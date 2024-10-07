@@ -43,131 +43,147 @@ module RegisterFile_tb();
 	initial begin
 	
     /* Please fill in the implementation here... */
-    
-    #10
+    //Writing test
+    #20
     RegWrite<=1;
     WriteRegister<=8;
     WriteData<=1;
     
-    #10
+    #20
     RegWrite<=1;
     WriteRegister<=9;
     WriteData<=2;
     
-    #10
+    #20
     RegWrite<=1;
     WriteRegister<=10;
     WriteData<=3;
     
-    #10
+    #20
     RegWrite<=1;
     WriteRegister<=11;
     WriteData<=4;
     
-    #10
+    #20
     RegWrite<=1;
     WriteRegister<=12;
     WriteData<=5;
     
-    #10
+    #20
     RegWrite<=1;
     WriteRegister<=13;
     WriteData<=6;
     
-    #10
+    #20
     RegWrite<=1;
     WriteRegister<=14;
     WriteData<=7;
     
-    #10
+    #20
     RegWrite<=1;
     WriteRegister<=15;
     WriteData<=8;
     
-    #10
+    #20
     RegWrite<=1;
     WriteRegister<=16;
     WriteData<=9;
     
-    #10
+    #20
     RegWrite<=1;
     WriteRegister<=17;
     WriteData<=10;
     
-    #10
+    #20
     RegWrite<=1;
     WriteRegister<=18;
     WriteData<=11;
     
-    #10
+    #20
     RegWrite<=1;
     WriteRegister<=19;
     WriteData<=12;
     
-    #10
+    #20
     RegWrite<=1;
     WriteRegister<=20;
     WriteData<=13;
     
-    #10
+    #20
     RegWrite<=1;
     WriteRegister<=21;
     WriteData<=14;
     
-    #10
+    #20
     RegWrite<=1;
     WriteRegister<=22;
     WriteData<=15;
     
-    #10
+    #20
     RegWrite<=1;
     WriteRegister<=23;
     WriteData<=16;
     
-    #10
+    #20
     RegWrite<=1;
     WriteRegister<=24;
     WriteData<=17;
     
-    #10
+    #20
     RegWrite<=1;
     WriteRegister<=25;
     WriteData<=18;
     
-    #10
+    
+    
+    
+    
+    
+    
+    
+    //Reading test
+    
+    
+    
+    
+    
+    
+    
+    
+    #20
     RegWrite<=0;
     ReadRegister1<=8;
     ReadRegister2<=25;
     
-    #10
+    #20
     ReadRegister1<=9;
     ReadRegister2<=24;
     
-    #10
+    #20
     ReadRegister1<=10;
     ReadRegister2<=23;
     
-    #10
+    #20
     ReadRegister1<=11;
     ReadRegister2<=22;
     
-    #10
+    #20
     ReadRegister1<=12;
     ReadRegister2<=21;
     
-    #10
+    #20
     ReadRegister1<=13;
     ReadRegister2<=20;
     
-    #10
+    #20
     ReadRegister1<=14;
     ReadRegister2<=19;
     
-    #10
+    #20
     ReadRegister1<=15;
     ReadRegister2<=18;
     
-    #10
+    #20
     ReadRegister1<=16;
     ReadRegister2<=17;
 	end
