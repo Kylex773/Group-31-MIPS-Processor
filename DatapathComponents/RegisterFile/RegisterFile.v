@@ -51,5 +51,25 @@
 module RegisterFile(ReadRegister1, ReadRegister2, WriteRegister, WriteData, RegWrite, Clk, ReadData1, ReadData2);
 
 	/* Please fill in the implementation here... */
-
+	input [4:0] ReadRegister1, ReadRegister2, WriteRegister;
+    input RegWrite;
+    output reg [31:0] ReadData1, ReadData2;
+    input [31:0] WriteData;
+    input Clk;
+    
+    reg [31:0] RegFile [0:31];
+    
+    always @(posedge Clk) begin
+        if (RegWrite==1) begin
+         RegFile[WriteRegister] <= WriteData;
+        end
+    end
+    
+    // Read procedure
+   always @(negedge Clk) begin
+         ReadData1 <= RegFile[ReadRegister1];
+         ReadData2 <= RegFile[ReadRegister2];
+   end
+    
+    
 endmodule
