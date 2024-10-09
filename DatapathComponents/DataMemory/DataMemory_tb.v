@@ -28,12 +28,23 @@ module DataMemory_tb();
 
 	initial begin
 		Clk <= 1'b0;
-		forever #10 Clk <= ~Clk;
+		forever #20 Clk <= ~Clk;
 	end
 
 	initial begin
 	
-    /* Please fill in the implementation here... */
+        MemRead = 0;
+        MemWrite = 1;
+        Address = 32'b00011100010111010000111100001010;
+        WriteData = 32'b10101010011000110011001010100100;
+        
+        #40 
+        MemRead = 1;
+        MemWrite = 0;
+        
+        #40
+        MemRead = 0;
+        MemWrite = 0;
 	
 	end
 
