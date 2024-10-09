@@ -943,7 +943,7 @@ sum:
     addi $t2, $t2, -1       # subtracting l by one
     j Loop2                 # re looping loop2
 Here2:                      # go here when loop2 is no longer valid
-    sub $t3, $s1, $s4       # calculating the skip value to go to next line
+    sub $t3, $s2, $s4       # calculating the skip value to go to next line
     sll $t3, $t3, 2         # multiplying skip by 4
     add $t4, $t4, $t3       # skiping the address to the new line    
     # addi $t5, $t5, 4
@@ -973,12 +973,12 @@ Here:                       # go here when loop1 is no longer valid
     loop:
     slt $t3, $t1, $0 #is t1 < 0
     bne $t3, $0, colunnIndex #leave if so
-    sub $t1, $t1, $s1 #increment row up
+    sub $t1, $t1, $s2 #increment row up
     addi $t2, $t2, 1 #increment row index
     j loop
 
     colunnIndex:
-    add $t1, $t1, $s1 #increment row up
+    add $t1, $t1, $s2 #increment row up
     
     add $v0, $0, $t2 #set row index
     add $v1, $0, $t1
