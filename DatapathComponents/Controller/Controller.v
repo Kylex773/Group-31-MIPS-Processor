@@ -155,6 +155,16 @@ ALUSrc <= 1;
 RegWrite <=1; 
 end
 
+6'b011100: begin //mul
+RegDst <= 1;
+MemRead <= 0;
+MemToReg <= 0;
+ALUOp <= 4'b1111;
+MemWrite <= 0;
+ALUSrc <= 0;
+RegWrite <= 1; 
+end
+
 default: begin //default case
 RegDst <= 0;
 MemRead <= 0;
