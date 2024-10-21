@@ -34,7 +34,7 @@ always @(*) begin
             case(Funct)
                 6'b100000: ALUControl <= 4'b0001;  //Add
                 6'b100010: ALUControl <= 4'b0010;  //Subtract
-                6'b100010: ALUControl <= 4'b0011;  //Multiply
+                //6'b000010: ALUControl <= 4'b0011;  //Multiply
                 6'b100100: ALUControl <= 4'b1010;  //And
                 6'b100101: ALUControl <= 4'b1011;  //or
                 6'b100111: ALUControl <= 4'b1100;  //Nor
@@ -55,7 +55,7 @@ always @(*) begin
         4'b1011: ALUControl <= 4'b1011;  //ori
         4'b1100: ALUControl <= 4'b1101;  //xori
         4'b1101: ALUControl <= 4'b1000;  //slti
-        
+        4'b1111: ALUControl <= 4'b0011;  //Multiply
     
     endcase
 end

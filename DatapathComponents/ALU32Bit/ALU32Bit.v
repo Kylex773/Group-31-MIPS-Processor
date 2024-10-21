@@ -26,11 +26,13 @@
 //   operations needed to support. 
 ////////////////////////////////////////////////////////////////////////////////
 
-module ALU32Bit(ALUControl, A, B, ALUResult, Zero);
+module ALU32Bit(ALUControl, A, B, ShftAmt, ALUResult, Zero);
 
 	input [3:0] ALUControl; // control bits for ALU operation
                                 // you need to adjust the bitwidth as needed
 	input [31:0] A, B;	    // inputs
+    input [4:0] ShftAmt; //shift amount
+
 
 	output reg [31:0] ALUResult;	// answer
 	output reg Zero;	    // Zero=1 if ALUResult == 0
@@ -92,8 +94,8 @@ end
 4'b1011: ALUResult <= A | B; //Or
 4'b1100: ALUResult <= ~(A | B); //Nor
 4'b1101: ALUResult <= A ^ B; //Xor
-4'b1110: ALUResult <= A <<< B; //Shift left
-4'b1111: ALUResult <= A >>> B; //Shift right
+4'b1110: ALUResult <= B <<< ShftAmt; //Shift left
+4'b1111: ALUResult <= B >>> ShftAmt; //Shift right
 
 endcase 
 end

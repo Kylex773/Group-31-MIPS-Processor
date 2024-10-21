@@ -20,7 +20,8 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module top(Clk, Reset, PCOut, Instruction, RegWriteData, ALUResult, RegReadData2);
+module top(Clk, Reset, PCOut, Instruction, RegWriteData, ALUResult, 
+RegReadData2, RegReadData1, ALUOp, ALUControl);
 
 input Clk;
 input Reset;
@@ -32,17 +33,17 @@ output wire [31:0] Instruction; //current instruction
 wire RegDst; //writing to rt or rd
 wire MemRead; //is the memory read
 wire MemToReg; //is the register getting its value from memory
-wire [3:0] ALUOp; //4 bit output code to control ALU
+output wire [3:0] ALUOp; //4 bit output code to control ALU
 wire MemWrite; //is the memory being written to
 wire ALUSrc; //is the second ALU input from a register or an immediate
 wire RegWrite; //is the a register bing written to
 wire [4:0] WriteReg; //address of write register through the mux
 output wire [31:0] RegWriteData; //write data for register
-wire [31:0] RegReadData1; //data at address of register 1
+output wire [31:0] RegReadData1; //data at address of register 1
 output wire [31:0] RegReadData2; //data at address of register 2
 wire [31:0] ImmExt; //sign extended immediate value
 wire [31:0] ALUSrcVal; //input B of the ALU through the mux
-wire [3:0] ALUControl; //control bits for the ALU operation
+output wire [3:0] ALUControl; //control bits for the ALU operation
 output wire [31:0] ALUResult; //output of ALU
 wire ZeroFlag; //zero flag output of ALU
 wire [31:0] MemReadData; //read data of the memory
@@ -56,7 +57,7 @@ RegisterFile RegFile(Instruction[25:21], Instruction[20:16], WriteReg, RegWriteD
 SignExtension SignExtender(Instruction[15:0], ImmExt);
 Mux32Bit2To1 ALUSrcMux(ALUSrcVal, RegReadData2, ImmExt, ALUSrc);
 ALU_Controller ALUController(ALUOp, Instruction[5:0], ALUControl);
-ALU32Bit ALU(ALUControl, RegReadData1, ALUSrcVal, ALUResult, ZeroFlag);
+ALU32Bit ALU(ALUControl, RegReadData1, ALUSrcVal, Instruction[10:6], ALUResult, ZeroFlag);
 DataMemory DataMemory(ALUResult, RegReadData2, Clk, MemWrite, MemRead, MemReadData);
 Mux32Bit2To1 WriteDataMux(RegWriteData, ALUResult, MemReadData, MemToReg);
 
