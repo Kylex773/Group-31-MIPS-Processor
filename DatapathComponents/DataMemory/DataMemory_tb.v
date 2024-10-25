@@ -14,8 +14,10 @@ module DataMemory_tb();
     reg             Clk;
     reg             MemWrite;
     reg             MemRead;
+    reg     [1:0]   MemType;
 
     wire [31:0] ReadData;
+    
 
     DataMemory u0(
         .Address(Address), 
@@ -23,7 +25,8 @@ module DataMemory_tb();
         .Clk(Clk), 
         .MemWrite(MemWrite), 
         .MemRead(MemRead), 
-        .ReadData(ReadData)
+        .ReadData(ReadData),
+        .MemType(MemType)
     ); 
 
 	initial begin
@@ -41,10 +44,17 @@ module DataMemory_tb();
         #40 
         MemRead = 1;
         MemWrite = 0;
+        MemType = 2'b11;
         
         #40
-        MemRead = 0;
+        MemRead = 1;
         MemWrite = 0;
+        MemType = 2'b01;
+        
+        #40
+        MemRead = 1;
+        MemWrite = 0;
+        MemType = 2'b00;
 	
 	end
 
