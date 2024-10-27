@@ -21,7 +21,9 @@
 
 
 module top2(
-Clk, Reset, PCOutF, InstructionD, WriteDataW
+Clk, Reset, PCOutF, InstructionD, WriteDataW, ALUResultE, ReadData1E,
+ALUSrcValE, ImmExtD, ReadData1D, ReadData2D, ALUControlE, WriteRegW,
+WriteRegD, WriteRegE, WriteRegM, ALUResultW, MemReadDataW
     );
     
     //Global Variables
@@ -33,23 +35,23 @@ Clk, Reset, PCOutF, InstructionD, WriteDataW
     output wire [31:0] InstructionD;
     wire MemReadD, MemToRegD, MemWriteD, ALUSrcD, RegWriteD, RegDst;
     wire [3:0] ALUOpD;
-    wire [4:0] WriteRegD;
-    wire [31:0] ImmExtD, ReadData1D, ReadData2D;
+    output wire [4:0] WriteRegD;
+    output wire [31:0] ImmExtD, ReadData1D, ReadData2D;
     wire MemReadE;
     wire MemToRegE;
     wire MemWrtieE;
     wire RegWriteE;
-    wire [31:0] ALUresultE;
+    output wire [31:0] ALUResultE;
     wire [31:0] ReadData2E;
-    wire [4:0] WriteRegE;
-    wire [31:0] ALUSrcValE;
+    output wire [4:0] WriteRegE;
+    output wire [31:0] ALUSrcValE;
     wire [31:0] ImmExtE;
     wire ALUSrcE;
-    wire [31:0] ReadData1E;
+    output wire [31:0] ReadData1E;
     wire [4:0] ShftAmtE;
     wire ZeroE;
     wire [3:0] ALUOpE;
-    wire [3:0] ALUControlE;
+    output wire [3:0] ALUControlE;
     wire MemtoRegM;
     wire RegWriteM;
     wire [31:0] MemReadDataM;
@@ -57,9 +59,9 @@ Clk, Reset, PCOutF, InstructionD, WriteDataW
     wire [31:0] ReadData2M;
     wire MemtoRegW;
     wire RegWriteW;
-    wire [31:0] MemReadDataW;
-    wire [31:0] ALUResultW;
-    wire [31:0] WriteRegW;
+    output wire [31:0] MemReadDataW;
+    output wire [31:0] ALUResultW;
+    output wire [4:0] WriteRegW, WriteRegM;
     output wire [31:0] WriteDataW;
     
     //Fetch Stage
@@ -73,7 +75,7 @@ Clk, Reset, PCOutF, InstructionD, WriteDataW
     
     Mux32Bit2To1 RegDstMux(WriteRegD, InstructionD[20:16], InstructionD[15:11], RegDst);
     
-    RegisterFile RegisterFile(InstructionD[25:21], InstructionD[20:16], WriteRegW[4:0], WriteDataW, 
+    RegisterFile RegisterFile(InstructionD[25:21], InstructionD[20:16], WriteRegW, WriteDataW, 
     RegWriteW, Clk, ReadData1D, ReadData2D);
     
     SignExtension SignExtender(InstructionD[15:0], ImmExtD);
@@ -93,9 +95,9 @@ Clk, Reset, PCOutF, InstructionD, WriteDataW
     
     Pipline_Execute Pipline_Executeipline_Execute(
         Clk, MemReadE, MemToRegE, MemWrtieE, 
-        RegWriteE, ALUresultE, ReadData2E, WriteRegE,
-        MemReadM, MemToRegM, MemWriteM, RegWriteM,
-        ALUresultM, ReadData2M, WriteRegM);
+        RegWriteE, ALUResultE, ReadData2E, WriteRegE,
+        MemReadM, MemtoRegM, MemWriteM, RegWriteM,
+        ALUResultM, ReadData2M, WriteRegM);
     
     //Memory Stage
     DataMemory DataMemory(ALUREsultM, ReadData2M, Clk, MemWriteM, MemReadM, MemReadDataM);     
@@ -105,6 +107,6 @@ Clk, Reset, PCOutF, InstructionD, WriteDataW
     MemtoRegW, RegWriteW, MemReadDataW, ALUResultW, WriteRegW);
 
     //Writeback Stage
-    Mux32Bit2To1 MemToRegMux(WriteDataW, ALUResultW, MemReadDataW, MemtoReg);
+    Mux32Bit2To1 MemToRegMux(WriteDataW, ALUResultW, MemReadDataW, MemtoRegW);
     
 endmodule
