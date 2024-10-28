@@ -67,8 +67,8 @@ Clk, Reset, PCDisplay, WriteDataDisplay
     wire [1:0] MemTypeM;
     wire [31:0] PCPlus4E, PCPlus4M, PCPlus4W;
     
-    output reg [31:0] PCDisplay;
-    output reg [31:0] WriteDataDisplay;
+    (* MARK_DEBUG = "TRUE" *) output reg [31:0] PCDisplay;
+    (* MARK_DEBUG = "TRUE" *) output reg [31:0] WriteDataDisplay;
     
     //Fetch Stage
     ProgramCounter PCCounter(PCPlus4F, PCOutF, Reset, Clk);
@@ -124,7 +124,7 @@ Clk, Reset, PCDisplay, WriteDataDisplay
     end
     
     //display output
-    always @(*)
+    always @(PCPlus4W or WriteDataW)
     begin
     PCDisplay <= PCPlus4W - 4;
     WriteDataDisplay <= WriteDataW;
