@@ -21,54 +21,54 @@
 
 
 module top2(
-Clk, Reset, PCOutF, InstructionD, WriteDataW, ALUResultE, ReadData1E,
-ALUSrcValE, ImmExtD, ReadData1D, ReadData2D, ALUControlE, WriteRegW,
-WriteRegD, WriteRegE, WriteRegM, ALUResultW, MemReadDataW, MemReadDataM,
-ReadData2M, MemReadM, ALUResultM, MemTypeM
+Clk, Reset, PCDisplay, WriteDataDisplay
     );
     
     //Global Variables
     input Clk, Reset;
     wire [31:0] PCPlus4F; //PC Counter + 4
     wire [31:0] InstructionF; //Instuction 32 bit
-    output wire [31:0] PCOutF; //PC Counter output
+    wire [31:0] PCOutF; //PC Counter output
     wire [31:0] PCPlus4D;
-    output wire [31:0] InstructionD;
+    wire [31:0] InstructionD;
     wire MemReadD, MemToRegD, MemWriteD, ALUSrcD, RegWriteD, RegDst;
     wire [3:0] ALUOpD;
-    output wire [4:0] WriteRegD;
-    output wire [31:0] ImmExtD, ReadData1D, ReadData2D;
+    wire [4:0] WriteRegD;
+    wire [31:0] ImmExtD, ReadData1D, ReadData2D;
     wire MemReadE;
     wire MemToRegE;
     wire MemWriteE;
     wire RegWriteE;
-    output wire [31:0] ALUResultE;
+    wire [31:0] ALUResultE;
     wire [31:0] ReadData2E;
-    output wire [4:0] WriteRegE;
-    output wire [31:0] ALUSrcValE;
+    wire [4:0] WriteRegE;
+    wire [31:0] ALUSrcValE;
     wire [31:0] ImmExtE;
     wire ALUSrcE;
-    output wire [31:0] ReadData1E;
+    wire [31:0] ReadData1E;
     wire [4:0] ShftAmtE;
     wire ZeroE;
     wire [3:0] ALUOpE;
-    output wire [3:0] ALUControlE;
+    wire [3:0] ALUControlE;
     wire MemtoRegM;
     wire RegWriteM;
-    output wire [31:0] MemReadDataM;
-    output wire [31:0] ALUResultM;
-    output wire [31:0] ReadData2M;
+    wire [31:0] MemReadDataM;
+    wire [31:0] ALUResultM;
+    wire [31:0] ReadData2M;
     wire MemtoRegW;
     wire RegWriteW;
-    output wire [31:0] MemReadDataW;
-    output wire [31:0] ALUResultW;
-    output wire [4:0] WriteRegW, WriteRegM;
-    output wire [31:0] WriteDataW;
+    wire [31:0] MemReadDataW;
+    wire [31:0] ALUResultW;
+    wire [4:0] WriteRegW, WriteRegM;
+    wire [31:0] WriteDataW;
     wire MemWriteM;
-    output wire MemReadM;
+    wire MemReadM;
     wire [1:0] MemTypeD, MemTypeE;
-    output wire [1:0] MemTypeM;
+    wire [1:0] MemTypeM;
+    wire [31:0] PCPlus4E, PCPlus4M, PCPlus4W;
     
+    (* MARK_DEBUG = "TRUE" *) output reg [31:0] PCDisplay;
+    (* MARK_DEBUG = "TRUE" *) output reg [31:0] WriteDataDisplay;
     
     //Fetch Stage
     ProgramCounter PCCounter(PCPlus4F, PCOutF, Reset, Clk);
@@ -90,7 +90,8 @@ ReadData2M, MemReadM, ALUResultM, MemTypeM
         MemReadD, MemToRegD, MemWriteD, ALUSrcD, RegWriteD, InstructionD[27:26],
         ALUOpD, WriteRegD, ImmExtD, ReadData1D, ReadData2D, InstructionD[10:6], 
         MemReadE, MemToRegE, MemWriteE, ALUSrcE, RegWriteE, MemTypeE,
-        ALUOpE, WriteRegE, ImmExtE, ReadData1E, ReadData2E, ShftAmtE);
+        ALUOpE, WriteRegE, ImmExtE, ReadData1E, ReadData2E, ShftAmtE,
+        PCPlus4D, PCPlus4E);
         
     //Execute Stage
     Mux32Bit2To1 ALUSrcMux(ALUSrcValE, ReadData2E, ImmExtE, ALUSrcE);
@@ -104,16 +105,31 @@ ReadData2M, MemReadM, ALUResultM, MemTypeM
         RegWriteE, ALUResultE, ReadData2E, WriteRegE,
         MemReadM, MemtoRegM, MemWriteM, RegWriteM,
         ALUResultM, ReadData2M, WriteRegM,
-        MemTypeE, MemTypeM);
+        MemTypeE, MemTypeM, PCPlus4E, PCPlus4M);
     
     //Memory Stage
     DataMemory DataMemory(ALUResultM, ReadData2M, Clk, MemWriteM, MemReadM, MemReadDataM, MemTypeM);     
     
     Pipline_Memory Pipline_Memory(Clk, 
     MemtoRegM, RegWriteM, MemReadDataM, ALUResultM, WriteRegM,
-    MemtoRegW, RegWriteW, MemReadDataW, ALUResultW, WriteRegW);
+    MemtoRegW, RegWriteW, MemReadDataW, ALUResultW, WriteRegW,
+    PCPlus4M, PCPlus4W);
 
     //Writeback Stage
     Mux32Bit2To1 MemToRegMux(WriteDataW, ALUResultW, MemReadDataW, MemtoRegW);
+    
+    
+    initial begin
+    PCDisplay = 4;
+    end
+    
+    //display output
+    always @(PCPlus4W or WriteDataW)
+    begin
+    PCDisplay <= PCPlus4W - 4;
+    WriteDataDisplay <= WriteDataW;
+    end 
+    
+    
     
 endmodule
