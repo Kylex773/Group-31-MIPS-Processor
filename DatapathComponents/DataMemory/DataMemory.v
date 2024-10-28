@@ -35,30 +35,93 @@
 // of the "Address" input to index any of the 256 words. 
 ////////////////////////////////////////////////////////////////////////////////
 
-module DataMemory(Address, WriteData, Clk, MemWrite, MemRead, ReadData); 
+module DataMemory(Address, WriteData, Clk, MemWrite, MemRead, ReadData, MemType); 
 
     input [31:0] Address; 	// Input Address 
     input [31:0] WriteData; // Data that needs to be written into the address 
     input Clk;
     input MemWrite; 		// Control signal for memory write 
     input MemRead; 			// Control signal for memory read 
+    input [1:0] MemType;
 
     output reg[31:0] ReadData; // Contents of memory location at Address
     
     reg [31:0] memory [0:1023];
-    
+
+    /* Please fill in the implementation here */
     always@(*) begin
-        if(MemRead == 1'b1)
-            ReadData <= memory[Address[11:2]];
+        if(MemRead == 1'b1)begin
+                if(MemType == 2'b11)begin //load word
+                    
+                    ReadData <= memory[Address[11:2]];
+                    
+                end
+                else if(MemType == 2'b01)begin  //load half
+                    if(Address[1:0] == 2'b10)begin  //load bottom half
+                        ReadData <= {{16{memory[Address[11:2]][15]}}, memory[Address[11:2]][15:0]};
+                        
+                    end
+                    else if(Address[1:0] == 2'b00)begin  //load top half
+                        ReadData <= {{16{memory[Address[11:2]][31]}}, memory[Address[11:2]][31:16]};
+                    end
+                end
+                else if(MemType == 2'b00)begin  //load byte
+                    if(Address[1:0] == 2'b11)begin
+                        ReadData <= {{24{memory[Address[11:2]][7]}}, memory[Address[11:2]][7:0]};//load least 8 bits                        
+                    end
+                    if(Address[1:0] == 2'b10)begin
+                        ReadData <= {{24{memory[Address[11:2]][15]}}, memory[Address[11:2]][15:8]}; //load lower half 8 bits
+                        
+                        
+                    end
+                    if(Address[1:0] == 2'b01)begin
+                        ReadData <= {{24{memory[Address[11:2]][23]}}, memory[Address[11:2]][23:16]};  //load upper half 8 bits
+                    end
+                    if(Address[1:0] == 2'b00)begin
+                        ReadData <= {{24{memory[Address[11:2]][31]}}, memory[Address[11:2]][31:24]};  //load most 8 bits
+                    end
+                        
+                end   
+        end       
         else
             ReadData <= 32'b0;
     end
 
     always @ (posedge Clk)begin
-        if(MemWrite == 1'b1)
-            memory[Address[11:2]] <= WriteData;
+        if(MemWrite == 1'b1)begin
+            if(MemType == 2'b11)begin //Save word
+                    memory[Address[11:2]] <= WriteData;
+            end
+            if(MemType == 2'b01)begin //Save half
+                if(Address[1:0] == 2'b10)begin  //Save bottom half
+                        memory[Address[11:2]] <= {memory[Address[11:2]][31:16], WriteData[15:0]};
+                end
+                else if(Address[1:0] == 2'b00)begin  //Save top half
+                        memory[Address[11:2]] <= {WriteData[15:0], memory[Address[11:2]][15:0]};
+                end
+            end
+            if(MemType == 2'b00)begin //Save byte
+                if(Address[1:0] == 2'b11)begin  //Save bottom half
+                        memory[Address[11:2]] <= {memory[Address[11:2]][31:8], WriteData[7:0]};
+                end
+                else if(Address[1:0] == 2'b10)begin  //Save top half
+                        memory[Address[11:2]] <= {memory[Address[11:2]][31:16], WriteData[7:0], memory[Address[11:2]][7:0]};
+                end
+                if(Address[1:0] == 2'b01)begin  //Save bottom half
+                        memory[Address[11:2]] <= {memory[Address[11:2]][31:24], WriteData[7:0], memory[Address[11:2]][15:0]};
+                end
+                else if(Address[1:0] == 2'b00)begin  //Save top half
+                       memory[Address[11:2]] <= {WriteData[7:0], memory[Address[11:2]][23:0]};
+                end
+            end
+        end    
     end
-    
-    
+        
+        
+        
+            
+
+            
+
 
 endmodule

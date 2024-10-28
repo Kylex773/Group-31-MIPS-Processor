@@ -14,8 +14,10 @@ module DataMemory_tb();
     reg             Clk;
     reg             MemWrite;
     reg             MemRead;
+    reg     [1:0]   MemType;
 
     wire [31:0] ReadData;
+    
 
     DataMemory u0(
         .Address(Address), 
@@ -23,7 +25,8 @@ module DataMemory_tb();
         .Clk(Clk), 
         .MemWrite(MemWrite), 
         .MemRead(MemRead), 
-        .ReadData(ReadData)
+        .ReadData(ReadData),
+        .MemType(MemType)
     ); 
 
 	initial begin
@@ -33,18 +36,56 @@ module DataMemory_tb();
 
 	initial begin
 	
-        MemRead = 0;
+       /* MemRead = 0;  //load test case
         MemWrite = 1;
-        Address = 32'b00011100010111010000111100001010;
-        WriteData = 32'b10101010011000110011001010100100;
+        Address = 32'b00000000000000000000000000000100;
+        WriteData = 32'b11111111111111100111111111111111;
+        MemType = 2'b11;
         
-        #40 
+        #40 // test lh lower half
+        Address = 32'b00000000000000000000000000000110;
         MemRead = 1;
         MemWrite = 0;
+        MemType = 2'b01;
         
-        #40
-        MemRead = 0;
+        
+        #40   // test lh upper half
+        MemRead = 1;
         MemWrite = 0;
+        MemType = 2'b01;
+        Address = 32'b00000000000000000000000000000100;
+        */
+        
+        #40  // load test lb
+        MemRead = 0;
+        MemWrite = 1;
+        Address = 32'b00000000000000000000000000000100;
+        WriteData = 32'b00000100000000110000000100000000;
+        MemType = 2'b11;
+        
+       #40  // test lb least 8 bits
+        MemRead = 1;
+        MemWrite = 0;
+        MemType = 2'b00;
+        Address = 32'b00000000000000000000000000000111;
+        
+        #40  // test lb  lower middle 8 bits
+        MemRead = 1;
+        MemWrite = 0;
+        MemType = 2'b00;
+        Address = 32'b00000000000000000000000000000110;
+        
+        #40  // test lb upper middle 8 bits
+        MemRead = 1;
+        MemWrite = 0;
+        MemType = 2'b00;
+        Address = 32'b00000000000000000000000000000101;
+        
+        #40  // test lb highest 8 bits
+        MemRead = 1;
+        MemWrite = 0;
+        MemType = 2'b00;
+        Address = 32'b00000000000000000000000000000100;
 	
 	end
 
