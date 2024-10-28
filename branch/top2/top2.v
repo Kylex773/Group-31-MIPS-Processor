@@ -23,7 +23,8 @@
 module top2(
 Clk, Reset, PCOutF, InstructionD, WriteDataW, ALUResultE, ReadData1E,
 ALUSrcValE, ImmExtD, ReadData1D, ReadData2D, ALUControlE, WriteRegW,
-WriteRegD, WriteRegE, WriteRegM, ALUResultW, MemReadDataW
+WriteRegD, WriteRegE, WriteRegM, ALUResultW, MemReadDataW, MemReadDataM,
+ReadData2M, MemReadM, ALUResultM
     );
     
     //Global Variables
@@ -39,7 +40,7 @@ WriteRegD, WriteRegE, WriteRegM, ALUResultW, MemReadDataW
     output wire [31:0] ImmExtD, ReadData1D, ReadData2D;
     wire MemReadE;
     wire MemToRegE;
-    wire MemWrtieE;
+    wire MemWriteE;
     wire RegWriteE;
     output wire [31:0] ALUResultE;
     wire [31:0] ReadData2E;
@@ -54,15 +55,17 @@ WriteRegD, WriteRegE, WriteRegM, ALUResultW, MemReadDataW
     output wire [3:0] ALUControlE;
     wire MemtoRegM;
     wire RegWriteM;
-    wire [31:0] MemReadDataM;
-    wire [31:0] ALUResultM;
-    wire [31:0] ReadData2M;
+    output wire [31:0] MemReadDataM;
+    output wire [31:0] ALUResultM;
+    output wire [31:0] ReadData2M;
     wire MemtoRegW;
     wire RegWriteW;
     output wire [31:0] MemReadDataW;
     output wire [31:0] ALUResultW;
     output wire [4:0] WriteRegW, WriteRegM;
     output wire [31:0] WriteDataW;
+    wire MemWriteM;
+    output wire MemReadM;
     
     //Fetch Stage
     ProgramCounter PCCounter(PCPlus4F, PCOutF, Reset, Clk);
@@ -94,13 +97,13 @@ WriteRegD, WriteRegE, WriteRegM, ALUResultW, MemReadDataW
     ALU32Bit ALU(ALUControlE, ReadData1E, ALUSrcValE, ShftAmtE, ALUResultE, Zero);
     
     Pipline_Execute Pipline_Executeipline_Execute(
-        Clk, MemReadE, MemToRegE, MemWrtieE, 
+        Clk, MemReadE, MemToRegE, MemWriteE, 
         RegWriteE, ALUResultE, ReadData2E, WriteRegE,
         MemReadM, MemtoRegM, MemWriteM, RegWriteM,
         ALUResultM, ReadData2M, WriteRegM);
     
     //Memory Stage
-    DataMemory DataMemory(ALUREsultM, ReadData2M, Clk, MemWriteM, MemReadM, MemReadDataM);     
+    DataMemory DataMemory(ALUResultM, ReadData2M, Clk, MemWriteM, MemReadM, MemReadDataM);     
     
     Pipline_Memory Pipline_Memory(Clk, 
     MemtoRegM, RegWriteM, MemReadDataM, ALUResultM, WriteRegM,

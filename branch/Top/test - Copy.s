@@ -10,12 +10,11 @@ nop
 nop
 nop
 nop
-sw $t1, 0($0)
 nop
 nop
 nop
 nop
-lw $t2, 0($0)
+add $t2, $t1, $0
 nop
 nop
 nop

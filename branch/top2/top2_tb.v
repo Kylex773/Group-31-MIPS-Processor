@@ -24,11 +24,12 @@ module top2_tb();
 
 reg Clk, Reset;
 
-wire [31:0] PCOutF, InstructionD, WriteDataW, ALUResultE, ReadData1E, ALUSrcValE, ImmExtD, ReadData1D, ReadData2D;
+wire [31:0] PCOutF, InstructionD, WriteDataW, ALUResultE, ReadData1E, ALUSrcValE, ImmExtD, ReadData1D, ReadData2D, MemReadDataM, ReadData2M;
 
 wire [3:0] ALUControlE;
 wire [4:0] WriteRegW, WriteRegD, WriteRegE, WriteRegM;
-wire [31:0] ALUResultW, MemReadDataW;
+wire [31:0] ALUResultW, MemReadDataW, ALUResultM;
+wire MemReadM;
 
 top2 u0(
 .Clk(Clk), .Reset(Reset), .PCOutF(PCOutF), 
@@ -46,7 +47,11 @@ top2 u0(
 .WriteRegE(WriteRegE),
 .WriteRegM(WriteRegM),
 .ALUResultW(ALUResultW),
-.MemReadDataW(MemReadDataW)
+.MemReadDataW(MemReadDataW),
+.MemReadDataM(MemReadDataM),
+.ReadData2M(ReadData2M),
+.MemReadM(MemReadM),
+.ALUResultM(ALUResultM)
 );
 
 
