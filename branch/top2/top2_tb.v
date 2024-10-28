@@ -30,6 +30,7 @@ wire [3:0] ALUControlE;
 wire [4:0] WriteRegW, WriteRegD, WriteRegE, WriteRegM;
 wire [31:0] ALUResultW, MemReadDataW, ALUResultM;
 wire MemReadM;
+wire [1:0] MemTypeM;
 
 top2 u0(
 .Clk(Clk), .Reset(Reset), .PCOutF(PCOutF), 
@@ -51,7 +52,8 @@ top2 u0(
 .MemReadDataM(MemReadDataM),
 .ReadData2M(ReadData2M),
 .MemReadM(MemReadM),
-.ALUResultM(ALUResultM)
+.ALUResultM(ALUResultM),
+.MemTypeM(MemTypeM)
 );
 
 

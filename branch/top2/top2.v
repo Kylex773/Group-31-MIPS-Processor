@@ -24,7 +24,7 @@ module top2(
 Clk, Reset, PCOutF, InstructionD, WriteDataW, ALUResultE, ReadData1E,
 ALUSrcValE, ImmExtD, ReadData1D, ReadData2D, ALUControlE, WriteRegW,
 WriteRegD, WriteRegE, WriteRegM, ALUResultW, MemReadDataW, MemReadDataM,
-ReadData2M, MemReadM, ALUResultM
+ReadData2M, MemReadM, ALUResultM, MemTypeM
     );
     
     //Global Variables
@@ -66,6 +66,9 @@ ReadData2M, MemReadM, ALUResultM
     output wire [31:0] WriteDataW;
     wire MemWriteM;
     output wire MemReadM;
+    wire [1:0] MemTypeD, MemTypeE;
+    output wire [1:0] MemTypeM;
+    
     
     //Fetch Stage
     ProgramCounter PCCounter(PCPlus4F, PCOutF, Reset, Clk);
@@ -84,9 +87,9 @@ ReadData2M, MemReadM, ALUResultM
     SignExtension SignExtender(InstructionD[15:0], ImmExtD);
     
     Pipline_Decode Pipline_Decode(Clk,
-        MemReadD, MemToRegD, MemWriteD, ALUSrcD, RegWriteD,
+        MemReadD, MemToRegD, MemWriteD, ALUSrcD, RegWriteD, InstructionD[27:26],
         ALUOpD, WriteRegD, ImmExtD, ReadData1D, ReadData2D, InstructionD[10:6], 
-        MemReadE, MemToRegE, MemWriteE, ALUSrcE, RegWriteE,
+        MemReadE, MemToRegE, MemWriteE, ALUSrcE, RegWriteE, MemTypeE,
         ALUOpE, WriteRegE, ImmExtE, ReadData1E, ReadData2E, ShftAmtE);
         
     //Execute Stage
@@ -96,14 +99,15 @@ ReadData2M, MemReadM, ALUResultM
      
     ALU32Bit ALU(ALUControlE, ReadData1E, ALUSrcValE, ShftAmtE, ALUResultE, Zero);
     
-    Pipline_Execute Pipline_Executeipline_Execute(
+    Pipline_Execute Pipline_Execute(
         Clk, MemReadE, MemToRegE, MemWriteE, 
         RegWriteE, ALUResultE, ReadData2E, WriteRegE,
         MemReadM, MemtoRegM, MemWriteM, RegWriteM,
-        ALUResultM, ReadData2M, WriteRegM);
+        ALUResultM, ReadData2M, WriteRegM,
+        MemTypeE, MemTypeM);
     
     //Memory Stage
-    DataMemory DataMemory(ALUResultM, ReadData2M, Clk, MemWriteM, MemReadM, MemReadDataM);     
+    DataMemory DataMemory(ALUResultM, ReadData2M, Clk, MemWriteM, MemReadM, MemReadDataM, MemTypeM);     
     
     Pipline_Memory Pipline_Memory(Clk, 
     MemtoRegM, RegWriteM, MemReadDataM, ALUResultM, WriteRegM,

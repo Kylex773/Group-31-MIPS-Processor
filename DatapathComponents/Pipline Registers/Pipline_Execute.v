@@ -20,7 +20,8 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module Pipline_Execute(Clk, MemReadE, MemToRegE, MemWriteE, RegWriteE, ALUresultE, ReadData2E, WriteRegE, MemReadM, MemToRegM, MemWriteM, RegWriteM, ALUresultM, ReadData2M, WriteRegM);
+module Pipline_Execute(Clk, MemReadE, MemToRegE, MemWriteE, RegWriteE, ALUresultE, ReadData2E, WriteRegE, MemReadM, MemToRegM, MemWriteM, RegWriteM, ALUresultM, ReadData2M, WriteRegM,
+MemTypeE, MemTypeM);
     input Clk;
     input MemReadE;
     input MemToRegE;
@@ -29,6 +30,8 @@ module Pipline_Execute(Clk, MemReadE, MemToRegE, MemWriteE, RegWriteE, ALUresult
     input [31:0] ALUresultE;
     input [31:0] ReadData2E;
     input [4:0] WriteRegE;
+    input [1:0] MemTypeE;
+    
     
     output reg MemReadM;
     output reg MemToRegM;
@@ -37,6 +40,7 @@ module Pipline_Execute(Clk, MemReadE, MemToRegE, MemWriteE, RegWriteE, ALUresult
     output reg [31:0] ALUresultM;
     output reg [31:0] ReadData2M;
     output reg [4:0] WriteRegM;
+    output reg [1:0] MemTypeM;
     
     always @(posedge Clk) begin
     MemReadM <= MemReadE;
@@ -46,6 +50,7 @@ module Pipline_Execute(Clk, MemReadE, MemToRegE, MemWriteE, RegWriteE, ALUresult
     ALUresultM <= ALUresultE;
     ReadData2M <= ReadData2E;
     WriteRegM <= WriteRegE;
+    MemTypeM <= MemTypeE;
     end
 
 endmodule

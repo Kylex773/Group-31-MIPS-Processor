@@ -21,9 +21,9 @@
 
 
 module Pipline_Decode(Clk,
-MemReadD, MemToRegD, MemWriteD, ALUSrcD, RegWriteD,
+MemReadD, MemToRegD, MemWriteD, ALUSrcD, RegWriteD, MemTypeD,
 ALUOpD, WriteRegD, ImmExtD, ReadData1D, ReadData2D, ShftAmtD,
-MemReadE, MemToRegE, MemWriteE, ALUSrcE, RegWriteE,
+MemReadE, MemToRegE, MemWriteE, ALUSrcE, RegWriteE, MemTypeE,
 ALUOpE, WriteRegE, ImmExtE, ReadData1E, ReadData2E, ShftAmtE
 );
 
@@ -32,13 +32,14 @@ input [3:0] ALUOpD;
 input [4:0] WriteRegD;
 input [31:0] ImmExtD, ReadData1D, ReadData2D;
 input [4:0] ShftAmtD;
+input [1:0] MemTypeD;
 
 output reg MemReadE, MemToRegE, MemWriteE, ALUSrcE, RegWriteE;
 output reg [3:0] ALUOpE;
 output reg [4:0] WriteRegE;
 output reg [31:0] ImmExtE, ReadData1E, ReadData2E;
 output reg [4:0] ShftAmtE;
-
+output reg [1:0] MemTypeE;
 
 always @(posedge Clk)
 begin
@@ -53,6 +54,7 @@ ImmExtE <= ImmExtD;
 ReadData1E <= ReadData1D;
 ReadData2E <= ReadData2D;
 ShftAmtE <= ShftAmtD;
+MemTypeE <= MemTypeD;
 end
 
 endmodule
