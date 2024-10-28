@@ -40,9 +40,7 @@ module ProgramCounter(Address, PCResult, Reset, Clk);
             PCResult = Address;
     end
 
-    initial begin
-    Address = 0;
-    end
+    
 
 endmodule
 
