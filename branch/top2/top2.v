@@ -66,6 +66,7 @@ Clk, Reset, PCDisplay, WriteDataDisplay
     wire [1:0] MemTypeD, MemTypeE;
     wire [1:0] MemTypeM;
     wire [31:0] PCPlus4E, PCPlus4M, PCPlus4W;
+    wire [1:0] BranchTypeD;
     
     (* MARK_DEBUG = "TRUE" *) output reg [31:0] PCDisplay;
     (* MARK_DEBUG = "TRUE" *) output reg [31:0] WriteDataDisplay;
@@ -77,7 +78,7 @@ Clk, Reset, PCDisplay, WriteDataDisplay
     Pipline_Fetch Pipline_Fetch(Clk, PCPlus4F, InstructionF, PCPlus4D, InstructionD);
     
     //Decode Stage
-    Controller Controller(InstructionD[31:26], RegDst, MemReadD, MemToRegD, ALUOpD, MemWriteD, ALUSrcD, RegWriteD);
+    Controller Controller(InstructionD[31:26], InstructionD[5:0], RegDst, MemReadD, MemToRegD, ALUOpD, MemWriteD, ALUSrcD, RegWriteD, BranchTypeD);
     
     Mux32Bit2To1 RegDstMux(WriteRegD, InstructionD[20:16], InstructionD[15:11], RegDst);
     

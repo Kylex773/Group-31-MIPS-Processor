@@ -26,10 +26,10 @@ module PCSelector(out, controlinput, comparatorinput);
     input comparatorinput;
     
     always @(*)begin
-        if(controlinput == 0)
+        if(comparatorinput == 0)
             out <= 0;
         else
-            out <= comparatorinput;
+            out <= controlinput;
             
     end
 endmodule
