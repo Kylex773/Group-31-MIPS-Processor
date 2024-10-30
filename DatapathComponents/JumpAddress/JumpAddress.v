@@ -3,9 +3,9 @@
 // Company: 
 // Engineer: 
 // 
-// Create Date: 10/28/2024 02:50:48 PM
+// Create Date: 10/29/2024 06:52:26 PM
 // Design Name: 
-// Module Name: PCSelector
+// Module Name: JumpAddress
 // Project Name: 
 // Target Devices: 
 // Tool Versions: 
@@ -20,16 +20,15 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module PCSelector(out, controlinput, comparatorinput);
-    output reg [1:0]out;
-    input [1:0] controlinput;
-    input comparatorinput;
-    
-    always @(*)begin
-        if(comparatorinput == 0)
-            out <= 0;
-        else
-            out <= controlinput; 
-    end
-    
+module JumpAddress(JumpImm, PCPlus4, JumpAddress);
+
+input [27:0] JumpImm;
+input [31:0] PCPlus4;
+
+output reg [31:0] JumpAddress;
+
+always @(*)begin
+JumpAddress[31:28] <= PCPlus4[31:28];
+JumpAddress[27:0] <= (JumpImm <<< 2);
+end
 endmodule

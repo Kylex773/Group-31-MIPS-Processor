@@ -3,9 +3,9 @@
 // Company: 
 // Engineer: 
 // 
-// Create Date: 10/28/2024 02:50:48 PM
+// Create Date: 10/29/2024 06:34:49 PM
 // Design Name: 
-// Module Name: PCSelector
+// Module Name: BranchAdder
 // Project Name: 
 // Target Devices: 
 // Tool Versions: 
@@ -20,16 +20,17 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module PCSelector(out, controlinput, comparatorinput);
-    output reg [1:0]out;
-    input [1:0] controlinput;
-    input comparatorinput;
+module BranchAdder(PCPlus4, ImmExt, BranchPC);
     
-    always @(*)begin
-        if(comparatorinput == 0)
-            out <= 0;
-        else
-            out <= controlinput; 
+    input [31:0] PCPlus4;
+    input [31:0] ImmExt;
+    
+    output reg [31:0] BranchPC;
+    
+    always @(*)
+    begin
+    BranchPC <= (PCPlus4) + (ImmExt * 4);
     end
+    
     
 endmodule

@@ -3,9 +3,9 @@
 // Company: 
 // Engineer: 
 // 
-// Create Date: 10/28/2024 02:50:48 PM
+// Create Date: 10/29/2024 06:59:30 PM
 // Design Name: 
-// Module Name: PCSelector
+// Module Name: JumpAddress_tb
 // Project Name: 
 // Target Devices: 
 // Tool Versions: 
@@ -20,16 +20,26 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module PCSelector(out, controlinput, comparatorinput);
-    output reg [1:0]out;
-    input [1:0] controlinput;
-    input comparatorinput;
-    
-    always @(*)begin
-        if(comparatorinput == 0)
-            out <= 0;
-        else
-            out <= controlinput; 
-    end
-    
+module JumpAddress_tb();
+
+reg [27:0] JumpImm;
+reg [31:0] PCPlus4;
+
+wire [31:0] JumpAddress;
+
+JumpAddress u0(
+.JumpImm(JumpImm),
+.PCPlus4(PCPlus4),
+.JumpAddress(JumpAddress)
+);
+
+initial begin
+JumpImm = 3;
+PCPlus4 = 0;
+#50
+JumpImm = 2;
+PCPlus4 = 60;
+
+end
+
 endmodule

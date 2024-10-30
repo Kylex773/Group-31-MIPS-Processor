@@ -20,11 +20,12 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module Controller(InstCode, FunctCode, RegDst, MemRead, MemToReg, ALUOp, MemWrite, ALUSrc, RegWrite, BranchType);
+module Controller(InstCode, FunctCode, RegImm, NopCheck, RegDst, MemRead, MemToReg, ALUOp, MemWrite, ALUSrc, RegWrite, BranchType, jal, Display);
 
 input [5:0] InstCode; // 6 bit input code for each instruction
 input [5:0] FunctCode; //needed because the world hates us and JR uses the R type function field :)
-
+input [4:0] RegImm; //needed because mips wants to kill me more
+input [31:0] NopCheck;
 
 output reg RegDst; //writing to rt or rd
 output reg MemRead; //is the memory read
@@ -34,9 +35,10 @@ output reg MemWrite; //is the memory being written to
 output reg ALUSrc; //is the second ALU input from a register or an immediate
 output reg RegWrite; //is the a register bing written to
 output reg [1:0] BranchType; //type of branch/jump
+output reg jal; //is it jal
+output reg Display;
 
-
-always @(InstCode)
+always @(*)
 begin
 case(InstCode)
 6'b000000: begin 
@@ -45,11 +47,12 @@ if (FunctCode == 6'b001000) begin //jump register
 RegDst <= 0;
 MemRead <= 0;
 MemToReg <= 0;
-ALUOp <= 4'b0001;
+ALUOp <= 4'b1001;
 MemWrite <= 0;
 ALUSrc <= 1;
 RegWrite <=1; 
 BranchType <= 2;
+jal <= 0;
 end
 
 else begin //r type instructions
@@ -61,6 +64,7 @@ MemWrite <= 0;
 ALUSrc <= 0;
 RegWrite <= 1; 
 BranchType <= 0;
+jal <= 0;
 end
 end
 
@@ -73,7 +77,7 @@ MemWrite <= 0;
 ALUSrc <= 1;
 RegWrite <=1; 
 BranchType <= 0;
-
+jal <= 0;
 end
 
 6'b100011: begin //lw
@@ -85,6 +89,7 @@ MemWrite <= 0;
 ALUSrc <= 1;
 RegWrite <=1; 
 BranchType <= 0;
+jal <= 0;
 end
 
 6'b100001: begin //lh
@@ -96,6 +101,7 @@ MemWrite <= 0;
 ALUSrc <= 1;
 RegWrite <=1; 
 BranchType <= 0;
+jal <= 0;
 end
 
 6'b100000: begin //lb
@@ -107,6 +113,7 @@ MemWrite <= 0;
 ALUSrc <= 1;
 RegWrite <=1;
 BranchType <= 0;
+jal <= 0;
 end
 
 6'b101011: begin //sw
@@ -118,6 +125,7 @@ MemWrite <= 1;
 ALUSrc <= 1;
 RegWrite <=0; 
 BranchType <= 0;
+jal <= 0;
 end
 
 6'b101001: begin //sh
@@ -129,6 +137,7 @@ MemWrite <= 1;
 ALUSrc <= 1;
 RegWrite <=0; 
 BranchType <= 0;
+jal <= 0;
 end
 
 6'b101000: begin //sb
@@ -140,6 +149,7 @@ MemWrite <= 1;
 ALUSrc <= 1;
 RegWrite <=0; 
 BranchType <= 0;
+jal <= 0;
 end
 
 6'b001100: begin //and immediate
@@ -151,6 +161,7 @@ MemWrite <= 0;
 ALUSrc <= 1;
 RegWrite <=1; 
 BranchType <= 0;
+jal <= 0;
 end
 
 6'b001101: begin //or immediate
@@ -162,6 +173,7 @@ MemWrite <= 0;
 ALUSrc <= 1;
 RegWrite <=1; 
 BranchType <= 0;
+jal <= 0;
 end
 
 6'b001110: begin //xor immediate
@@ -173,6 +185,7 @@ MemWrite <= 0;
 ALUSrc <= 1;
 RegWrite <=1; 
 BranchType <= 0;
+jal <= 0;
 end
 
 6'b001010: begin //slt immediate
@@ -184,6 +197,7 @@ MemWrite <= 0;
 ALUSrc <= 1;
 RegWrite <=1; 
 BranchType <= 0;
+jal <= 0;
 end
 
 6'b011100: begin //mul
@@ -195,11 +209,14 @@ MemWrite <= 0;
 ALUSrc <= 0;
 RegWrite <= 1; 
 BranchType <= 0;
+jal <= 0;
 end
 
 //branch type instructions
 
-6'b000001: begin //bgez
+6'b000001: begin //bgez and bltz
+
+if (RegImm == 5'b00001) begin
 RegDst <= 0;
 MemRead <= 0;
 MemToReg <= 0;
@@ -208,9 +225,23 @@ MemWrite <= 0;
 ALUSrc <= 0;
 RegWrite <= 0; 
 BranchType <= 3;
+jal <= 0;
 end
 
-6'b000001: begin //beq
+if (RegImm == 5'b00000) begin //bltz
+RegDst <= 0;
+MemRead <= 0;
+MemToReg <= 0;
+ALUOp <= 4'b1000;
+MemWrite <= 0;
+ALUSrc <= 0;
+RegWrite <= 0; 
+BranchType <= 3;
+jal <= 0;
+end
+end
+
+6'b000100: begin //beq
 RegDst <= 0;
 MemRead <= 0;
 MemToReg <= 0;
@@ -219,6 +250,7 @@ MemWrite <= 0;
 ALUSrc <= 0;
 RegWrite <= 0; 
 BranchType <= 3;
+jal <= 0;
 end
 
 6'b000101: begin //bne
@@ -230,6 +262,7 @@ MemWrite <= 0;
 ALUSrc <= 0;
 RegWrite <= 0; 
 BranchType <= 3;
+jal <= 0;
 end
 
 6'b000111: begin //bgtz
@@ -241,6 +274,7 @@ MemWrite <= 0;
 ALUSrc <= 0;
 RegWrite <= 0; 
 BranchType <= 3;
+jal <= 0;
 end
 
 6'b000110: begin //blez
@@ -252,17 +286,7 @@ MemWrite <= 0;
 ALUSrc <= 0;
 RegWrite <= 0; 
 BranchType <= 3;
-end
-
-6'b000001: begin //bltz
-RegDst <= 0;
-MemRead <= 0;
-MemToReg <= 0;
-ALUOp <= 4'b1000;
-MemWrite <= 0;
-ALUSrc <= 0;
-RegWrite <= 0; 
-BranchType <= 3;
+jal <= 0;
 end
 
 6'b000010: begin //j
@@ -274,6 +298,7 @@ MemWrite <= 0;
 ALUSrc <= 0;
 RegWrite <= 0; 
 BranchType <= 1;
+jal <= 0;
 end
 
 6'b000011: begin //jal
@@ -283,8 +308,9 @@ MemToReg <= 0;
 ALUOp <= 4'b1001;
 MemWrite <= 0;
 ALUSrc <= 0;
-RegWrite <= 0; 
+RegWrite <= 1; 
 BranchType <= 1;
+jal <= 1;
 end
 
 default: begin //default case
@@ -296,8 +322,26 @@ MemWrite <= 0;
 ALUSrc <= 0;
 RegWrite <=0; 
 BranchType <= 0;
+jal <= 0;
 end
 endcase 
+
+if (NopCheck == 0) begin
+Display <= 0;
+RegDst <= 0;
+MemRead <= 0;
+MemToReg <= 0;
+ALUOp <= 4'b0000;
+MemWrite <= 0;
+ALUSrc <= 0;
+RegWrite <=0; 
+BranchType <= 0;
+jal <= 0;
 end
+else
+Display <= 1;
+
+end
+
 
 endmodule
