@@ -20,11 +20,11 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module Controller(InstCode, FunctCode, RegDst, MemRead, MemToReg, ALUOp, MemWrite, ALUSrc, RegWrite, BranchType);
+module Controller(InstCode, FunctCode, RegImm, RegDst, MemRead, MemToReg, ALUOp, MemWrite, ALUSrc, RegWrite, BranchType);
 
 input [5:0] InstCode; // 6 bit input code for each instruction
 input [5:0] FunctCode; //needed because the world hates us and JR uses the R type function field :)
-
+input [4:0] RegImm; //needed because mips wants to kill me more
 
 output reg RegDst; //writing to rt or rd
 output reg MemRead; //is the memory read
@@ -45,7 +45,7 @@ if (FunctCode == 6'b001000) begin //jump register
 RegDst <= 0;
 MemRead <= 0;
 MemToReg <= 0;
-ALUOp <= 4'b0001;
+ALUOp <= 4'b1001;
 MemWrite <= 0;
 ALUSrc <= 1;
 RegWrite <=1; 
@@ -199,7 +199,9 @@ end
 
 //branch type instructions
 
-6'b000001: begin //bgez
+6'b000001: begin //bgez and bltz
+
+if (RegImm == 5'b00001) begin
 RegDst <= 0;
 MemRead <= 0;
 MemToReg <= 0;
@@ -210,7 +212,19 @@ RegWrite <= 0;
 BranchType <= 3;
 end
 
-6'b000001: begin //beq
+if (RegImm == 5'b00000) begin //bltz
+RegDst <= 0;
+MemRead <= 0;
+MemToReg <= 0;
+ALUOp <= 4'b1000;
+MemWrite <= 0;
+ALUSrc <= 0;
+RegWrite <= 0; 
+BranchType <= 3;
+end
+end
+
+6'b000100: begin //beq
 RegDst <= 0;
 MemRead <= 0;
 MemToReg <= 0;
@@ -248,17 +262,6 @@ RegDst <= 0;
 MemRead <= 0;
 MemToReg <= 0;
 ALUOp <= 4'b0111;
-MemWrite <= 0;
-ALUSrc <= 0;
-RegWrite <= 0; 
-BranchType <= 3;
-end
-
-6'b000001: begin //bltz
-RegDst <= 0;
-MemRead <= 0;
-MemToReg <= 0;
-ALUOp <= 4'b1000;
 MemWrite <= 0;
 ALUSrc <= 0;
 RegWrite <= 0; 
