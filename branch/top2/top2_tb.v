@@ -16,7 +16,8 @@
 // Revision:
 // Revision 0.01 - File Created
 // Additional Comments:
-// 
+//  Overall percent effort of each team meber: 
+//  Patrick - 33.3%, Kyle - 33.3%, Aiden - 33.3%
 //////////////////////////////////////////////////////////////////////////////////
 
 
