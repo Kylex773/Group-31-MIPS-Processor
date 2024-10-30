@@ -60,14 +60,14 @@ Clk, Reset, PCDisplay, WriteDataDisplay
     wire [31:0] MemReadDataW;
     wire [31:0] ALUResultW;
     wire [4:0] WriteRegW, WriteRegM;
-    wire [31:0] WriteDataW;
+    wire [31:0] WriteDataW, WriteDataW1;
     wire MemWriteM;
     wire MemReadM;
     wire [1:0] MemTypeD, MemTypeE;
     wire [1:0] MemTypeM;
     wire [31:0] PCPlus4E, PCPlus4M, PCPlus4W;
     wire [1:0] BranchTypeD;
-    wire jal;
+    wire jalD, jalE, jalM, jalW;
     
     (* MARK_DEBUG = "TRUE" *) output reg [31:0] PCDisplay;
     (* MARK_DEBUG = "TRUE" *) output reg [31:0] WriteDataDisplay;
@@ -79,7 +79,7 @@ Clk, Reset, PCDisplay, WriteDataDisplay
     Pipline_Fetch Pipline_Fetch(Clk, PCPlus4F, InstructionF, PCPlus4D, InstructionD);
     
     //Decode Stage
-    Controller Controller(InstructionD[31:26], InstructionD[5:0], InstructionD[20:15], RegDst, MemReadD, MemToRegD, ALUOpD, MemWriteD, ALUSrcD, RegWriteD, BranchTypeD, jal);
+    Controller Controller(InstructionD[31:26], InstructionD[5:0], InstructionD[20:15], RegDst, MemReadD, MemToRegD, ALUOpD, MemWriteD, ALUSrcD, RegWriteD, BranchTypeD, jalD);
     
     Mux32Bit2To1 RegDstMux(WriteRegD1, InstructionD[20:16], InstructionD[15:11], RegDst);
     
@@ -93,7 +93,7 @@ Clk, Reset, PCDisplay, WriteDataDisplay
         ALUOpD, WriteRegD1, ImmExtD, ReadData1D, ReadData2D, InstructionD[10:6], 
         MemReadE, MemToRegE, MemWriteE, ALUSrcE, RegWriteE, MemTypeE,
         ALUOpE, WriteRegE, ImmExtE, ReadData1E, ReadData2E, ShftAmtE,
-        PCPlus4D, PCPlus4E);
+        PCPlus4D, PCPlus4E, jalD, jalE);
         
     //Execute Stage
     Mux32Bit2To1 ALUSrcMux(ALUSrcValE, ReadData2E, ImmExtE, ALUSrcE);
@@ -107,7 +107,8 @@ Clk, Reset, PCDisplay, WriteDataDisplay
         RegWriteE, ALUResultE, ReadData2E, WriteRegE,
         MemReadM, MemtoRegM, MemWriteM, RegWriteM,
         ALUResultM, ReadData2M, WriteRegM,
-        MemTypeE, MemTypeM, PCPlus4E, PCPlus4M);
+        MemTypeE, MemTypeM, PCPlus4E, PCPlus4M,
+        jalE, jalM);
     
     //Memory Stage
     DataMemory DataMemory(ALUResultM, ReadData2M, Clk, MemWriteM, MemReadM, MemReadDataM, MemTypeM);     
@@ -115,17 +116,20 @@ Clk, Reset, PCDisplay, WriteDataDisplay
     Pipline_Memory Pipline_Memory(Clk, 
     MemtoRegM, RegWriteM, MemReadDataM, ALUResultM, WriteRegM,
     MemtoRegW, RegWriteW, MemReadDataW, ALUResultW, WriteRegW,
-    PCPlus4M, PCPlus4W);
+    PCPlus4M, PCPlus4W, jalM, jalW);
 
     //Writeback Stage
-    Mux32Bit2To1 MemToRegMux(WriteDataW, ALUResultW, MemReadDataW, MemtoRegW);
+    Mux32Bit2To1 MemToRegMux(WriteDataW1, ALUResultW, MemReadDataW, MemtoRegW);
+    Mux32Bit2To1 JALMux(WriteDataW, WriteDataW1, (PCPlus4W + 4), jalW);
     
     
+    
+    //display output
     initial begin
     PCDisplay = 4;
     end
     
-    //display output
+    
     always @(PCPlus4W or WriteDataW)
     begin
     PCDisplay <= PCPlus4W - 4;
