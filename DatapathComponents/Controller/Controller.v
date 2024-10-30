@@ -20,11 +20,12 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module Controller(InstCode, FunctCode, RegImm, RegDst, MemRead, MemToReg, ALUOp, MemWrite, ALUSrc, RegWrite, BranchType, jal);
+module Controller(InstCode, FunctCode, RegImm, NopCheck, RegDst, MemRead, MemToReg, ALUOp, MemWrite, ALUSrc, RegWrite, BranchType, jal, Display);
 
 input [5:0] InstCode; // 6 bit input code for each instruction
 input [5:0] FunctCode; //needed because the world hates us and JR uses the R type function field :)
 input [4:0] RegImm; //needed because mips wants to kill me more
+input [31:0] NopCheck;
 
 output reg RegDst; //writing to rt or rd
 output reg MemRead; //is the memory read
@@ -35,8 +36,9 @@ output reg ALUSrc; //is the second ALU input from a register or an immediate
 output reg RegWrite; //is the a register bing written to
 output reg [1:0] BranchType; //type of branch/jump
 output reg jal; //is it jal
+output reg Display;
 
-always @(InstCode)
+always @(*)
 begin
 case(InstCode)
 6'b000000: begin 
@@ -323,6 +325,23 @@ BranchType <= 0;
 jal <= 0;
 end
 endcase 
+
+if (NopCheck == 0) begin
+Display <= 0;
+RegDst <= 0;
+MemRead <= 0;
+MemToReg <= 0;
+ALUOp <= 4'b0000;
+MemWrite <= 0;
+ALUSrc <= 0;
+RegWrite <=0; 
+BranchType <= 0;
+jal <= 0;
 end
+else
+Display <= 1;
+
+end
+
 
 endmodule

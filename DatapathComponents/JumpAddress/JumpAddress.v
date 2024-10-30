@@ -29,6 +29,6 @@ output reg [31:0] JumpAddress;
 
 always @(*)begin
 JumpAddress[31:28] <= PCPlus4[31:28];
-JumpAddress[27:0] <= (JumpImm * 4);
+JumpAddress[27:0] <= (JumpImm <<< 2);
 end
 endmodule

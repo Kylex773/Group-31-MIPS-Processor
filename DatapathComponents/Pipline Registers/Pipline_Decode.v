@@ -25,7 +25,7 @@ MemReadD, MemToRegD, MemWriteD, ALUSrcD, RegWriteD, MemTypeD,
 ALUOpD, WriteRegD, ImmExtD, ReadData1D, ReadData2D, ShftAmtD,
 MemReadE, MemToRegE, MemWriteE, ALUSrcE, RegWriteE, MemTypeE,
 ALUOpE, WriteRegE, ImmExtE, ReadData1E, ReadData2E, ShftAmtE,
-PCPlus4D, PCPlus4E, jalD, jalE
+PCPlus4D, PCPlus4E, jalD, jalE, DisplayD, DisplayE, BranchTypeD, BranchTypeE
 );
 
 input Clk, MemReadD, MemToRegD, MemWriteD, ALUSrcD, RegWriteD;
@@ -35,7 +35,8 @@ input [31:0] ImmExtD, ReadData1D, ReadData2D;
 input [4:0] ShftAmtD;
 input [1:0] MemTypeD;
 input [31:0] PCPlus4D;
-input jalD;
+input jalD, DisplayD;
+input [1:0] BranchTypeD;
 
 output reg MemReadE, MemToRegE, MemWriteE, ALUSrcE, RegWriteE;
 output reg [3:0] ALUOpE;
@@ -44,7 +45,8 @@ output reg [31:0] ImmExtE, ReadData1E, ReadData2E;
 output reg [4:0] ShftAmtE;
 output reg [1:0] MemTypeE;
 output reg [31:0] PCPlus4E;
-output reg jalE;
+output reg jalE, DisplayE;
+output reg [1:0] BranchTypeE;
 
 always @(posedge Clk)
 begin
@@ -62,6 +64,8 @@ ShftAmtE <= ShftAmtD;
 MemTypeE <= MemTypeD;
 PCPlus4E <= PCPlus4D;
 jalE <= jalD;
+DisplayE <= DisplayD;
+BranchTypeE <= BranchTypeD;
 end
 
 endmodule

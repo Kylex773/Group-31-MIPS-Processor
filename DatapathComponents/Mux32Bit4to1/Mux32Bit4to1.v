@@ -32,14 +32,14 @@ module Mux32Bit4to1(out, in0, in1, in2, in3, sel);
     input [1:0]sel;
     always @(sel or in0 or in1 or in2, in3)
         begin
-            if(sel==0)
-                out=in0;
             if(sel==1)
                 out=in1;
-            if(sel==2)
+            else if(sel==2)
                 out=in2;
-            if(sel==3)
+            else if(sel==3)
                 out=in3;
+            else
+                out=in0;
         end
 
 endmodule

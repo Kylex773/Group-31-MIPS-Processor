@@ -29,7 +29,7 @@ module PCSelector(out, controlinput, comparatorinput);
         if(comparatorinput == 0)
             out <= 0;
         else
-            out <= controlinput;
-            
+            out <= controlinput; 
     end
+    
 endmodule
