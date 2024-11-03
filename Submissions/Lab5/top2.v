@@ -81,8 +81,8 @@ Clk, Reset, PCDisplay, WriteDataDisplay
     wire DisplayD, DisplayE, DisplayM, DisplayW;
     wire [1:0] BranchTypeE, BranchTypeM, BranchTypeW;
     
-    output reg [31:0] PCDisplay;
-    output reg [31:0] WriteDataDisplay;
+    (* MARK_DEBUG = "TRUE" *) output reg [31:0] PCDisplay;
+    (* MARK_DEBUG = "TRUE" *) output reg [31:0] WriteDataDisplay;
     
     //Fetch Stage
     ProgramCounter PCCounter(PCInF, PCOutF, Reset, Clk);
