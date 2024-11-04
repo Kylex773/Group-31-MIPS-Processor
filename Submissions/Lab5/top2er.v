@@ -27,8 +27,8 @@
 module top2er(Reset, Clk, out7, en_out);
 
 input Reset, Clk;
-output [6:0] out7; //seg a, b, ... g
-output [7:0] en_out;
+output wire [6:0] out7; //seg a, b, ... g
+output wire [7:0] en_out;
 wire ClkOut;
 wire [31:0] PCDisplay, WriteDataDisplay;
 
@@ -36,6 +36,6 @@ ClkDiv ClkDiv(Clk, Rst, ClkOut);
 top2 top2(
 ClkOut, Reset, PCDisplay, WriteDataDisplay
 );
-Two4DigitDisplay Two4DigitDisplay(ClkOut, PCDisplay, WriteDataDisplay, out7, en_out);
+Two4DigitDisplay Two4DigitDisplay(Clk, PCDisplay, WriteDataDisplay, out7, en_out);
 
 endmodule

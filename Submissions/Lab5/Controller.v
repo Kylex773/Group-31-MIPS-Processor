@@ -327,7 +327,7 @@ end
 endcase 
 
 if (NopCheck == 0) begin
-Display <= 0;
+Display <= 1;
 RegDst <= 0;
 MemRead <= 0;
 MemToReg <= 0;
