@@ -75,4 +75,25 @@ hazardTypeE <= hazardTypeD;
 instructionE <= instructionD;
 end
 
+initial begin
+MemReadE <= 0;
+MemToRegE <= 0;
+MemWriteE <= 0;
+ALUSrcE <= 0;
+RegWriteE <= 0;
+ALUOpE <= 0;
+WriteRegE <= 0;
+ImmExtE <= 0;
+ReadData1E <= 0;
+ReadData2E <= 0;
+ShftAmtE <= 0;
+MemTypeE <= 0;
+PCPlus4E <= 0;
+jalE <= 0;
+DisplayE <= 0;
+BranchTypeE <= 0;
+hazardTypeE <= 0;
+instructionE <= 0;
+end
+
 endmodule

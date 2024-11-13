@@ -34,5 +34,10 @@ module Pipline_Fetch(Clk, PCPlus4F, InstructionF, PCPlus4D, InstructionD, Fetch_
         InstructionD <= InstructionF;
         end
     end
+    
+    initial begin
+    PCPlus4D <= 0;
+    InstructionD <= 0;
+    end
 
 endmodule
