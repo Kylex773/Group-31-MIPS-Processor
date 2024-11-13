@@ -32,7 +32,7 @@ output wire [7:0] en_out;
 wire ClkOut;
 wire [31:0] PCDisplay, WriteDataDisplay;
 
-ClkDiv ClkDiv(Clk, Rst, ClkOut);
+ClkDiv ClkDiv(Clk, Reset, ClkOut);
 top2 top2(
 ClkOut, Reset, PCDisplay, WriteDataDisplay
 );
