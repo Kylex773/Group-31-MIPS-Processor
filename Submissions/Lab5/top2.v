@@ -80,6 +80,8 @@ Clk, Reset, PCDisplay, WriteDataDisplay
     wire [31:0] BranchAddressD;
     wire DisplayD, DisplayE, DisplayM, DisplayW;
     wire [1:0] BranchTypeE, BranchTypeM, BranchTypeW;
+    wire hazardTypeD, hazardTypeE, hazardTypeM;
+    wire [31:0] instructionE, instructionM;
     
     (* MARK_DEBUG = "TRUE" *) output reg [31:0] PCDisplay;
     (* MARK_DEBUG = "TRUE" *) output reg [31:0] WriteDataDisplay;
@@ -91,7 +93,7 @@ Clk, Reset, PCDisplay, WriteDataDisplay
     Pipline_Fetch Pipline_Fetch(Clk, PCPlus4F, InstructionF, PCPlus4D, InstructionD);
     
     //Decode Stage
-    Controller Controller(InstructionD[31:26], InstructionD[5:0], InstructionD[20:16], InstructionD,  RegDst, MemReadD, MemToRegD, ALUOpD, MemWriteD, ALUSrcD, RegWriteD, BranchTypeD, jalD, DisplayD);
+    Controller Controller(InstructionD[31:26], InstructionD[5:0], InstructionD[20:16], InstructionD,  RegDst, MemReadD, MemToRegD, ALUOpD, MemWriteD, ALUSrcD, RegWriteD, BranchTypeD, jalD, DisplayD, hazardTypeD);
     
     Mux32Bit2To1 RegDstMux(WriteRegD1, InstructionD[20:16], InstructionD[15:11], RegDst);
     
@@ -116,7 +118,8 @@ Clk, Reset, PCDisplay, WriteDataDisplay
         ALUOpD, WriteRegD, ImmExtD, ReadData1D, ReadData2D, InstructionD[10:6], 
         MemReadE, MemToRegE, MemWriteE, ALUSrcE, RegWriteE, MemTypeE,
         ALUOpE, WriteRegE, ImmExtE, ReadData1E, ReadData2E, ShftAmtE,
-        PCPlus4D, PCPlus4E, jalD, jalE, DisplayD, DisplayE, BranchTypeD, BranchTypeE);
+        PCPlus4D, PCPlus4E, jalD, jalE, DisplayD, DisplayE, BranchTypeD, BranchTypeE,
+        hazardTypeD, hazardTypeE, InstructionD, InstructionE);
         
     //Execute Stage
     Mux32Bit2To1 ALUSrcMux(ALUSrcValE, ReadData2E, ImmExtE, ALUSrcE);
@@ -131,7 +134,8 @@ Clk, Reset, PCDisplay, WriteDataDisplay
         MemReadM, MemtoRegM, MemWriteM, RegWriteM,
         ALUResultM, ReadData2M, WriteRegM,
         MemTypeE, MemTypeM, PCPlus4E, PCPlus4M,
-        jalE, jalM, DisplayE, DisplayM, BranchTypeE, BranchTypeM);
+        jalE, jalM, DisplayE, DisplayM, BranchTypeE, BranchTypeM,
+        hazardTypeE, hazardTypeM, instructionE, instructionM);
     
     //Memory Stage
     DataMemory DataMemory(ALUResultM, ReadData2M, Clk, MemWriteM, MemReadM, MemReadDataM, MemTypeM);     

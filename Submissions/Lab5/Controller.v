@@ -20,7 +20,7 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module Controller(InstCode, FunctCode, RegImm, NopCheck, RegDst, MemRead, MemToReg, ALUOp, MemWrite, ALUSrc, RegWrite, BranchType, jal, Display);
+module Controller(InstCode, FunctCode, RegImm, NopCheck, RegDst, MemRead, MemToReg, ALUOp, MemWrite, ALUSrc, RegWrite, BranchType, jal, Display, hazardType);
 
 input [5:0] InstCode; // 6 bit input code for each instruction
 input [5:0] FunctCode; //needed because the world hates us and JR uses the R type function field :)
@@ -36,7 +36,8 @@ output reg ALUSrc; //is the second ALU input from a register or an immediate
 output reg RegWrite; //is the a register bing written to
 output reg [1:0] BranchType; //type of branch/jump
 output reg jal; //is it jal
-output reg Display;
+output reg Display; //not needed anymore
+output reg hazardType; //0 for rtype, 1 for mem/itype
 
 always @(*)
 begin
@@ -65,6 +66,7 @@ ALUSrc <= 0;
 RegWrite <= 1; 
 BranchType <= 0;
 jal <= 0;
+hazardType <= 0;
 end
 end
 
@@ -78,6 +80,7 @@ ALUSrc <= 1;
 RegWrite <=1; 
 BranchType <= 0;
 jal <= 0;
+hazardType <= 1;
 end
 
 6'b100011: begin //lw
@@ -162,6 +165,7 @@ ALUSrc <= 1;
 RegWrite <=1; 
 BranchType <= 0;
 jal <= 0;
+hazardType <= 1;
 end
 
 6'b001101: begin //or immediate
@@ -174,6 +178,7 @@ ALUSrc <= 1;
 RegWrite <=1; 
 BranchType <= 0;
 jal <= 0;
+hazardType <= 1;
 end
 
 6'b001110: begin //xor immediate
@@ -186,6 +191,7 @@ ALUSrc <= 1;
 RegWrite <=1; 
 BranchType <= 0;
 jal <= 0;
+hazardType <= 1;
 end
 
 6'b001010: begin //slt immediate
@@ -198,6 +204,7 @@ ALUSrc <= 1;
 RegWrite <=1; 
 BranchType <= 0;
 jal <= 0;
+hazardType <= 1;
 end
 
 6'b011100: begin //mul
@@ -210,6 +217,7 @@ ALUSrc <= 0;
 RegWrite <= 1; 
 BranchType <= 0;
 jal <= 0;
+hazardType <= 0;
 end
 
 //branch type instructions
