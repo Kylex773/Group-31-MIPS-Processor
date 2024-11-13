@@ -82,12 +82,13 @@ Clk, Reset, PCDisplay, WriteDataDisplay
     wire [1:0] BranchTypeE, BranchTypeM, BranchTypeW;
     wire hazardTypeD, hazardTypeE, hazardTypeM;
     wire [31:0] instructionE, instructionM;
+    wire PC_Enable;
     
     (* MARK_DEBUG = "TRUE" *) output reg [31:0] PCDisplay;
     (* MARK_DEBUG = "TRUE" *) output reg [31:0] WriteDataDisplay;
     
     //Fetch Stage
-    ProgramCounter PCCounter(PCInF, PCOutF, Reset, Clk);
+    ProgramCounter PCCounter(PCInF, PCOutF, Reset, Clk, ~PC_Enable);
     PCAdder PCAdder(PCOutF, PCPlus4F);
     InstructionMemory InstructionMemory(PCOutF, InstructionF);
     Pipline_Fetch Pipline_Fetch(Clk, PCPlus4F, InstructionF, PCPlus4D, InstructionD);
@@ -102,6 +103,9 @@ Clk, Reset, PCDisplay, WriteDataDisplay
     
     SignExtension SignExtender(InstructionD[15:0], ImmExtD);
     
+    Hazard_Detection_Unit Unit(instructionE, instructionM, InstructionD, 
+    hazardTypeE, hazardTypeM, hazardTypeD, PC_Enable, RegWriteE, RegWriteM);
+
     //jump section
     BranchComparator BranchComparator(ALUOpD, ReadData1D, ReadData2D, BranchD);
     PCSelector PCSelector(PCSel, BranchTypeD, BranchD);
