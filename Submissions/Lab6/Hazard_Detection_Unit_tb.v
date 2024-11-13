@@ -22,8 +22,8 @@
 
 module Hazard_Detection_Unit_tb();
 reg [31:0] Exei, Memi, Deci;
-reg exeh, memh, dech;
-wire [1:0]count;
+reg exeh, memh, dech, RegWriteE, RegWriteM;
+wire [1:0]Stall;
 
 Hazard_Detection_Unit Hazard_Detection_Unit(
     .Exei(Exei), 
@@ -32,7 +32,9 @@ Hazard_Detection_Unit Hazard_Detection_Unit(
     .exeh(exeh), 
     .memh(memh), 
     .dech(dech), 
-    .count(count)
+    .Stall(Stall),
+    .RegWriteE(RegWriteE),
+    .RegWriteM(RegWriteM)
 );
 
 initial begin
