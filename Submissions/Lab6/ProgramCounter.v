@@ -24,23 +24,26 @@
 // location, 0x00000000H).
 ////////////////////////////////////////////////////////////////////////////////
 
-module ProgramCounter(Address, PCResult, Reset, Clk);
+module ProgramCounter(Address, PCResult, Reset, Clk, PC_Enable);
 
 	input [31:0] Address;
 	input Reset, Clk;
+	input PC_Enable;
 
 	output reg [31:0] PCResult;
 
     /* Please fill in the implementation here... */
     always@(posedge Clk)
     begin
-        if(Reset)
-            PCResult = 0;
+        if((Reset == 1) || (PC_Enable == 0))
+            PCResult <= 0;
         else
-            PCResult = Address;
+            PCResult <= Address;
     end
 
-    
+    initial begin
+    PCResult <= 0;
+    end
 
 endmodule
 
