@@ -104,7 +104,7 @@ Clk, Reset, PCDisplay, WriteDataDisplay, Stall
     SignExtension SignExtender(InstructionD[15:0], ImmExtD);
     
     Hazard_Detection_Unit Unit(instructionE, instructionM, InstructionD, 
-    hazardTypeE, hazardTypeM, hazardTypeD, PC_Enable, RegWriteE, RegWriteM);
+    hazardTypeE, hazardTypeM, hazardTypeD, Stall, RegWriteE, RegWriteM);
 
     //jump section
     BranchComparator BranchComparator(ALUOpD, ReadData1D, ReadData2D, BranchD);
