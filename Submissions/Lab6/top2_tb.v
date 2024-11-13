@@ -26,7 +26,7 @@ module top2_tb();
 reg Clk, Reset;
 
 wire [31:0] PCDisplay, WriteDataDisplay;
-
+wire Stall;
 /*wire [31:0] PCOutF, InstructionD, WriteDataW, ALUResultE, ReadData1E, ALUSrcValE, ImmExtD, ReadData1D, ReadData2D, MemReadDataM, ReadData2M;
 
 wire [3:0] ALUControlE;
@@ -41,7 +41,8 @@ top2 u0(
 .Clk(Clk), 
 .Reset(Reset),
 .PCDisplay(PCDisplay),
-.WriteDataDisplay(WriteDataDisplay)
+.WriteDataDisplay(WriteDataDisplay),
+.Stall(Stall)
 );
 
 

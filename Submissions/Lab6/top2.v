@@ -22,7 +22,7 @@
 
 
 module top2(
-Clk, Reset, PCDisplay, WriteDataDisplay
+Clk, Reset, PCDisplay, WriteDataDisplay, Stall
     );
     
     //Global Variables
@@ -82,16 +82,16 @@ Clk, Reset, PCDisplay, WriteDataDisplay
     wire [1:0] BranchTypeE, BranchTypeM, BranchTypeW;
     wire hazardTypeD, hazardTypeE, hazardTypeM;
     wire [31:0] instructionE, instructionM;
-    wire PC_Enable;
+    output wire Stall;
     
     (* MARK_DEBUG = "TRUE" *) output reg [31:0] PCDisplay;
     (* MARK_DEBUG = "TRUE" *) output reg [31:0] WriteDataDisplay;
     
     //Fetch Stage
-    ProgramCounter PCCounter(PCInF, PCOutF, Reset, Clk, ~PC_Enable);
+    ProgramCounter PCCounter(PCInF, PCOutF, Reset, Clk, ~Stall);
     PCAdder PCAdder(PCOutF, PCPlus4F);
     InstructionMemory InstructionMemory(PCOutF, InstructionF);
-    Pipline_Fetch Pipline_Fetch(Clk, PCPlus4F, InstructionF, PCPlus4D, InstructionD);
+    Pipline_Fetch Pipline_Fetch(Clk, PCPlus4F, InstructionF, PCPlus4D, InstructionD, ~Stall);
     
     //Decode Stage
     Controller Controller(InstructionD[31:26], InstructionD[5:0], InstructionD[20:16], InstructionD,  RegDst, MemReadD, MemToRegD, ALUOpD, MemWriteD, ALUSrcD, RegWriteD, BranchTypeD, jalD, DisplayD, hazardTypeD);
