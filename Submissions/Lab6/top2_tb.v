@@ -26,10 +26,10 @@ module top2_tb();
 reg Clk, Reset;
 
 wire [31:0] PCDisplay, WriteDataDisplay;
-wire Stall;
-wire hazardTypeD, hazardTypeE, hazardTypeM;
-wire RegWriteE, RegWriteM, RegWriteW;
-wire [31:0] InstructionE, InstructionM, InstructionD, InstructionF, ReadData1D;
+//wire Stall;
+//wire hazardTypeD, hazardTypeE, hazardTypeM;
+//wire RegWriteE, RegWriteM, RegWriteW;
+//wire [31:0] InstructionE, InstructionM, InstructionD, InstructionF, ReadData1D;
 /*wire [31:0] PCOutF, InstructionD, WriteDataW, ALUResultE, ReadData1E, ALUSrcValE, ImmExtD, ReadData1D, ReadData2D, MemReadDataM, ReadData2M;
 
 wire [3:0] ALUControlE;
@@ -44,30 +44,18 @@ top2 u0(
 .Clk(Clk), 
 .Reset(Reset),
 .PCDisplay(PCDisplay),
-.WriteDataDisplay(WriteDataDisplay),
-.Stall(Stall),
-.hazardTypeD(hazardTypeD),
-.hazardTypeE(hazardTypeE),
-.hazardTypeM(hazardTypeM),
-.RegWriteE(RegWriteE),
-.RegWriteM(RegWriteM),
-.InstructionD(InstructionD),
-.InstructionE(InstructionE),
-.InstructionM(InstructionM),
-.InstructionF(InstructionF),
-.RegWriteW(RegWriteW),
-.ReadData1D(ReadData1D)
+.WriteDataDisplay(WriteDataDisplay)
 );
 
 
   initial begin
 		Clk <= 1'b0;
-		forever #2000 Clk <= ~Clk;
+		forever #200 Clk <= ~Clk;
 	end
     
     initial begin 
     Reset <=1;
-    #2050;
+    #250;
     Reset <=0;
     end
 

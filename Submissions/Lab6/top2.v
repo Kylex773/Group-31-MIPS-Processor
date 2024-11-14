@@ -22,29 +22,27 @@
 
 
 module top2(
-Clk, Reset, PCDisplay, WriteDataDisplay, Stall,
-hazardTypeD, hazardTypeE, hazardTypeM, RegWriteE, RegWriteM, RegWriteW,
-InstructionD, InstructionE, InstructionM, InstructionF, ReadData1D
+Clk, Reset, PCDisplay, WriteDataDisplay
     );
     
     //Global Variables
     input Clk, Reset;
     wire [31:0] PCPlus4F; //PC Counter + 4
-    output wire [31:0] InstructionF; //Instuction 32 bit
+    wire [31:0] InstructionF; //Instuction 32 bit
     wire [31:0] PCOutF; //PC Counter output
     wire [31:0] PCPlus4D;
-    output wire [31:0] InstructionD;
+    wire [31:0] InstructionD;
     wire MemReadD, MemToRegD, MemWriteD, ALUSrcD, RegWriteD, RegDst;
     wire [3:0] ALUOpD;
     wire [4:0] WriteRegD; 
     wire [4:0] WriteRegD1;
     wire [31:0] ImmExtD; 
-    output wire [31:0] ReadData1D;
+    wire [31:0] ReadData1D;
     wire [31:0] ReadData2D;
     wire MemReadE;
     wire MemToRegE;
     wire MemWriteE;
-    output wire RegWriteE;
+    wire RegWriteE;
     wire [31:0] ALUResultE;
     wire [31:0] ReadData2E;
     wire [4:0] WriteRegE;
@@ -57,12 +55,12 @@ InstructionD, InstructionE, InstructionM, InstructionF, ReadData1D
     wire [3:0] ALUOpE;
     wire [3:0] ALUControlE;
     wire MemtoRegM;
-    output wire RegWriteM;
+    wire RegWriteM;
     wire [31:0] MemReadDataM;
     wire [31:0] ALUResultM;
     wire [31:0] ReadData2M;
     wire MemtoRegW;
-    output wire RegWriteW;
+    wire RegWriteW;
     wire [31:0] MemReadDataW;
     wire [31:0] ALUResultW;
     wire [4:0] WriteRegW;
@@ -83,9 +81,9 @@ InstructionD, InstructionE, InstructionM, InstructionF, ReadData1D
     wire [31:0] BranchAddressD;
     wire DisplayD, DisplayE, DisplayM, DisplayW;
     wire [1:0] BranchTypeE, BranchTypeM, BranchTypeW;
-    output wire hazardTypeD, hazardTypeE, hazardTypeM;
-    output wire Stall;
-    output wire [31:0] InstructionE, InstructionM;
+    wire hazardTypeD, hazardTypeE, hazardTypeM;
+    wire Stall;
+    wire [31:0] InstructionE, InstructionM;
     
     (* MARK_DEBUG = "TRUE" *) output reg [31:0] PCDisplay;
     (* MARK_DEBUG = "TRUE" *) output reg [31:0] WriteDataDisplay;
@@ -94,7 +92,8 @@ InstructionD, InstructionE, InstructionM, InstructionF, ReadData1D
     ProgramCounter PCCounter(PCInF, PCOutF, Reset, Clk, ~Stall);
     PCAdder PCAdder(PCOutF, PCPlus4F);
     InstructionMemory InstructionMemory(PCOutF, InstructionF);
-    Pipline_Fetch Pipline_Fetch(Clk, PCPlus4F, InstructionF, PCPlus4D, InstructionD, ~Stall);
+    Pipline_Fetch Pipline_Fetch(Clk, PCPlus4F, InstructionF, PCPlus4D, InstructionD,
+     ~Stall, BranchD);
     
     //Decode Stage
     Controller Controller(InstructionD[31:26], InstructionD[5:0], InstructionD[20:16], InstructionD,  RegDst, MemReadD, MemToRegD, ALUOpD, MemWriteD, ALUSrcD, RegWriteD, BranchTypeD, jalD, DisplayD, hazardTypeD);
