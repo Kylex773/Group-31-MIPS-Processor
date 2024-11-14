@@ -70,7 +70,7 @@ module RegisterFile(ReadRegister1, ReadRegister2, WriteRegister, WriteData, RegW
     end
     
     // Read procedure
-   always @(negedge Clk) begin
+   always @(*) begin
          ReadData1 <= RegFile[ReadRegister1];
          ReadData2 <= RegFile[ReadRegister2];
    end

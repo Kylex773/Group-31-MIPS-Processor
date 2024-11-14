@@ -22,26 +22,29 @@
 
 
 module top2(
-Clk, Reset, PCDisplay, WriteDataDisplay, Stall
+Clk, Reset, PCDisplay, WriteDataDisplay, Stall,
+hazardTypeD, hazardTypeE, hazardTypeM, RegWriteE, RegWriteM, RegWriteW,
+InstructionD, InstructionE, InstructionM, InstructionF, ReadData1D
     );
     
     //Global Variables
     input Clk, Reset;
     wire [31:0] PCPlus4F; //PC Counter + 4
-    wire [31:0] InstructionF; //Instuction 32 bit
+    output wire [31:0] InstructionF; //Instuction 32 bit
     wire [31:0] PCOutF; //PC Counter output
     wire [31:0] PCPlus4D;
-    wire [31:0] InstructionD;
+    output wire [31:0] InstructionD;
     wire MemReadD, MemToRegD, MemWriteD, ALUSrcD, RegWriteD, RegDst;
     wire [3:0] ALUOpD;
     wire [4:0] WriteRegD; 
     wire [4:0] WriteRegD1;
-    wire [31:0] ImmExtD, ReadData1D; 
+    wire [31:0] ImmExtD; 
+    output wire [31:0] ReadData1D;
     wire [31:0] ReadData2D;
     wire MemReadE;
     wire MemToRegE;
     wire MemWriteE;
-    wire RegWriteE;
+    output wire RegWriteE;
     wire [31:0] ALUResultE;
     wire [31:0] ReadData2E;
     wire [4:0] WriteRegE;
@@ -54,12 +57,12 @@ Clk, Reset, PCDisplay, WriteDataDisplay, Stall
     wire [3:0] ALUOpE;
     wire [3:0] ALUControlE;
     wire MemtoRegM;
-    wire RegWriteM;
+    output wire RegWriteM;
     wire [31:0] MemReadDataM;
     wire [31:0] ALUResultM;
     wire [31:0] ReadData2M;
     wire MemtoRegW;
-    wire RegWriteW;
+    output wire RegWriteW;
     wire [31:0] MemReadDataW;
     wire [31:0] ALUResultW;
     wire [4:0] WriteRegW;
@@ -80,9 +83,9 @@ Clk, Reset, PCDisplay, WriteDataDisplay, Stall
     wire [31:0] BranchAddressD;
     wire DisplayD, DisplayE, DisplayM, DisplayW;
     wire [1:0] BranchTypeE, BranchTypeM, BranchTypeW;
-    wire hazardTypeD, hazardTypeE, hazardTypeM;
-    wire [31:0] instructionE, instructionM;
+    output wire hazardTypeD, hazardTypeE, hazardTypeM;
     output wire Stall;
+    output wire [31:0] InstructionE, InstructionM;
     
     (* MARK_DEBUG = "TRUE" *) output reg [31:0] PCDisplay;
     (* MARK_DEBUG = "TRUE" *) output reg [31:0] WriteDataDisplay;
@@ -103,7 +106,7 @@ Clk, Reset, PCDisplay, WriteDataDisplay, Stall
     
     SignExtension SignExtender(InstructionD[15:0], ImmExtD);
     
-    Hazard_Detection_Unit Unit(instructionE, instructionM, InstructionD, 
+    Hazard_Detection_Unit Unit(InstructionE, InstructionM, InstructionD, 
     hazardTypeE, hazardTypeM, hazardTypeD, Stall, RegWriteE, RegWriteM);
 
     //jump section
@@ -123,7 +126,7 @@ Clk, Reset, PCDisplay, WriteDataDisplay, Stall
         MemReadE, MemToRegE, MemWriteE, ALUSrcE, RegWriteE, MemTypeE,
         ALUOpE, WriteRegE, ImmExtE, ReadData1E, ReadData2E, ShftAmtE,
         PCPlus4D, PCPlus4E, jalD, jalE, DisplayD, DisplayE, BranchTypeD, BranchTypeE,
-        hazardTypeD, hazardTypeE, InstructionD, InstructionE);
+        hazardTypeD, hazardTypeE, InstructionD, InstructionE, ~Stall);
         
     //Execute Stage
     Mux32Bit2To1 ALUSrcMux(ALUSrcValE, ReadData2E, ImmExtE, ALUSrcE);
@@ -139,7 +142,7 @@ Clk, Reset, PCDisplay, WriteDataDisplay, Stall
         ALUResultM, ReadData2M, WriteRegM,
         MemTypeE, MemTypeM, PCPlus4E, PCPlus4M,
         jalE, jalM, DisplayE, DisplayM, BranchTypeE, BranchTypeM,
-        hazardTypeE, hazardTypeM, instructionE, instructionM);
+        hazardTypeE, hazardTypeM, InstructionE, InstructionM);
     
     //Memory Stage
     DataMemory DataMemory(ALUResultM, ReadData2M, Clk, MemWriteM, MemReadM, MemReadDataM, MemTypeM);     

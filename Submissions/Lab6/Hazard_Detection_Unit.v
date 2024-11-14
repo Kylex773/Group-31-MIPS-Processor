@@ -116,13 +116,13 @@ always @(*) begin
         end
     end
     
+    else begin
+            Stall <= 0;
+    end
     
     
     
 end
 
-initial begin
-Stall <= 0;
-end
 
 endmodule
