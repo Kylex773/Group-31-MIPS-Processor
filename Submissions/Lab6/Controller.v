@@ -54,6 +54,7 @@ ALUSrc <= 1;
 RegWrite <=1; 
 BranchType <= 2;
 jal <= 0;
+hazardType <= 1;
 end
 
 else begin //r type instructions
@@ -93,6 +94,7 @@ ALUSrc <= 1;
 RegWrite <=1; 
 BranchType <= 0;
 jal <= 0;
+hazardType <= 1;
 end
 
 6'b100001: begin //lh
@@ -105,6 +107,7 @@ ALUSrc <= 1;
 RegWrite <=1; 
 BranchType <= 0;
 jal <= 0;
+hazardType <= 1;
 end
 
 6'b100000: begin //lb
@@ -117,6 +120,7 @@ ALUSrc <= 1;
 RegWrite <=1;
 BranchType <= 0;
 jal <= 0;
+hazardType <= 1;
 end
 
 6'b101011: begin //sw
@@ -129,6 +133,7 @@ ALUSrc <= 1;
 RegWrite <=0; 
 BranchType <= 0;
 jal <= 0;
+hazardType <= 0;
 end
 
 6'b101001: begin //sh
@@ -141,6 +146,7 @@ ALUSrc <= 1;
 RegWrite <=0; 
 BranchType <= 0;
 jal <= 0;
+hazardType <= 0;
 end
 
 6'b101000: begin //sb
@@ -153,6 +159,7 @@ ALUSrc <= 1;
 RegWrite <=0; 
 BranchType <= 0;
 jal <= 0;
+hazardType <= 0;
 end
 
 6'b001100: begin //and immediate
@@ -234,6 +241,7 @@ ALUSrc <= 0;
 RegWrite <= 0; 
 BranchType <= 3;
 jal <= 0;
+hazardType <= 1;
 end
 
 if (RegImm == 5'b00000) begin //bltz
@@ -246,6 +254,7 @@ ALUSrc <= 0;
 RegWrite <= 0; 
 BranchType <= 3;
 jal <= 0;
+hazardType <= 1;
 end
 end
 
@@ -259,6 +268,7 @@ ALUSrc <= 0;
 RegWrite <= 0; 
 BranchType <= 3;
 jal <= 0;
+hazardType <= 0;
 end
 
 6'b000101: begin //bne
@@ -271,6 +281,7 @@ ALUSrc <= 0;
 RegWrite <= 0; 
 BranchType <= 3;
 jal <= 0;
+hazardType <= 0;
 end
 
 6'b000111: begin //bgtz
@@ -283,6 +294,7 @@ ALUSrc <= 0;
 RegWrite <= 0; 
 BranchType <= 3;
 jal <= 0;
+hazardType <= 1;
 end
 
 6'b000110: begin //blez
@@ -295,6 +307,7 @@ ALUSrc <= 0;
 RegWrite <= 0; 
 BranchType <= 3;
 jal <= 0;
+hazardType <= 0;
 end
 
 6'b000010: begin //j

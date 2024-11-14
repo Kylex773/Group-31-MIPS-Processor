@@ -8,7 +8,6 @@
 200e000f	//		addi	$t6, $zero, 15 ->		addi	$t6, $zero, 15
 01204022	//		sub	$t0, $t1, $zero ->		sub	$t0, $t1, $zero
 210d000e	//		addi	$t5, $t0, 14 ->		addi	$t5, $t0, 14
-210d000e	//		addi	$t5, $t0, 14 ->		addi	$t5, $t0, 14
 00000000	//		nop ->		nop
 00000000	//		nop ->		nop
 00000000	//		nop ->		nop
