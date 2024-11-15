@@ -26,7 +26,7 @@ ALUOpD, WriteRegD, ImmExtD, ReadData1D, ReadData2D, ShftAmtD,
 MemReadE, MemToRegE, MemWriteE, ALUSrcE, RegWriteE, MemTypeE,
 ALUOpE, WriteRegE, ImmExtE, ReadData1E, ReadData2E, ShftAmtE,
 PCPlus4D, PCPlus4E, jalD, jalE, DisplayD, DisplayE, BranchTypeD, BranchTypeE,
-hazardTypeD, hazardTypeE, instructionD, instructionE
+hazardTypeD, hazardTypeE, instructionD, test, Decode_On
 );
 
 input Clk, MemReadD, MemToRegD, MemWriteD, ALUSrcD, RegWriteD;
@@ -40,6 +40,7 @@ input jalD, DisplayD;
 input [1:0] BranchTypeD;
 input hazardTypeD;
 input [31:0] instructionD;
+input Decode_On;
 
 output reg MemReadE, MemToRegE, MemWriteE, ALUSrcE, RegWriteE;
 output reg [3:0] ALUOpE;
@@ -51,10 +52,12 @@ output reg [31:0] PCPlus4E;
 output reg jalE, DisplayE;
 output reg [1:0] BranchTypeE;
 output reg hazardTypeE;
-output reg [31:0] instructionE;
+output reg [31:0] test;
 
 always @(posedge Clk)
 begin
+if(Decode_On) begin
+test <= instructionD;
 MemReadE <= MemReadD;
 MemToRegE <= MemToRegD;
 MemWriteE <= MemWriteD;
@@ -72,7 +75,29 @@ jalE <= jalD;
 DisplayE <= DisplayD;
 BranchTypeE <= BranchTypeD;
 hazardTypeE <= hazardTypeD;
-instructionE <= instructionD;
 end
+else begin
+test <= 0;
+MemReadE <= 0;
+MemToRegE <= 0;
+MemWriteE <= 0;
+ALUSrcE <= 0;
+RegWriteE <= 0;
+ALUOpE <= 0;
+WriteRegE <= 0;
+ImmExtE <= 0;
+ReadData1E <= 0;
+ReadData2E <= 0;
+ShftAmtE <= 0;
+MemTypeE <= 0;
+PCPlus4E <= 0;
+jalE <= 0;
+DisplayE <= 0;
+BranchTypeE <= 0;
+hazardTypeE <= 0;
+end
+
+end
+
 
 endmodule

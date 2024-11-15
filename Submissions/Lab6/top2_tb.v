@@ -26,7 +26,10 @@ module top2_tb();
 reg Clk, Reset;
 
 wire [31:0] PCDisplay, WriteDataDisplay;
-
+//wire Stall;
+//wire hazardTypeD, hazardTypeE, hazardTypeM;
+//wire RegWriteE, RegWriteM, RegWriteW;
+//wire [31:0] InstructionE, InstructionM, InstructionD, InstructionF, ReadData1D;
 /*wire [31:0] PCOutF, InstructionD, WriteDataW, ALUResultE, ReadData1E, ALUSrcValE, ImmExtD, ReadData1D, ReadData2D, MemReadDataM, ReadData2M;
 
 wire [3:0] ALUControlE;

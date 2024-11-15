@@ -20,16 +20,28 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module Pipline_Fetch(Clk, PCPlus4F, InstructionF, PCPlus4D, InstructionD);
+module Pipline_Fetch(Clk, PCPlus4F, InstructionF, PCPlus4D, InstructionD,
+ Fetch_Enable, Flush);
     input Clk;
     input [31:0] PCPlus4F;
     input [31:0] InstructionF;
+    input Fetch_Enable;
+    input Flush;
+    
     output reg [31:0] PCPlus4D;
     output reg [31:0] InstructionD;
     
     always @(posedge Clk) begin
+        if (Flush) begin
+        PCPlus4D <= 4;
+        InstructionD <= 0;
+        end
+        else if (Fetch_Enable) begin
         PCPlus4D <= PCPlus4F;
         InstructionD <= InstructionF;
+        
+        end
     end
+    
 
 endmodule

@@ -120,6 +120,6 @@ module DataMemory(Address, WriteData, Clk, MemWrite, MemRead, ReadData, MemType)
         
         
             initial begin
-            $readmemh("data_memory.mem", memory);
+            $readmemh("public_data_memory_lab6.mem", memory);
             end
 endmodule

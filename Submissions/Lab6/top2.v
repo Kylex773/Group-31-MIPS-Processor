@@ -36,7 +36,8 @@ Clk, Reset, PCDisplay, WriteDataDisplay
     wire [3:0] ALUOpD;
     wire [4:0] WriteRegD; 
     wire [4:0] WriteRegD1;
-    wire [31:0] ImmExtD, ReadData1D; 
+    wire [31:0] ImmExtD; 
+    wire [31:0] ReadData1D;
     wire [31:0] ReadData2D;
     wire MemReadE;
     wire MemToRegE;
@@ -81,17 +82,18 @@ Clk, Reset, PCDisplay, WriteDataDisplay
     wire DisplayD, DisplayE, DisplayM, DisplayW;
     wire [1:0] BranchTypeE, BranchTypeM, BranchTypeW;
     wire hazardTypeD, hazardTypeE, hazardTypeM;
-    wire [31:0] instructionE, instructionM;
-    wire PC_Enable;
+    wire Stall;
+    wire [31:0] InstructionE, InstructionM;
     
     (* MARK_DEBUG = "TRUE" *) output reg [31:0] PCDisplay;
     (* MARK_DEBUG = "TRUE" *) output reg [31:0] WriteDataDisplay;
     
     //Fetch Stage
-    ProgramCounter PCCounter(PCInF, PCOutF, Reset, Clk, ~PC_Enable);
+    ProgramCounter PCCounter(PCInF, PCOutF, Reset, Clk, ~Stall);
     PCAdder PCAdder(PCOutF, PCPlus4F);
     InstructionMemory InstructionMemory(PCOutF, InstructionF);
-    Pipline_Fetch Pipline_Fetch(Clk, PCPlus4F, InstructionF, PCPlus4D, InstructionD);
+    Pipline_Fetch Pipline_Fetch(Clk, PCPlus4F, InstructionF, PCPlus4D, InstructionD,
+     ~Stall, BranchD);
     
     //Decode Stage
     Controller Controller(InstructionD[31:26], InstructionD[5:0], InstructionD[20:16], InstructionD,  RegDst, MemReadD, MemToRegD, ALUOpD, MemWriteD, ALUSrcD, RegWriteD, BranchTypeD, jalD, DisplayD, hazardTypeD);
@@ -103,8 +105,8 @@ Clk, Reset, PCDisplay, WriteDataDisplay
     
     SignExtension SignExtender(InstructionD[15:0], ImmExtD);
     
-    Hazard_Detection_Unit Unit(instructionE, instructionM, InstructionD, 
-    hazardTypeE, hazardTypeM, hazardTypeD, PC_Enable, RegWriteE, RegWriteM);
+    Hazard_Detection_Unit Unit(InstructionE, InstructionM, InstructionD, 
+    hazardTypeE, hazardTypeM, hazardTypeD, Stall, RegWriteE, RegWriteM);
 
     //jump section
     BranchComparator BranchComparator(ALUOpD, ReadData1D, ReadData2D, BranchD);
@@ -123,7 +125,7 @@ Clk, Reset, PCDisplay, WriteDataDisplay
         MemReadE, MemToRegE, MemWriteE, ALUSrcE, RegWriteE, MemTypeE,
         ALUOpE, WriteRegE, ImmExtE, ReadData1E, ReadData2E, ShftAmtE,
         PCPlus4D, PCPlus4E, jalD, jalE, DisplayD, DisplayE, BranchTypeD, BranchTypeE,
-        hazardTypeD, hazardTypeE, InstructionD, InstructionE);
+        hazardTypeD, hazardTypeE, InstructionD, InstructionE, ~Stall);
         
     //Execute Stage
     Mux32Bit2To1 ALUSrcMux(ALUSrcValE, ReadData2E, ImmExtE, ALUSrcE);
@@ -139,7 +141,7 @@ Clk, Reset, PCDisplay, WriteDataDisplay
         ALUResultM, ReadData2M, WriteRegM,
         MemTypeE, MemTypeM, PCPlus4E, PCPlus4M,
         jalE, jalM, DisplayE, DisplayM, BranchTypeE, BranchTypeM,
-        hazardTypeE, hazardTypeM, instructionE, instructionM);
+        hazardTypeE, hazardTypeM, InstructionE, InstructionM);
     
     //Memory Stage
     DataMemory DataMemory(ALUResultM, ReadData2M, Clk, MemWriteM, MemReadM, MemReadDataM, MemTypeM);     

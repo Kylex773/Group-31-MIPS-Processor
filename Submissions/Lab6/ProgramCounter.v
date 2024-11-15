@@ -35,9 +35,9 @@ module ProgramCounter(Address, PCResult, Reset, Clk, PC_Enable);
     /* Please fill in the implementation here... */
     always@(posedge Clk)
     begin
-        if((Reset == 1) || (PC_Enable == 0))
+        if(Reset == 1)
             PCResult <= 0;
-        else
+        else if (PC_Enable)
             PCResult <= Address;
     end
 
