@@ -22,7 +22,7 @@
 
 module Pipline_Execute(Clk, MemReadE, MemToRegE, MemWriteE, RegWriteE, ALUresultE, ReadData2E, WriteRegE, MemReadM, MemToRegM, MemWriteM, RegWriteM, ALUresultM, ReadData2M, WriteRegM,
 MemTypeE, MemTypeM, PCPlus4E, PCPlus4M, jalE, jalM, DisplayE, DisplayM, BranchTypeE, BranchTypeM,
-hazardTypeE, hazardTypeM, InstructionE, InstructionM);
+hazardTypeE, hazardTypeM, InstructionE, InstructionM, Reset);
     input Clk;
     input MemReadE;
     input MemToRegE;
@@ -37,6 +37,7 @@ hazardTypeE, hazardTypeM, InstructionE, InstructionM);
     input [1:0] BranchTypeE;
     input hazardTypeE;
     input [31:0] InstructionE;
+    input Reset;
     
     output reg MemReadM;
     output reg MemToRegM;
@@ -53,6 +54,23 @@ hazardTypeE, hazardTypeM, InstructionE, InstructionM);
     output reg [31:0] InstructionM;
     
     always @(posedge Clk) begin
+    if(Reset) begin
+    MemReadM <= 0;
+    MemToRegM <= 0;
+    MemWriteM <= 0;
+    RegWriteM <= 0;
+    ALUresultM <= 0;
+    ReadData2M <= 0;
+    WriteRegM <= 0;
+    MemTypeM <= 0;
+    PCPlus4M <= 0;
+    jalM <= 0;
+    DisplayM <= 0;
+    BranchTypeM <= 0;
+    hazardTypeM <= 0;
+    InstructionM <= 0;
+    end
+    else begin
     MemReadM <= MemReadE;
     MemToRegM <= MemToRegE;
     MemWriteM <= MemWriteE;
@@ -67,6 +85,7 @@ hazardTypeE, hazardTypeM, InstructionE, InstructionM);
     BranchTypeM <= BranchTypeE;
     hazardTypeM <= hazardTypeE;
     InstructionM <= InstructionE;
+    end
     end
 
 endmodule

@@ -57,6 +57,10 @@ top2 u0(
     Reset <=1;
     #250;
     Reset <=0;
+    #19900
+    Reset <=1;
+    #250;
+    Reset <=0;
     end
 
 endmodule

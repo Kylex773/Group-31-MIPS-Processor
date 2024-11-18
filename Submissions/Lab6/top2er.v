@@ -32,10 +32,10 @@ output wire [7:0] en_out;
 wire ClkOut;
 wire [31:0] PCDisplay, WriteDataDisplay;
 
-ClkDiv ClkDiv(Clk, Reset, ClkOut);
+ClkDiv ClkDiv(Clk, Rst, ClkOut);
 top2 top2(
 ClkOut, Reset, PCDisplay, WriteDataDisplay
 );
-Two4DigitDisplay Two4DigitDisplay(Clk, PCDisplay, WriteDataDisplay, out7, en_out);
+Two4DigitDisplay Two4DigitDisplay(Clk, PCDisplay[15:0], WriteDataDisplay[15:0], out7, en_out);
 
 endmodule

@@ -93,7 +93,7 @@ Clk, Reset, PCDisplay, WriteDataDisplay
     PCAdder PCAdder(PCOutF, PCPlus4F);
     InstructionMemory InstructionMemory(PCOutF, InstructionF);
     Pipline_Fetch Pipline_Fetch(Clk, PCPlus4F, InstructionF, PCPlus4D, InstructionD,
-     ~Stall, BranchD);
+     ~Stall, BranchD, Reset);
     
     //Decode Stage
     Controller Controller(InstructionD[31:26], InstructionD[5:0], InstructionD[20:16], InstructionD,  RegDst, MemReadD, MemToRegD, ALUOpD, MemWriteD, ALUSrcD, RegWriteD, BranchTypeD, jalD, DisplayD, hazardTypeD);
@@ -125,7 +125,7 @@ Clk, Reset, PCDisplay, WriteDataDisplay
         MemReadE, MemToRegE, MemWriteE, ALUSrcE, RegWriteE, MemTypeE,
         ALUOpE, WriteRegE, ImmExtE, ReadData1E, ReadData2E, ShftAmtE,
         PCPlus4D, PCPlus4E, jalD, jalE, DisplayD, DisplayE, BranchTypeD, BranchTypeE,
-        hazardTypeD, hazardTypeE, InstructionD, InstructionE, ~Stall);
+        hazardTypeD, hazardTypeE, InstructionD, InstructionE, ~Stall, Reset);
         
     //Execute Stage
     Mux32Bit2To1 ALUSrcMux(ALUSrcValE, ReadData2E, ImmExtE, ALUSrcE);
@@ -141,15 +141,15 @@ Clk, Reset, PCDisplay, WriteDataDisplay
         ALUResultM, ReadData2M, WriteRegM,
         MemTypeE, MemTypeM, PCPlus4E, PCPlus4M,
         jalE, jalM, DisplayE, DisplayM, BranchTypeE, BranchTypeM,
-        hazardTypeE, hazardTypeM, InstructionE, InstructionM);
+        hazardTypeE, hazardTypeM, InstructionE, InstructionM, Reset);
     
     //Memory Stage
-    DataMemory DataMemory(ALUResultM, ReadData2M, Clk, MemWriteM, MemReadM, MemReadDataM, MemTypeM);     
+    DataMemory DataMemory(ALUResultM, ReadData2M, Clk, MemWriteM, MemReadM, MemReadDataM, MemTypeM, Reset);     
     
     Pipline_Memory Pipline_Memory(Clk, 
     MemtoRegM, RegWriteM, MemReadDataM, ALUResultM, WriteRegM,
     MemtoRegW, RegWriteW, MemReadDataW, ALUResultW, WriteRegW,
-    PCPlus4M, PCPlus4W, jalM, jalW, DisplayM, DisplayW, BranchTypeM, BranchTypeW);
+    PCPlus4M, PCPlus4W, jalM, jalW, DisplayM, DisplayW, BranchTypeM, BranchTypeW, Reset);
 
     //Writeback Stage
     Mux32Bit2To1 MemToRegMux(WriteDataW1, ALUResultW, MemReadDataW, MemtoRegW);
