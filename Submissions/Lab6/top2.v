@@ -83,7 +83,9 @@ Clk, Reset, PCDisplay, WriteDataDisplay
     wire [1:0] BranchTypeE, BranchTypeM, BranchTypeW;
     wire hazardTypeD, hazardTypeE, hazardTypeM;
     wire Stall;
-    wire [31:0] InstructionE, InstructionM;
+    wire [31:0] InstructionE, InstructionM, InstructionW;
+    wire hazardTypeM, hazardTypeW;
+    
     
     (* MARK_DEBUG = "TRUE" *) output reg [31:0] PCDisplay;
     (* MARK_DEBUG = "TRUE" *) output reg [31:0] WriteDataDisplay;
@@ -105,8 +107,8 @@ Clk, Reset, PCDisplay, WriteDataDisplay
     
     SignExtension SignExtender(InstructionD[15:0], ImmExtD);
     
-    Hazard_Detection_Unit Unit(InstructionE, InstructionM, InstructionD, 
-    hazardTypeE, hazardTypeM, hazardTypeD, Stall, RegWriteE, RegWriteM);
+    Hazard_Detection_Unit Unit(InstructionE, InstructionM, InstructionD, InstructionW, 
+    hazardTypeE, hazardTypeM, hazardTypeD, hazardTypeW, Stall, RegWriteE, RegWriteM, RegWriteW);
 
     //jump section
     BranchComparator BranchComparator(ALUOpD, ReadData1D, ReadData2D, BranchD);
@@ -149,7 +151,8 @@ Clk, Reset, PCDisplay, WriteDataDisplay
     Pipline_Memory Pipline_Memory(Clk, 
     MemtoRegM, RegWriteM, MemReadDataM, ALUResultM, WriteRegM,
     MemtoRegW, RegWriteW, MemReadDataW, ALUResultW, WriteRegW,
-    PCPlus4M, PCPlus4W, jalM, jalW, DisplayM, DisplayW, BranchTypeM, BranchTypeW, Reset);
+    PCPlus4M, PCPlus4W, jalM, jalW, DisplayM, DisplayW, BranchTypeM, BranchTypeW, Reset,
+    hazardTypeM, hazardTypeW, InstructionM, InstructionW);
 
     //Writeback Stage
     Mux32Bit2To1 MemToRegMux(WriteDataW1, ALUResultW, MemReadDataW, MemtoRegW);
