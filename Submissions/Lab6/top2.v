@@ -22,7 +22,7 @@
 
 
 module top2(
-Clk, Reset, PCDisplay, WriteDataDisplay
+Clk, Reset, PCDisplay, WriteDataDisplay, Stall
     );
     
     //Global Variables
@@ -82,7 +82,7 @@ Clk, Reset, PCDisplay, WriteDataDisplay
     wire DisplayD, DisplayE, DisplayM, DisplayW;
     wire [1:0] BranchTypeE, BranchTypeM, BranchTypeW;
     wire hazardTypeD, hazardTypeE, hazardTypeM;
-    wire Stall;
+    output wire Stall;
     wire [31:0] InstructionE, InstructionM, InstructionW;
     wire hazardTypeM, hazardTypeW;
     
@@ -166,15 +166,16 @@ Clk, Reset, PCDisplay, WriteDataDisplay
     end
     
     
-    always @(PCPlus4W or WriteDataW or DisplayD)
+    always @(posedge Clk)
     begin
     if (DisplayW == 1) begin
     PCDisplay <= PCPlus4W - 4;
     WriteDataDisplay <= WriteDataW;
+        if ((BranchTypeW != 0) && (jalW == 0) ) begin
+        WriteDataDisplay <= 0;
+        
     end
     
-    if ((BranchTypeW != 0) && (jalW == 0) ) begin
-    WriteDataDisplay <= 0;
     end
     
     end 
