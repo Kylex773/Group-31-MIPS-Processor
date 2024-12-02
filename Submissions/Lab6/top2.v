@@ -85,7 +85,7 @@ Clk, Reset, S7, J, WriteRegW, WriteDataW1
     wire hazardTypeD, hazardTypeE, hazardTypeM;
     wire Stall;
     wire [31:0] InstructionE, InstructionM, InstructionW;
-    wire hazardTypeM, hazardTypeW;
+    wire  hazardTypeW;
     wire [31:0] tempS7, tempJ;
     
     (* MARK_DEBUG = "TRUE" *) output reg [31:0] S7;
@@ -114,10 +114,11 @@ Clk, Reset, S7, J, WriteRegW, WriteDataW1
     //jump section
     BranchComparator BranchComparator(ALUOpD, ReadData1D, ReadData2D, BranchD);
     PCSelector PCSelector(PCSel, BranchTypeD, BranchD);
-    Mux32Bit4to1 PCMux(PCInF, PCPlus4F, JumpAddressD, ReadData1D, BranchAddressD, PCSel);
+    
     
     JumpAddress JumpAddressCalc(InstructionD[25:0], PCPlus4D, JumpAddressD);
     BranchAdder BranchAdder(PCPlus4D, ImmExtD, BranchAddressD);
+    Mux32Bit4to1 PCMux(PCInF, PCPlus4F, JumpAddressD, ReadData1D, BranchAddressD, PCSel);
     
     
     Mux32Bit2To1 JALMuxRegister(WriteRegD, WriteRegD1, 31, jalD);
@@ -135,7 +136,7 @@ Clk, Reset, S7, J, WriteRegW, WriteDataW1
      
     ALU_Controller ALU_Controller(ALUOpE, ImmExtE[5:0], ALUControlE);
      
-    ALU32Bit ALU(ALUControlE, ReadData1E, ALUSrcValE, ShftAmtE, ALUResultE, Zero);
+    ALU32Bit ALU(ALUControlE, ReadData1E, ALUSrcValE, ShftAmtE, ALUResultE, Zero, PCPlus4E);
     
     Pipline_Execute Pipline_Execute(
         Clk, MemReadE, MemToRegE, MemWriteE, 
