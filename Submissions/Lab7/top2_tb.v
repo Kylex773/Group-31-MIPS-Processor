@@ -25,8 +25,8 @@ module top2_tb();
 
 reg Clk, Reset;
 
-wire [4:0] WriteRegW;
-wire [31:0] S7, J, WriteDataW1;
+wire [31:0] PCDisplay, WriteDataDisplay;
+wire Stall;
 //wire Stall;
 //wire hazardTypeD, hazardTypeE, hazardTypeM;
 //wire RegWriteE, RegWriteM, RegWriteW;
@@ -44,10 +44,9 @@ wire [1:0] MemTypeM;*/
 top2 u0(
 .Clk(Clk), 
 .Reset(Reset),
-.S7(S7),
-.J(J),
-.WriteRegW(WriteRegW),
-.WriteDataW1(WriteDataW1)
+.PCDisplay(PCDisplay),
+.WriteDataDisplay(WriteDataDisplay),
+.Stall(Stall)
 );
 
 
@@ -57,6 +56,10 @@ top2 u0(
 	end
     
     initial begin 
+    Reset <=1;
+    #250;
+    Reset <=0;
+    #19900
     Reset <=1;
     #250;
     Reset <=0;

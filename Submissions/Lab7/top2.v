@@ -22,7 +22,7 @@
 
 
 module top2(
-Clk, Reset, S7, J, WriteRegW, WriteDataW1
+Clk, Reset, PCDisplay, WriteDataDisplay, Stall
     );
     
     //Global Variables
@@ -63,10 +63,9 @@ Clk, Reset, S7, J, WriteRegW, WriteDataW1
     wire RegWriteW;
     wire [31:0] MemReadDataW;
     wire [31:0] ALUResultW;
-    output wire [4:0] WriteRegW;
+    wire [4:0] WriteRegW;
     wire [4:0] WriteRegM;
-    wire [31:0] WriteDataW;
-    output wire [31:0] WriteDataW1;
+    wire [31:0] WriteDataW, WriteDataW1;
     wire MemWriteM;
     wire MemReadM;
     wire [1:0] MemTypeD, MemTypeE;
@@ -83,13 +82,13 @@ Clk, Reset, S7, J, WriteRegW, WriteDataW1
     wire DisplayD, DisplayE, DisplayM, DisplayW;
     wire [1:0] BranchTypeE, BranchTypeM, BranchTypeW;
     wire hazardTypeD, hazardTypeE, hazardTypeM;
-    wire Stall;
+    output wire Stall;
     wire [31:0] InstructionE, InstructionM, InstructionW;
     wire hazardTypeM, hazardTypeW;
-    wire [31:0] tempS7, tempJ;
     
-    (* MARK_DEBUG = "TRUE" *) output reg [31:0] S7;
-    (* MARK_DEBUG = "TRUE" *) output reg [31:0] J;
+    
+    (* MARK_DEBUG = "TRUE" *) output reg [31:0] PCDisplay;
+    (* MARK_DEBUG = "TRUE" *) output reg [31:0] WriteDataDisplay;
     
     //Fetch Stage
     ProgramCounter PCCounter(PCInF, PCOutF, Reset, Clk, ~Stall);
@@ -104,7 +103,7 @@ Clk, Reset, S7, J, WriteRegW, WriteDataW1
     Mux32Bit2To1 RegDstMux(WriteRegD1, InstructionD[20:16], InstructionD[15:11], RegDst);
     
     RegisterFile RegisterFile(InstructionD[25:21], InstructionD[20:16], WriteRegW, WriteDataW, 
-    RegWriteW, Clk, ReadData1D, ReadData2D, tempS7);
+    RegWriteW, Clk, ReadData1D, ReadData2D);
     
     SignExtension SignExtender(InstructionD[15:0], ImmExtD);
     
@@ -147,8 +146,7 @@ Clk, Reset, S7, J, WriteRegW, WriteDataW1
         hazardTypeE, hazardTypeM, InstructionE, InstructionM, Reset);
     
     //Memory Stage
-    DataMemory DataMemory(ALUResultM, ReadData2M, Clk, MemWriteM, MemReadM,
-     MemReadDataM, tempJ, MemTypeM, Reset);     
+    DataMemory DataMemory(ALUResultM, ReadData2M, Clk, MemWriteM, MemReadM, MemReadDataM, MemTypeM, Reset);     
     
     Pipline_Memory Pipline_Memory(Clk, 
     MemtoRegM, RegWriteM, MemReadDataM, ALUResultM, WriteRegM,
@@ -163,14 +161,24 @@ Clk, Reset, S7, J, WriteRegW, WriteDataW1
     
     
     //display output
-    always @(posedge Clk) begin
-    S7 <= tempS7;
-    J <= tempJ;
+    initial begin
+    PCDisplay = 4;
     end
     
     
+    always @(posedge Clk)
+    begin
+    if (DisplayW == 1) begin
+    PCDisplay <= PCPlus4W - 4;
+    WriteDataDisplay <= WriteDataW;
+        if ((BranchTypeW != 0) && (jalW == 0) ) begin
+        WriteDataDisplay <= 0;
+        
+    end
     
+    end
     
+    end 
     
     
     

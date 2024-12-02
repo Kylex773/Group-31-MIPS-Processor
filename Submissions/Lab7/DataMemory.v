@@ -35,7 +35,7 @@
 // of the "Address" input to index any of the 256 words. 
 ////////////////////////////////////////////////////////////////////////////////
 
-module DataMemory(Address, WriteData, Clk, MemWrite, MemRead, ReadData, J, MemType,
+module DataMemory(Address, WriteData, Clk, MemWrite, MemRead, ReadData, MemType,
 Reset); 
 
     input [31:0] Address; 	// Input Address 
@@ -45,8 +45,7 @@ Reset);
     input MemRead; 			// Control signal for memory read 
     input [1:0] MemType;
     input Reset;
-    
-    output reg[31:0] ReadData, J; // Contents of memory location at real
+    output reg[31:0] ReadData; // Contents of memory location at Address
     
     reg [31:0] memory [0:1023];
 
@@ -90,7 +89,6 @@ Reset);
        end
 
     always @ (posedge Clk)begin
-    //J <= memory[2];
         if(MemWrite == 1'b1)begin
             if(MemType == 2'b11)begin //Save word
                     memory[Address[11:2]] <= WriteData;
@@ -123,7 +121,6 @@ Reset);
         
         
             initial begin
-            $readmemh("vbsmeDataTest1.mem", memory);
-            J = memory[1];
+            $readmemh("public_data_memory_lab6.mem", memory);
             end
 endmodule
