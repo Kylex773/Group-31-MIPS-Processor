@@ -85,7 +85,7 @@ Clk, Reset, S7, J, WriteRegW, WriteDataW1
     wire hazardTypeD, hazardTypeE, hazardTypeM;
     wire Stall;
     wire [31:0] InstructionE, InstructionM, InstructionW;
-    wire hazardTypeW;
+    wire hazardTypeM, hazardTypeW;
     wire [31:0] tempS7, tempJ;
     
     (* MARK_DEBUG = "TRUE" *) output reg [31:0] S7;
@@ -135,7 +135,7 @@ Clk, Reset, S7, J, WriteRegW, WriteDataW1
      
     ALU_Controller ALU_Controller(ALUOpE, ImmExtE[5:0], ALUControlE);
      
-    ALU32Bit ALU(ALUControlE, ReadData1E, ALUSrcValE, ShftAmtE, ALUResultE, Zero, PCPlus4E);
+    ALU32Bit ALU(ALUControlE, ReadData1E, ALUSrcValE, ShftAmtE, ALUResultE, Zero);
     
     Pipline_Execute Pipline_Execute(
         Clk, MemReadE, MemToRegE, MemWriteE, 

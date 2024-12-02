@@ -26,13 +26,12 @@
 //   operations needed to support. 
 ////////////////////////////////////////////////////////////////////////////////
 
-module ALU32Bit(ALUControl, A, B, ShftAmt, ALUResult, Zero, PCPlus4E);
+module ALU32Bit(ALUControl, A, B, ShftAmt, ALUResult, Zero);
 
 	input [3:0] ALUControl; // control bits for ALU operation
                                 // you need to adjust the bitwidth as needed
 	input [31:0] A, B;	    // inputs
     input [4:0] ShftAmt; //shift amount
-    input [31:0] PCPlus4E;
 
 
 	output reg [31:0] ALUResult;	// answer
@@ -54,7 +53,7 @@ end
 always @(*)
 begin
 case(ALUControl)
-4'b0000: ALUResult <= PCPlus4E + 4; //set 0 for jump commands
+4'b0000: ALUResult <= 0; //set 0 for jump commands
 4'b0001: ALUResult <= A + B; //addition
 4'b0010: ALUResult <= A - B; //subtraction
 4'b0011: ALUResult <= A * B; //multiplication
