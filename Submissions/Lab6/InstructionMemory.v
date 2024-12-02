@@ -48,7 +48,7 @@ module InstructionMemory(Address, Instruction);
     initial begin
 
 
-    $readmemh("VbsmeIMTest1.mem", memory);
+    $readmemh("branch_test.mem", memory);
 
     end
     always @(*) begin
