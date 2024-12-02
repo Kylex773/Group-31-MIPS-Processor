@@ -48,7 +48,7 @@ Reset);
     
     output reg[31:0] ReadData, J; // Contents of memory location at real
     
-    reg [31:0] memory [0:1023];
+    reg [31:0] memory [0:17000];
 
     /* Please fill in the implementation here */
     always@(*) begin
@@ -123,7 +123,7 @@ Reset);
         
         
             initial begin
-            $readmemh("vbsmeDataTest1.mem", memory);
+            $readmemh("VbsmeDMTest1.mem", memory);
             J = memory[1];
             end
 endmodule
