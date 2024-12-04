@@ -22,7 +22,7 @@
 
 
 module top2(
-Clk, Reset, S7, J, WriteRegW, WriteDataW1, PCPlus4W, BranchW, InstructionW
+Clk, Reset, S7, J
     );
     
     //Global Variables
@@ -63,16 +63,16 @@ Clk, Reset, S7, J, WriteRegW, WriteDataW1, PCPlus4W, BranchW, InstructionW
     wire RegWriteW;
     wire [31:0] MemReadDataW;
     wire [31:0] ALUResultW;
-    output wire [4:0] WriteRegW;
+    wire [4:0] WriteRegW;
     wire [4:0] WriteRegM;
     wire [31:0] WriteDataW;
-    output wire [31:0] WriteDataW1;
+    wire [31:0] WriteDataW1;
     wire MemWriteM;
     wire MemReadM;
     wire [1:0] MemTypeD, MemTypeE;
     wire [1:0] MemTypeM;
     wire [31:0] PCPlus4E, PCPlus4M;
-    output wire [31:0] PCPlus4W;
+    wire [31:0] PCPlus4W;
     wire [1:0] BranchTypeD;
     wire jalD;
     wire jalE, jalM, jalW;
@@ -86,11 +86,11 @@ Clk, Reset, S7, J, WriteRegW, WriteDataW1, PCPlus4W, BranchW, InstructionW
     wire hazardTypeD, hazardTypeE, hazardTypeM;
     wire Stall;
     wire [31:0] InstructionE, InstructionM;
-    output wire [31:0] InstructionW;
+    wire [31:0] InstructionW;
     wire  hazardTypeW;
     wire [31:0] tempS7, tempJ;
     wire BranchE, BranchM;
-    output wire BranchW;
+    wire BranchW;
 
     
     (* MARK_DEBUG = "TRUE" *) output reg [31:0] S7;
