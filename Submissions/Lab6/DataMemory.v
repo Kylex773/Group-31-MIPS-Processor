@@ -123,7 +123,7 @@ Reset);
         
         
             initial begin
-            $readmemh("VbsmeDMTest1.mem", memory);
+            $readmemh("DM2.mem", memory);
             J = memory[1];
             end
 endmodule
