@@ -35,9 +35,9 @@ wire [31:0] X, Y;
 wire displayXY;
 
 ClkDiv ClkDiv(Clk, Rst, ClkOut);
-top2 top2(ClkOut, Reset, S7, J);
-XYStateMachine XY(ClkOut, Reset, S7, J, X, Y, displayXY);
-Two4DigitDisplay Two4DigitDisplay(Clk, X, Y, out7, en_out);
+top2 top2(ClkOut, Reset, S7, J, V0, V1);
+//XYStateMachine XY(ClkOut, Reset, S7, J, X, Y, displayXY);
+Two4DigitDisplay Two4DigitDisplay(Clk, V1, V0, out7, en_out);
 
 
 

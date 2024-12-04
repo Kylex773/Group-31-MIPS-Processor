@@ -22,7 +22,7 @@
 
 
 module top2(
-Clk, Reset, S7, J
+Clk, Reset, S7, J, V0, V1
     );
     
     //Global Variables
@@ -91,6 +91,7 @@ Clk, Reset, S7, J
     wire [31:0] tempS7, tempJ;
     wire BranchE, BranchM;
     wire BranchW;
+    output wire [31:0] V0, V1;
 
     
     (* MARK_DEBUG = "TRUE" *) output reg [31:0] S7;
@@ -112,7 +113,7 @@ Clk, Reset, S7, J
     Mux32Bit2To1 RegDstMux(WriteRegD1, InstructionD[20:16], InstructionD[15:11], RegDst);
     
     RegisterFile RegisterFile(InstructionD[25:21], InstructionD[20:16], WriteRegW, WriteDataW, 
-    RegWriteW, Clk, ReadData1D, ReadData2D, tempS7);
+    RegWriteW, Clk, ReadData1D, ReadData2D, tempS7, V0, V1);
     
     SignExtension SignExtender(InstructionD[15:0], ImmExtD);
     
