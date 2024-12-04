@@ -22,7 +22,7 @@
 
 
 module top2(
-Clk, Reset, S7, J, V0, V1, PCPlus4W, WriteRegW, WriteDataW1, BranchW
+Clk, Reset, S7, J, V0, V1
     );
     
     //Global Variables
@@ -63,16 +63,16 @@ Clk, Reset, S7, J, V0, V1, PCPlus4W, WriteRegW, WriteDataW1, BranchW
     wire RegWriteW;
     wire [31:0] MemReadDataW;
     wire [31:0] ALUResultW;
-    output wire [4:0] WriteRegW;
+    wire [4:0] WriteRegW;
     wire [4:0] WriteRegM;
     wire [31:0] WriteDataW;
-    output wire [31:0] WriteDataW1;
+    wire [31:0] WriteDataW1;
     wire MemWriteM;
     wire MemReadM;
     wire [1:0] MemTypeD, MemTypeE;
     wire [1:0] MemTypeM;
     wire [31:0] PCPlus4E, PCPlus4M;
-    output wire [31:0] PCPlus4W;
+    wire [31:0] PCPlus4W;
     wire [1:0] BranchTypeD;
     wire jalD;
     wire jalE, jalM, jalW;
@@ -90,7 +90,7 @@ Clk, Reset, S7, J, V0, V1, PCPlus4W, WriteRegW, WriteDataW1, BranchW
     wire  hazardTypeW;
     wire [31:0] tempS7, tempJ;
     wire BranchE, BranchM;
-    output wire BranchW;
+    wire BranchW;
     output wire [31:0] V0, V1;
 
     
@@ -114,6 +114,7 @@ Clk, Reset, S7, J, V0, V1, PCPlus4W, WriteRegW, WriteDataW1, BranchW
     
     RegisterFile RegisterFile(InstructionD[25:21], InstructionD[20:16], WriteRegW, WriteDataW, 
     RegWriteW, Clk, ReadData1D, ReadData2D, tempS7, V0, V1);
+    
     
     SignExtension SignExtender(InstructionD[15:0], ImmExtD);
     

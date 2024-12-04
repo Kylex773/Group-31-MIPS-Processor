@@ -57,7 +57,7 @@ S7, V0, V1);
     output reg [31:0] ReadData1, ReadData2;
     input [31:0] WriteData;
     input Clk;
-    
+
     output reg [31:0] V0, V1;
     output reg [31:0] S7;
 
@@ -67,13 +67,15 @@ S7, V0, V1);
     
 	initial begin
 	RegFile[0] = 0;
-	S7 = 16;
+	S7 = 0;
+
 	RegFile[29] = 4092;
 	end
 	
     always @(posedge Clk) begin
         if ((RegWrite==1) && (Clk == 1)) begin
         RegFile[WriteRegister] <= WriteData;
+        
         end
     end
    

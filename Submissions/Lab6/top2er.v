@@ -31,7 +31,7 @@ output wire [6:0] out7; //seg a, b, ... g
 output wire [7:0] en_out;
 wire ClkOut;
 wire [31:0] S7, J;
-wire [31:0] X, Y;
+wire [31:0] V0, V1;
 wire displayXY;
 
 ClkDiv ClkDiv(Clk, Rst, ClkOut);
