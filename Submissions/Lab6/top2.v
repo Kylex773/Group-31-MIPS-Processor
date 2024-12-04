@@ -22,7 +22,7 @@
 
 
 module top2(
-Clk, Reset, S7, J, WriteRegW, WriteDataW1
+Clk, Reset, S7, J, WriteRegW, WriteDataW1, PCPlus4W, BranchW, InstructionW
     );
     
     //Global Variables
@@ -71,7 +71,8 @@ Clk, Reset, S7, J, WriteRegW, WriteDataW1
     wire MemReadM;
     wire [1:0] MemTypeD, MemTypeE;
     wire [1:0] MemTypeM;
-    wire [31:0] PCPlus4E, PCPlus4M, PCPlus4W;
+    wire [31:0] PCPlus4E, PCPlus4M;
+    output wire [31:0] PCPlus4W;
     wire [1:0] BranchTypeD;
     wire jalD;
     wire jalE, jalM, jalW;
@@ -84,12 +85,19 @@ Clk, Reset, S7, J, WriteRegW, WriteDataW1
     wire [1:0] BranchTypeE, BranchTypeM, BranchTypeW;
     wire hazardTypeD, hazardTypeE, hazardTypeM;
     wire Stall;
-    wire [31:0] InstructionE, InstructionM, InstructionW;
+    wire [31:0] InstructionE, InstructionM;
+    output wire [31:0] InstructionW;
     wire  hazardTypeW;
     wire [31:0] tempS7, tempJ;
+    wire BranchE, BranchM;
+    output wire BranchW;
+
     
     (* MARK_DEBUG = "TRUE" *) output reg [31:0] S7;
     (* MARK_DEBUG = "TRUE" *) output reg [31:0] J;
+    //(* MARK_DEBUG = "TRUE" *) output reg [31:0] PCPLUS4;
+    
+    //(* MARK_DEBUG = "TRUE" *) output wire [31:0] InstructioW;
     
     //Fetch Stage
     ProgramCounter PCCounter(PCInF, PCOutF, Reset, Clk, ~Stall);
@@ -112,7 +120,7 @@ Clk, Reset, S7, J, WriteRegW, WriteDataW1
     hazardTypeE, hazardTypeM, hazardTypeD, hazardTypeW, Stall, RegWriteE, RegWriteM, RegWriteW);
 
     //jump section
-    BranchComparator BranchComparator(ALUOpD, ReadData1D, ReadData2D, BranchD);
+    BranchComparator BranchComparator(ALUOpD, ReadData1D, ReadData2D, BranchD, Stall);
     PCSelector PCSelector(PCSel, BranchTypeD, BranchD);
     
     
@@ -129,7 +137,7 @@ Clk, Reset, S7, J, WriteRegW, WriteDataW1
         MemReadE, MemToRegE, MemWriteE, ALUSrcE, RegWriteE, MemTypeE,
         ALUOpE, WriteRegE, ImmExtE, ReadData1E, ReadData2E, ShftAmtE,
         PCPlus4D, PCPlus4E, jalD, jalE, DisplayD, DisplayE, BranchTypeD, BranchTypeE,
-        hazardTypeD, hazardTypeE, InstructionD, InstructionE, ~Stall, Reset);
+        hazardTypeD, hazardTypeE, InstructionD, InstructionE, ~Stall, Reset, BranchD, BranchE);
         
     //Execute Stage
     Mux32Bit2To1 ALUSrcMux(ALUSrcValE, ReadData2E, ImmExtE, ALUSrcE);
@@ -145,7 +153,7 @@ Clk, Reset, S7, J, WriteRegW, WriteDataW1
         ALUResultM, ReadData2M, WriteRegM,
         MemTypeE, MemTypeM, PCPlus4E, PCPlus4M,
         jalE, jalM, DisplayE, DisplayM, BranchTypeE, BranchTypeM,
-        hazardTypeE, hazardTypeM, InstructionE, InstructionM, Reset);
+        hazardTypeE, hazardTypeM, InstructionE, InstructionM, Reset, BranchE, BranchM);
     
     //Memory Stage
     DataMemory DataMemory(ALUResultM, ReadData2M, Clk, MemWriteM, MemReadM,
@@ -155,11 +163,11 @@ Clk, Reset, S7, J, WriteRegW, WriteDataW1
     MemtoRegM, RegWriteM, MemReadDataM, ALUResultM, WriteRegM,
     MemtoRegW, RegWriteW, MemReadDataW, ALUResultW, WriteRegW,
     PCPlus4M, PCPlus4W, jalM, jalW, DisplayM, DisplayW, BranchTypeM, BranchTypeW, Reset,
-    hazardTypeM, hazardTypeW, InstructionM, InstructionW);
+    hazardTypeM, hazardTypeW, InstructionM, InstructionW, BranchM, BranchW);
 
     //Writeback Stage
     Mux32Bit2To1 MemToRegMux(WriteDataW1, ALUResultW, MemReadDataW, MemtoRegW);
-    Mux32Bit2To1 JALMuxData(WriteDataW, WriteDataW1, (PCPlus4W + 4), jalW);
+    Mux32Bit2To1 JALMuxData(WriteDataW, WriteDataW1, (PCPlus4W), jalW);
     
     
     
@@ -167,6 +175,9 @@ Clk, Reset, S7, J, WriteRegW, WriteDataW1
     always @(posedge Clk) begin
     S7 <= tempS7;
     J <= tempJ;
+    //PCPLUS4 <= PCPlus4W;
+    //Branch <= BranchW;
+    //Instruction <= InstructionW;
     end
     
     

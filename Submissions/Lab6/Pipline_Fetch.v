@@ -22,6 +22,7 @@
 
 module Pipline_Fetch(Clk, PCPlus4F, InstructionF, PCPlus4D, InstructionD,
  Fetch_Enable, Flush, Reset);
+
     input Clk;
     input [31:0] PCPlus4F;
     input [31:0] InstructionF;

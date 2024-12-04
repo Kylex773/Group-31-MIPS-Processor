@@ -24,9 +24,9 @@
 module top2_tb();
 
 reg Clk, Reset;
-
+wire BranchW;
 wire [4:0] WriteRegW;
-wire [31:0] S7, J, WriteDataW1;
+wire [31:0] S7, J, WriteDataW1, PCPlus4W, InstructionW;
 //wire Stall;
 //wire hazardTypeD, hazardTypeE, hazardTypeM;
 //wire RegWriteE, RegWriteM, RegWriteW;
@@ -47,7 +47,10 @@ top2 u0(
 .S7(S7),
 .J(J),
 .WriteRegW(WriteRegW),
-.WriteDataW1(WriteDataW1)
+.WriteDataW1(WriteDataW1),
+.PCPlus4W(PCPlus4W),
+.BranchW(BranchW),
+.InstructionW(InstructionW)
 );
 
 

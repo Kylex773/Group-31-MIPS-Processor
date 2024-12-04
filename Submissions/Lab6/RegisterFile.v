@@ -59,6 +59,8 @@ S7);
     input Clk;
     
     output reg [31:0] S7;
+
+    
     
     reg [31:0] RegFile [0:31];
     

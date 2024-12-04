@@ -20,15 +20,19 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module BranchComparator(BranchType, A, B, Branch);
+module BranchComparator(BranchType, A, B, Branch, stall);
 
 input [3:0] BranchType;
 input [31:0] A, B;
-
+input stall;
 output reg Branch;
 
 always @(*)
 begin
+if (stall) begin
+    Branch <= 0;
+end
+else begin
 case(BranchType)
 4'b0011: begin//bgez  wierd behavior but working working
  if (A[31] == 0)
@@ -69,5 +73,6 @@ case(BranchType)
  4'b1001: Branch <= 1;
 default: Branch <= 0;
 endcase
+end
 end
 endmodule
