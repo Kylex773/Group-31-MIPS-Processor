@@ -27,6 +27,7 @@ reg Clk, Reset;
 wire BranchW;
 wire [4:0] WriteRegW;
 wire [31:0] S7, J, V0, V1;
+wire [31:0] PCPlus4W, WriteDataW1;
 
 //wire Stall;
 //wire hazardTypeD, hazardTypeE, hazardTypeM;
@@ -48,7 +49,11 @@ top2 u0(
 .S7(S7),
 .J(J),
 .V0(V0),
-.V1(V1)
+.V1(V1),
+.BranchW(BranchW),
+.WriteRegW(WriteRegW),
+.PCPlus4W(PCPlus4W),
+.WriteDataW1(WriteDataW1)
 
 );
 
