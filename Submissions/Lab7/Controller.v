@@ -51,7 +51,7 @@ MemToReg <= 0;
 ALUOp <= 4'b1001;
 MemWrite <= 0;
 ALUSrc <= 1;
-RegWrite <=1; 
+RegWrite <=0; 
 BranchType <= 2;
 jal <= 0;
 hazardType <= 1;
@@ -244,7 +244,7 @@ jal <= 0;
 hazardType <= 1;
 end
 
-if (RegImm == 5'b00000) begin //bltz
+else if (RegImm == 5'b00000) begin //bltz
 RegDst <= 0;
 MemRead <= 0;
 MemToReg <= 0;

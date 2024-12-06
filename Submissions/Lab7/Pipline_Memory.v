@@ -22,7 +22,7 @@
 
 module Pipline_Memory(Clk, MemtoRegM, RegWriteM, MemReadDataM, ALUResultM, WriteRegM, MemtoRegW, RegWriteW, MemReadDataW, ALUResultW, WriteRegW,
 PCPlus4M, PCPlus4W, jalM, jalW, DisplayM, DisplayW, BranchTypeM, BranchTypeW, Reset,
-hazardTypeM, hazardTypeW, instructionM, instructionW);
+hazardTypeM, hazardTypeW, instructionM, instructionW, BranchM, BranchW);
 input Clk;
 input MemtoRegM;
 input RegWriteM;
@@ -35,6 +35,7 @@ input [1:0] BranchTypeM;
 input Reset;
 input hazardTypeM;
 input [31:0]instructionM;
+input BranchM;
 
 output reg MemtoRegW;
 output reg RegWriteW;
@@ -46,6 +47,7 @@ output reg jalW, DisplayW;
 output reg [1:0] BranchTypeW;
 output reg hazardTypeW;
 output reg [31:0]instructionW;
+output reg BranchW;
 
 always @(posedge Clk) begin
         if(Reset) begin
@@ -71,6 +73,7 @@ always @(posedge Clk) begin
         BranchTypeW <= BranchTypeM;
         hazardTypeW <= hazardTypeM;
         instructionW <= instructionM;
+        BranchW <= BranchM;
         end
     end
 

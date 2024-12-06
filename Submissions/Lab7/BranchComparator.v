@@ -20,48 +20,52 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module BranchComparator(BranchType, A, B, Branch);
+module BranchComparator(BranchType, A, B, Branch, stall);
 
 input [3:0] BranchType;
 input [31:0] A, B;
-
+input stall;
 output reg Branch;
 
 always @(*)
 begin
+if (stall) begin
+    Branch <= 0;
+end
+else begin
 case(BranchType)
-4'b0011: begin//bgez
- if (A[31:31] == 1)
-    Branch <= 0;
- else
+4'b0011: begin//bgez  wierd behavior but working working
+ if (A[31] == 0)
     Branch <= 1;
+ else
+    Branch <= 0;
  end
-4'b0100: begin//beq
+4'b0100: begin//beq  Working
  if (A == B)
     Branch <= 1;
  else
     Branch <= 0;
  end
-4'b0101: begin //bne
- if (A == B)
-    Branch <= 0;
- else
-    Branch <= 1;
- end
-4'b0110:  begin //bgtz
- if ((A[31:31] == 1) || (A == 0))
-    Branch <= 0;
- else
-    Branch <= 1;
- end
-4'b0111: begin //blez
- if ((A[31:31] == 1) || (A == 0))
+4'b0101: begin //bne  working
+ if (A != B)
     Branch <= 1;
  else
     Branch <= 0;
  end
-4'b1000: begin//bltz
- if (A[31:31] == 1)
+4'b0110:  begin //bgtz  working
+ if ((A[31] != 1) && (A != 0))
+    Branch <= 1;
+ else
+    Branch <= 0;
+ end
+4'b0111: begin //blez   working
+ if ((A[31] == 1) || (A == 0))
+    Branch <= 1;
+ else
+    Branch <= 0;
+ end
+4'b1000: begin//bltz  working
+ if (A[31] == 1)
     Branch <= 1;
  else
     Branch <= 0;
@@ -69,5 +73,6 @@ case(BranchType)
  4'b1001: Branch <= 1;
 default: Branch <= 0;
 endcase
+end
 end
 endmodule
