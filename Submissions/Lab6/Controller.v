@@ -244,7 +244,7 @@ jal <= 0;
 hazardType <= 1;
 end
 
-if (RegImm == 5'b00000) begin //bltz
+else if (RegImm == 5'b00000) begin //bltz
 RegDst <= 0;
 MemRead <= 0;
 MemToReg <= 0;

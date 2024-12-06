@@ -48,8 +48,7 @@
 // to allow for data multiplexing and setup time.
 ////////////////////////////////////////////////////////////////////////////////
 
-module RegisterFile(ReadRegister1, ReadRegister2, WriteRegister, WriteData, RegWrite, Clk, ReadData1, ReadData2,
-S7, V0, V1);
+module RegisterFile(ReadRegister1, ReadRegister2, WriteRegister, WriteData, RegWrite, Clk, ReadData1, ReadData2, V0, V1);
 
 	/* Please fill in the implementation here... */
 	input [4:0] ReadRegister1, ReadRegister2, WriteRegister;
@@ -59,7 +58,7 @@ S7, V0, V1);
     input Clk;
 
     output reg [31:0] V0, V1;
-    output reg [31:0] S7;
+
 
     
     
@@ -67,7 +66,7 @@ S7, V0, V1);
     
 	initial begin
 	RegFile[0] = 0;
-	S7 = 0;
+
 
 	RegFile[29] = 4092;
 	end
@@ -82,7 +81,7 @@ S7, V0, V1);
      always @(negedge Clk) begin
      ReadData1 <= RegFile[ReadRegister1];
      ReadData2 <= RegFile[ReadRegister2];
-     S7 <= RegFile[23];
+
      V0 <= RegFile[2];
      V1 <= RegFile[3];
      end
