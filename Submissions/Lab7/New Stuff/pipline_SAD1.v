@@ -24,6 +24,7 @@ module pipline_SAD1(Clk, MemtoRegSAD1, RegWriteSAD1, MemReadDataSAD1, ALUResultS
 MemtoRegSAD2, RegWriteSAD2, MemReadDataSAD2, ALUResultSAD2, WriteRegSAD2,PCPlus4SAD1, 
 PCPlus4SAD2, jalSAD1, jalSAD2, DisplaySAD1, DisplaySAD2, BranchTypeSAD1, BranchTypeSAD2, Reset,
 hazardTypeSAD1, hazardTypeSAD2, instructionSAD1, instructionSAD2, BranchSAD1, BranchSAD2,
+SADSAD1, SADSAD2,
 V1SAD1, V2SAD1, V3SAD1, V4SAD1, V5SAD1, V6SAD1, V7SAD1, V8SAD1, V9SAD1, V10SAD1, V11SAD1, 
 V12SAD1, V13SAD1, V14SAD1, V15SAD1, V16SAD1,
 V1SAD2, V2SAD2, V3SAD2, V4SAD2, V5SAD2, V6SAD2, V7SAD2, V8SAD2,
@@ -42,6 +43,8 @@ input Reset;
 input hazardTypeSAD1;
 input [31:0]instructionSAD1;
 input BranchSAD1;
+input [1:0] SADSAD1;
+
 input [31:0] V1SAD1;
 input [31:0] V2SAD1;
 input [31:0] V3SAD1;
@@ -59,6 +62,7 @@ input [31:0] V14SAD1;
 input [31:0] V15SAD1;
 input [31:0] V16SAD1;
 
+
 output reg MemtoRegSAD2;
 output reg RegWriteSAD2;
 output reg [31:0] MemReadDataSAD2;
@@ -70,6 +74,7 @@ output reg [1:0] BranchTypeSAD2;
 output reg hazardTypeSAD2;
 output reg [31:0]instructionSAD2;
 output reg BranchSAD2;
+output reg [1:0] SADSAD2;
 
 output reg [31:0] V1SAD2;
 output reg [31:0] V2SAD2;
@@ -100,6 +105,7 @@ always @(posedge Clk) begin
         jalSAD2 <= 0;
         DisplaySAD2 <= 0;
         BranchTypeSAD2 <= 0;
+        SADSAD2 <= 0;
         end
         else begin
         MemtoRegSAD2 <= MemtoRegSAD1;
@@ -114,6 +120,8 @@ always @(posedge Clk) begin
         hazardTypeSAD2 <= hazardTypeSAD1;
         instructionSAD2 <= instructionSAD1;
         BranchSAD2 <= BranchSAD1;
+        SADSAD2 <= SADSAD1;
+        
         
     V1SAD2 <= V1SAD1;
     V2SAD2 <= V2SAD1;
