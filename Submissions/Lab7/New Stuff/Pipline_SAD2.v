@@ -23,7 +23,11 @@
 module pipline_SAD2(Clk, MemtoRegSAD2, RegWriteSAD2, MemReadDataSAD2, ALUResultSAD2, WriteRegSAD2,
  MemtoRegW, RegWriteW, MemReadDataW, ALUResultW, WriteRegW,
 PCPlus4SAD2, PCPlus4W, jalSAD2, jalW, DisplaySAD2, DisplayW, BranchTypeSAD2, BranchTypeW, Reset,
-hazardTypeW, hazardTypeSAD2, instructionSAD2, instructionW, BranchSAD2, BranchW, FADSAD2, FADW);
+hazardTypeW, hazardTypeSAD2, instructionSAD2, instructionW, BranchSAD2, BranchW, FADSAD2, FADW,
+curXIn, CurYIn, minXIn, minYIn, currSADIn, minSADIn,
+curXOut, CurYOut, minXOut, minYOut, currSADOut, minSADOut
+);
+
 input Clk;
 input MemtoRegSAD2;
 input RegWriteSAD2;
@@ -39,6 +43,9 @@ input [31:0]instructionSAD2;
 input BranchSAD2;
 input [31:0] FADSAD2;
 
+input [31:0] curXIn, CurYIn, minXIn, minYIn;
+input [31:0] currSADIn, minSADIn;
+
 output reg MemtoRegW;
 output reg RegWriteW;
 output reg [31:0] MemReadDataW;
@@ -51,6 +58,9 @@ output reg hazardTypeW;
 output reg [31:0]instructionW;
 output reg BranchW;
 output reg [31:0] FADW;
+
+output reg [31:0] curXOut, CurYOut, minXOut, minYOut;
+output reg [31:0] currSADOut, minSADOut;
 
 always @(posedge Clk) begin
         if(Reset) begin
@@ -78,6 +88,14 @@ always @(posedge Clk) begin
         instructionW <= instructionSAD2;
         BranchW <= BranchSAD2;
         FADW <= FADSAD2;
+        curXOut <= curXIn;
+        CurYOut <= CurYIn;
+        minXOut <= minXIn;
+        minYOut <= minYIn;
+        currSADOut <= currSADIn;
+        minSADOut <= minSADIn;
+        
+        
         end
         //if(INT)begin
         //window1 <= Vect1

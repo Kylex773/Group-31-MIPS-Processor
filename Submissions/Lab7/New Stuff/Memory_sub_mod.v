@@ -21,7 +21,7 @@
 
 
 module Memory_sub_mod(AddressM, WriteDataM, ReadData2M, Clk, MemWriteM, MemReadM, 
-    MemTypeM, Reset, address, rowSkip, updatedAddress,
+    MemTypeM, Reset, SADM, updatedAddress,
     V1, V2, V3, V4, V5, V6, V7, V8, V9, V10, V11, V12, V13, V14, V15, V16
                      );
     
@@ -38,12 +38,11 @@ module Memory_sub_mod(AddressM, WriteDataM, ReadData2M, Clk, MemWriteM, MemReadM
     
     
     // AdressUpdated
-    input [31:0] address;
-    input [31:0] rowSkip;
+    input [1:0] SADM;
     output wire [31:0] updatedAddress;
     
     
-    AddressUpdater AddressUpdater(address, rowSkip, updatedAddress);
+    AddressUpdater AddressUpdater(AddressM, SADM, updatedAddress);
      
     DataMemoryNew DataMemoryNew(AddressM, WriteDataM, Clk, MemWriteM, MemReadM, ReadData2M, Reset, InitM, SADM, 
                                V1, V2, V3, V4, V5, V6, V7, V8, V9, V10, V11, V12, V13, V14, V15, V16);
