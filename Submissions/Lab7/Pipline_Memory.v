@@ -23,7 +23,9 @@
 module Pipline_Memory(Clk, MemtoRegM, RegWriteM, MemReadDataM, ALUResultM, WriteRegM,
  MemtoRegSAD1, RegWriteSAD1, MemReadDataSAD1, ALUResultSAD1, WriteRegSAD1,
 PCPlus4M, PCPlus4SAD1, jalM, jalSAD1, DisplayM, DisplaySAD1, BranchTypeM, BranchTypeSAD1, Reset,
-hazardTypeM, hazardTypeSAD1, instructionM, instructionSAD1, BranchM, BranchSAD1);
+hazardTypeM, hazardTypeSAD1, instructionM, instructionSAD1, BranchM, BranchSAD1, vector1M, vector2M,
+vector1SAD1, vector2SAD1);
+
 input Clk;
 input MemtoRegM;
 input RegWriteM;
@@ -37,6 +39,9 @@ input Reset;
 input hazardTypeM;
 input [31:0]instructionM;
 input BranchM;
+input [31:0] vector1M [0:15];
+input [31:0] vector2M [0:15];
+
 
 
 output reg MemtoRegSAD1;
@@ -50,6 +55,10 @@ output reg [1:0] BranchTypeSAD1;
 output reg hazardTypeSAD1;
 output reg [31:0]instructionSAD1;
 output reg BranchSAD1;
+output reg [31:0] vector1SAD1 [0:15];
+output reg [31:0] vector2SAD1 [0:15];
+
+
 
 always @(posedge Clk) begin
         if(Reset) begin
@@ -76,6 +85,8 @@ always @(posedge Clk) begin
         hazardTypeSAD1 <= hazardTypeM;
         instructionSAD1 <= instructionM;
         BranchSAD1 <= BranchM;
+        vector1SAD1 <= vector1M;
+        vector2SAD1 <= vector2M;
         end
         //if(INT)begin
         //window1 <= Vect1
