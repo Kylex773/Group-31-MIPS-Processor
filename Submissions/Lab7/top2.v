@@ -227,13 +227,13 @@ Clk, Reset, minX, minY
     MemtoRegW, RegWriteW, MemReadDataW, ALUResultW, WriteRegW,
     PCPlus4SAD2, PCPlus4W, jalSAD2, jalW, DisplaySAD2, DisplayW, BranchTypeSAD2, BranchTypeW, Reset,
     hazardTypeW, hazardTypeSAD2, instructionSAD2, instructionW, BranchSAD2, BranchW, FADSAD2, FADW, xcurrSAD2, 
-    ycurrSAD2, currSADValueSAD2, min, minX, minY, XcurrW, YcurrW, currSADValueW, minW, minX, minY);
+    ycurrSAD2, minX, minY, currSADValueSAD2, min, XcurrW, YcurrW, minXW, minYW, currSADValueW, minW);
 
 
 
     
-    Writeback_sub_mod Writeback_sub_mod(ALUResultW, MemReadDataW, MemtoRegW, PCPlus4W, jalW, WriteDataW, minSADValueW,
-     CurrSADValuew, XminW, YminW, XcurrW, YcurrW, minW, minXW, minYW);
+    Writeback_sub_mod Writeback_sub_mod(ALUResultW, MemReadDataW, MemtoRegW, PCPlus4W, jalW, WriteDataW, minW,
+     CurrSADValuew, minXW, minYW, XcurrW, YcurrW, min, minX, minY);
     
     
     

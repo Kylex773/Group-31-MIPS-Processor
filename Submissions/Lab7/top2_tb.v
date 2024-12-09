@@ -46,8 +46,8 @@ wire [1:0] MemTypeM;*/
 top2 u0(
 .Clk(Clk), 
 .Reset(Reset),
-.V0(V0),
-.V1(V1)
+.minX(minY),
+.minY(minY)
 );
 
 
