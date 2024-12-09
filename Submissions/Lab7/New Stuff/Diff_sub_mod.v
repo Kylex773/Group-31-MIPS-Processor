@@ -3,9 +3,9 @@
 // Company: 
 // Engineer: 
 // 
-// Create Date: 12/07/2024 12:40:27 PM
+// Create Date: 12/07/2024 11:14:38 PM
 // Design Name: 
-// Module Name: Fetch_sub_mod
+// Module Name: Diff_sub_mod
 // Project Name: 
 // Target Devices: 
 // Tool Versions: 
@@ -20,21 +20,14 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module Fetch_sub_mod(
-Clk, Reset, PCPlus4F, InstructionF, PCInF
-);
+module Diff_sub_mod();
 
-    input Clk, Reset;
-    input [31:0] PCInF;
-    output wire [31:0] PCPlus4F, InstructionF;
+    //subtractor subtractor1(result window1 frame1)
+    //subtractor subtractor2(result window1 frame1) ect
     
-    wire [31:0] PCOutF;
     
-     
+    //add abs functions or code that into the subtractors idk
 
 
-    ProgramCounter PCCounter(PCInF, PCOutF, Reset, Clk);
-    PCAdder PCAdder(PCOutF, PCPlus4F);
-    InstructionMemory InstructionMemory(PCOutF, InstructionF);
 
 endmodule

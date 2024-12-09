@@ -22,7 +22,7 @@
 
 module Decode_sub_mod(InstructionD, MemReadD, MemToRegD, ALUOpD, MemWriteD, ALUSrcD, 
     RegWriteD, BranchTypeD, jalD, DisplayD, hazardTypeD, WriteRegD1, Clk, WriteRegW,
-    WriteDataW, RegWriteW, ReadData1D, ReadData2D, V0, V1, ImmExtD, Stall, BranchD,
+    WriteDataW, RegWriteW, ReadData1D, ReadData2D, V0, V1, ImmExtD, BranchD,
     PCSel, PCPlus4D, PCPlus4F, PCInF, WriteRegD
 );
     //Controller
@@ -56,7 +56,7 @@ module Decode_sub_mod(InstructionD, MemReadD, MemToRegD, ALUOpD, MemWriteD, ALUS
     output wire [31:0] ImmExtD;
     
     //BranchComparator
-    input Stall;
+    
     output wire BranchD; 
      
     //PCSelector
@@ -91,7 +91,7 @@ module Decode_sub_mod(InstructionD, MemReadD, MemToRegD, ALUOpD, MemWriteD, ALUS
     
     //Jump functions
     
-    BranchComparator BranchComparator(ALUOpD, ReadData1D, ReadData2D, BranchD, Stall);
+    BranchComparator BranchComparator(ALUOpD, ReadData1D, ReadData2D, BranchD);
     
     PCSelector PCSelector(PCSel, BranchTypeD, BranchD);
     
