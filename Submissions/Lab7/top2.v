@@ -120,7 +120,8 @@ Clk, Reset, V0, V1
     wire [1:0] MFSel;
     wire [31:0] addrS1, addrS2, addrW;
     
-    wire [1:0] SADD, SADE;
+    
+    wire [31:0] V1M, V2M, V3M, V4M, V5M, V6M, V7M, V8M, V9M ,V10M, V11M, V12M, V13M, V14M, V15M, V16M;
     
     
     
@@ -128,24 +129,19 @@ Clk, Reset, V0, V1
     
     
     
-    //(* MARK_DEBUG = "TRUE" *) output reg [31:0] PCPLUS4;
     
-    //(* MARK_DEBUG = "TRUE" *) output wire [31:0] InstructioW;
-    
-    //Fetch Stage
-    //ProgramCounter PCCounter(PCInF, PCOutF, Reset, Clk, ~Stall);
-    //PCAdder PCAdder(PCOutF, PCPlus4F);
-    //InstructionMemory InstructionMemory(PCOutF, InstructionF);
     
    Fetch_sub_mod Fetch_sub_mod(Clk, Reset, PCPlus4F, InstructionF, PCInF);
     
     Pipline_Fetch Pipline_Fetch(Clk, PCPlus4F, InstructionF, PCPlus4D, InstructionD, Reset);
-    
+     
+     
+  
     
     Decode_sub_mod Decode_sub_mod(InstructionD, MemReadD, MemToRegD, ALUOpD, MemWriteD, ALUSrcD, 
     RegWriteD, BranchTypeD, jalD, DisplayD, hazardTypeD, WriteRegD1, Clk, WriteRegW,
     WriteDataW, RegWriteW, ReadData1D, ReadData2D, V0, V1, ImmExtD, BranchD,
-    PCSel, PCPlus4D, PCPlus4F, PCInF, WriteRegD, SADD);
+    PCSel, PCPlus4D, PCPlus4F, PCInF, WriteRegD);
     
     
     Pipline_Decode Pipline_Decode(Clk,
@@ -154,14 +150,8 @@ Clk, Reset, V0, V1
         MemReadE, MemToRegE, MemWriteE, ALUSrcE, RegWriteE, MemTypeE,
         ALUOpE, WriteRegE, ImmExtE, ReadData1E, ReadData2E, ShftAmtE,
         PCPlus4D, PCPlus4E, jalD, jalE, DisplayD, DisplayE, BranchTypeD, BranchTypeE,
-        hazardTypeD, hazardTypeE, InstructionD, InstructionE, Reset, BranchD, BranchE, SADD, SADE);
-        
-    //Execute Stage
-    //Mux32Bit2To1 ALUSrcMux(ALUSrcValE, ReadData2E, ImmExtE, ALUSrcE);
-     
-    //ALU_Controller ALU_Controller(ALUOpE, ImmExtE[5:0], ALUControlE);
-     
-    //ALU32Bit ALU(ALUControlE, ReadData1E, ALUSrcValE, ShftAmtE, ALUResultE, Zero, PCPlus4E);
+        hazardTypeD, hazardTypeE, InstructionD, InstructionE, Reset, BranchD, BranchE);
+
     
     Execute_sub_mod Execute_sub_mod(ReadData2E, ImmExtE, ALUSrcE, ALUOpE, ReadData1E, ShftAmtE,
      PCPlus4E, ALUResultE, Zero);
@@ -175,23 +165,25 @@ Clk, Reset, V0, V1
         jalE, jalM, DisplayE, DisplayM, BranchTypeE, BranchTypeM,
         hazardTypeE, hazardTypeM, InstructionE, InstructionM, Reset, BranchE, BranchM);
     
-    //Memory Stage
-    //DataMemory DataMemory(ALUResultM, ReadData2M, Clk, MemWriteM, MemReadM,
-     //MemReadDataM, MemTypeM, Reset); 
+ 
      
     forwardingUnit forwardingUnit(instructionW, instructionM, instructionSAD2, MFSel);
     
     Mux32Bit4to1(out, ALUResultM, addrS1, addrS2, addrW, MFSel);
      
     Memory_sub_mod(AddressM, WriteDataM, ReadData2M, Clk, MemWriteM, MemReadM, 
-    MemTypeM, Reset, vector, address, rowSkip, updatedAddress);    
+    MemTypeM, Reset, vector, address, rowSkip, updatedAddress, V1M, V2M, V3M, V4M, 
+    V5M, V6M, V7M, V8M, V9M ,V10M, V11M, V12M, V13M, V14M, V15M, V16M);    
     
     Pipline_Memory Pipline_Memory(Clk, MemtoRegM, RegWriteM, MemReadDataM, ALUResultM, WriteRegM,
     MemtoRegSAD1, RegWriteSAD1, MemReadDataSAD1, ALUResultSAD1, WriteRegSAD1,
     PCPlus4M, PCPlus4SAD1, jalM, jalSAD1, DisplayM, DisplaySAD1, BranchTypeM, BranchTypeSAD1, Reset,
     hazardTypeM, hazardTypeSAD1, instructionM, instructionSAD1, BranchM, BranchSAD1);
     
-    SAD1_sub_mod SAD1_sub_mod(vector1, vector2, vector4);
+    SAD1_sub_mod SAD1_sub_mod(V1_1, V2_1, V3_1, V4_1, V5_1, V6_1, V7_1, V8_1, V9_1, V10_1, V11_1, V12_1, V13_1,
+     V14_1, V15_1, V16_1, V1_2, V2_2, V3_2, V4_2, V5_2, V6_2, V7_2, V8_2, V9_2, V10_2, V11_2, V12_2, V13_2,
+     V14_2, V15_2, V16_2,V1_4, V2_4, V3_4, V4_4, V5_4, V6_4, V7_4, V8_4, V9_4, V10_4, V11_4, V12_4, V13_4, 
+     V14_4, V15_4, V16_4);
     
     pipline_SAD1 pipline_SAD1(Clk, MemtoRegSAD1, RegWriteSAD1, MemReadDataSAD1, ALUResultSAD1, WriteRegSAD1,
     MemtoRegSAD2, RegWriteSAD2, MemReadDataSAD2, ALUResultSAD2, WriteRegSAD2,PCPlus4SAD1, 
@@ -200,14 +192,13 @@ Clk, Reset, V0, V1
     
     SAD2_sub_mod SAD2_sub_mod(vector4SAD2, x, y, SADValue, instructionSAD2, xnew, ynew);
     
-    Pipline_SAD2 Pipline_SAD2(Clk, MemtoRegSAD2, RegWriteSAD2, MemReadDataSAD2, ALUResultSAD2, WriteRegSAD2,
+    pipline_SAD2 pipline_SAD2(Clk, MemtoRegSAD2, RegWriteSAD2, MemReadDataSAD2, ALUResultSAD2, WriteRegSAD2,
     MemtoRegW, RegWriteW, MemReadDataW, ALUResultW, WriteRegW,
     PCPlus4SAD2, PCPlus4W, jalSAD2, jalW, DisplaySAD2, DisplayW, BranchTypeSAD2, BranchTypeW, Reset,
     hazardTypeW, hazardTypeSAD2, instructionSAD2, instructionW, BranchSAD2, BranchW);
 
-    //Writeback Stage
-    //Mux32Bit2To1 MemToRegMux(WriteDataW1, ALUResultW, MemReadDataW, MemtoRegW);
-    //Mux32Bit2To1 JALMuxData(WriteDataW, WriteDataW1, (PCPlus4W), jalW);
+
+
     
     Writeback_sub_mod(ALUResultW, MemReadDataW, MemtoRegW, PCPlus4W, jalW, WriteDataW, A, B, Xa, 
     Ya, Xb, Yb, min, minX, minY);
