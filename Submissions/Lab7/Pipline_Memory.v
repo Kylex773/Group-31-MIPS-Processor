@@ -138,7 +138,7 @@ always @(posedge Clk) begin
         instructionSAD1 <= instructionM;
         BranchSAD1 <= BranchM;
         SADSAD1 <= SADM;
-        FADSAD1 < FADM;
+        FADSAD1 <= FADM;
         end
         
         if(SADM == 3) begin
@@ -191,10 +191,7 @@ always @(posedge Clk) begin
         //frame1 <= Vect1
         //frame2 <= Vect2 ect
         //end
-<<<<<<< Updated upstream
-=======
 
->>>>>>> Stashed changes
 
 
 endmodule
