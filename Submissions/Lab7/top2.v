@@ -141,7 +141,7 @@ Clk, Reset, minX, minY
      V11SAD2, V12SAD2, V13SAD2, V14SAD2, V15SAD2, V16SAD2;
      
     
-    
+    wire [31:0] xcurrSAD2, ycurrSAD2, currSADValueSAD2,  XcurrW, YcurrW, minXW, minYW, currSADValueW, minW, min;
     
     
     
@@ -184,7 +184,7 @@ Clk, Reset, minX, minY
      
     forwardingUnit forwardingUnit(instructionW, instructionM, instructionSAD2, MFSel);
     
-    Mux32Bit4to1 Finchat(AddressM, ALUResultM, FADS1, FADS2, FADW, MFSel);
+    Mux32Bit4to1 Finchat(AddressM, ALUResultM, FADSAD1, FADSAD2, FADW, MFSel);
      
     Memory_sub_mod Memory_sub_mod(AddressM, WriteDataM, ReadData2M, Clk, MemWriteM, MemReadM, 
     MemTypeM, Reset, SADM, FADM, V1M, V2M, V3M, V4M, 

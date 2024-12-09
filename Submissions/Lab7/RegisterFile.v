@@ -67,7 +67,7 @@ module RegisterFile(ReadRegister1, ReadRegister2, WriteRegister,
     
 	initial begin
 	RegFile[0] = 0;
-
+    RegFile[8] = 60;
 
 	RegFile[29] = 4092;
 	end
