@@ -23,12 +23,12 @@
 module AddressUpdater(address, rowSkip, updatedAddress);
 
 input [31:0] address;
-input rowSkip;
+input [1:0] rowSkip;
 
 output reg [31:0] updatedAddress;
 
 always @(*) begin
-    if(rowSkip)
+    if(rowSkip == 1)
     updatedAddress <= address + 16;
     else
     updatedAddress <= address + 4;
