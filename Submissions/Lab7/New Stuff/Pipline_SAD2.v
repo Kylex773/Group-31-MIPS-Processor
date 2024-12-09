@@ -23,7 +23,7 @@
 module Pipline_SAD2(Clk, MemtoRegSAD2, RegWriteSAD2, MemReadDataSAD2, ALUResultSAD2, WriteRegSAD2,
  MemtoRegW, RegWriteW, MemReadDataW, ALUResultW, WriteRegW,
 PCPlus4SAD2, PCPlus4W, jalSAD2, jalW, DisplaySAD2, DisplayW, BranchTypeSAD2, BranchTypeW, Reset,
-hazardTypeW, hazardTypeSAD2, instructionSAD2, instructionW, BranchSAD2, BranchW);
+hazardTypeW, hazardTypeSAD2, instructionSAD2, instructionW, BranchSAD2, BranchW, FADSAD2, FADW);
 input Clk;
 input MemtoRegSAD2;
 input RegWriteSAD2;
@@ -37,7 +37,7 @@ input Reset;
 input hazardTypeSAD2;
 input [31:0]instructionSAD2;
 input BranchSAD2;
-
+input [31:0] FADSAD2;
 
 output reg MemtoRegW;
 output reg RegWriteW;
@@ -50,6 +50,7 @@ output reg [1:0] BranchTypeW;
 output reg hazardTypeW;
 output reg [31:0]instructionW;
 output reg BranchW;
+output reg [31:0] FADW;
 
 always @(posedge Clk) begin
         if(Reset) begin
@@ -76,6 +77,7 @@ always @(posedge Clk) begin
         hazardTypeW <= hazardTypeSAD2;
         instructionW <= instructionSAD2;
         BranchW <= BranchSAD2;
+        FADW <= FADSAD2;
         end
         //if(INT)begin
         //window1 <= Vect1

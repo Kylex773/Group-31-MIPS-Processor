@@ -28,7 +28,8 @@ SADSAD1, SADSAD2,
 V1SAD1, V2SAD1, V3SAD1, V4SAD1, V5SAD1, V6SAD1, V7SAD1, V8SAD1, V9SAD1, V10SAD1, V11SAD1, 
 V12SAD1, V13SAD1, V14SAD1, V15SAD1, V16SAD1,
 V1SAD2, V2SAD2, V3SAD2, V4SAD2, V5SAD2, V6SAD2, V7SAD2, V8SAD2,
-V9SAD2, V10SAD2, V11SAD2, V12SAD2, V13SAD2, V14SAD2, V15SAD2, V16SAD2);
+V9SAD2, V10SAD2, V11SAD2, V12SAD2, V13SAD2, V14SAD2, V15SAD2, V16SAD2,
+FADSAD1, FADSAD2);
 
 input Clk;
 input MemtoRegSAD1;
@@ -44,6 +45,7 @@ input hazardTypeSAD1;
 input [31:0]instructionSAD1;
 input BranchSAD1;
 input [1:0] SADSAD1;
+input [31:0] FADSAD1;
 
 input [31:0] V1SAD1;
 input [31:0] V2SAD1;
@@ -75,6 +77,7 @@ output reg hazardTypeSAD2;
 output reg [31:0]instructionSAD2;
 output reg BranchSAD2;
 output reg [1:0] SADSAD2;
+output reg [31:0] FADSAD2;
 
 output reg [31:0] V1SAD2;
 output reg [31:0] V2SAD2;
@@ -121,7 +124,7 @@ always @(posedge Clk) begin
         instructionSAD2 <= instructionSAD1;
         BranchSAD2 <= BranchSAD1;
         SADSAD2 <= SADSAD1;
-        
+        FADSAD2 <= FADSAD1;
         
     V1SAD2 <= V1SAD1;
     V2SAD2 <= V2SAD1;
