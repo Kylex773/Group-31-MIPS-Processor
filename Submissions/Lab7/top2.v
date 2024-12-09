@@ -120,10 +120,20 @@ Clk, Reset, V0, V1
     wire [1:0] MFSel;
     wire [31:0] addrS1, addrS2, addrW;
     
+    wire [1:0] SAMD, SADE, SADM, SADSAD1;
     
     wire [31:0] V1M, V2M, V3M, V4M, V5M, V6M, V7M, V8M, V9M ,V10M, V11M, V12M, V13M, V14M, V15M, V16M;
     
+    wire [31:0] V1SAD1_Frame, V2SAD1_Frame, V3SAD1_Frame, V4SAD1_Frame, V5SAD1_Frame, V6SAD1_Frame, 
+    V7SAD1_Frame, V8SAD1_Frame, V9SAD1_Frame, V10SAD1_Frame, V11SAD1_Frame, V12SAD1_Frame, V13SAD1_Frame, 
+    V14SAD1_Frame, V15SAD1_Frame, V16SAD1_Frame;
+     
+     wire [31:0] V1SAD1_Window, V2SAD1_Window, V3SAD1_Window, V4SAD1_Window, V5SAD1_Window, 
+     V6SAD1_Window, V7SAD1_Window, V8SAD1_Window, V9SAD1_Window, V10SAD1_Window, V11SAD1_Window, 
+     V12SAD1_Window, V13SAD1_Window, V14SAD1_Window, V15SAD1_Window, V16SAD1_Window;
     
+    wire [31:0] V1SAD1, V2SAD1, V3SAD1, V4SAD1, V5SAD1, V6SAD1, V7SAD1, V8SAD1, V9SAD1, V10SAD1, 
+    V11SAD1, V12SAD1, V13SAD1, V14SAD1, V15SAD1, V16SAD1;
     
 
     
@@ -141,7 +151,7 @@ Clk, Reset, V0, V1
     Decode_sub_mod Decode_sub_mod(InstructionD, MemReadD, MemToRegD, ALUOpD, MemWriteD, ALUSrcD, 
     RegWriteD, BranchTypeD, jalD, DisplayD, hazardTypeD, WriteRegD1, Clk, WriteRegW,
     WriteDataW, RegWriteW, ReadData1D, ReadData2D, V0, V1, ImmExtD, BranchD,
-    PCSel, PCPlus4D, PCPlus4F, PCInF, WriteRegD);
+    PCSel, PCPlus4D, PCPlus4F, PCInF, WriteRegD, SAMD);
     
     
     Pipline_Decode Pipline_Decode(Clk,
@@ -150,7 +160,7 @@ Clk, Reset, V0, V1
         MemReadE, MemToRegE, MemWriteE, ALUSrcE, RegWriteE, MemTypeE,
         ALUOpE, WriteRegE, ImmExtE, ReadData1E, ReadData2E, ShftAmtE,
         PCPlus4D, PCPlus4E, jalD, jalE, DisplayD, DisplayE, BranchTypeD, BranchTypeE,
-        hazardTypeD, hazardTypeE, InstructionD, InstructionE, Reset, BranchD, BranchE);
+        hazardTypeD, hazardTypeE, InstructionD, InstructionE, Reset, BranchD, BranchE, SAMD, SAME);
 
     
     Execute_sub_mod Execute_sub_mod(ReadData2E, ImmExtE, ALUSrcE, ALUOpE, ReadData1E, ShftAmtE,
@@ -163,7 +173,7 @@ Clk, Reset, V0, V1
         ALUResultM, ReadData2M, WriteRegM,
         MemTypeE, MemTypeM, PCPlus4E, PCPlus4M,
         jalE, jalM, DisplayE, DisplayM, BranchTypeE, BranchTypeM,
-        hazardTypeE, hazardTypeM, InstructionE, InstructionM, Reset, BranchE, BranchM);
+        hazardTypeE, hazardTypeM, InstructionE, InstructionM, Reset, BranchE, BranchM, SAME, SADM);
     
  
      
@@ -172,18 +182,29 @@ Clk, Reset, V0, V1
     Mux32Bit4to1(out, ALUResultM, addrS1, addrS2, addrW, MFSel);
      
     Memory_sub_mod(AddressM, WriteDataM, ReadData2M, Clk, MemWriteM, MemReadM, 
-    MemTypeM, Reset, vector, address, rowSkip, updatedAddress, V1M, V2M, V3M, V4M, 
+    MemTypeM, Reset, address, rowSkip, updatedAddress, V1M, V2M, V3M, V4M, 
     V5M, V6M, V7M, V8M, V9M ,V10M, V11M, V12M, V13M, V14M, V15M, V16M);    
     
     Pipline_Memory Pipline_Memory(Clk, MemtoRegM, RegWriteM, MemReadDataM, ALUResultM, WriteRegM,
     MemtoRegSAD1, RegWriteSAD1, MemReadDataSAD1, ALUResultSAD1, WriteRegSAD1,
     PCPlus4M, PCPlus4SAD1, jalM, jalSAD1, DisplayM, DisplaySAD1, BranchTypeM, BranchTypeSAD1, Reset,
-    hazardTypeM, hazardTypeSAD1, instructionM, instructionSAD1, BranchM, BranchSAD1);
+    hazardTypeM, hazardTypeSAD1, instructionM, instructionSAD1, BranchM, BranchSAD1, SADM, SADSAD1, 
+    V1M, V2M, V3M, V4M, V5M, V6M, V7M, V8M, V9M ,V10M, V11M, V12M, V13M, V14M, V15M, V16M,
+     V1SAD1_Window, V2SAD1_Window, V3SAD1_Window, V4SAD1_Window, V5SAD1_Window, 
+     V6SAD1_Window, V7SAD1_Window, V8SAD1_Window, V9SAD1_Window, V10SAD1_Window, V11SAD1_Window, 
+     V12SAD1_Window, V13SAD1_Window, V14SAD1_Window, V15SAD1_Window, V16SAD1_Window, 
+     V1SAD1_Frame, V2SAD1_Frame, V3SAD1_Frame, V4SAD1_Frame, V5SAD1_Frame, V6SAD1_Frame, 
+    V7SAD1_Frame, V8SAD1_Frame, V9SAD1_Frame, V10SAD1_Frame, V11SAD1_Frame, V12SAD1_Frame, V13SAD1_Frame, 
+    V14SAD1_Frame, V15SAD1_Frame, V16SAD1_Frame);
     
-    SAD1_sub_mod SAD1_sub_mod(V1_1, V2_1, V3_1, V4_1, V5_1, V6_1, V7_1, V8_1, V9_1, V10_1, V11_1, V12_1, V13_1,
-     V14_1, V15_1, V16_1, V1_2, V2_2, V3_2, V4_2, V5_2, V6_2, V7_2, V8_2, V9_2, V10_2, V11_2, V12_2, V13_2,
-     V14_2, V15_2, V16_2,V1_4, V2_4, V3_4, V4_4, V5_4, V6_4, V7_4, V8_4, V9_4, V10_4, V11_4, V12_4, V13_4, 
-     V14_4, V15_4, V16_4);
+    SAD1_sub_mod SAD1_sub_mod(V1SAD1_Frame, V2SAD1_Frame, V3SAD1_Frame, V4SAD1_Frame, V5SAD1_Frame, V6SAD1_Frame, 
+    V7SAD1_Frame, V8SAD1_Frame, V9SAD1_Frame, V10SAD1_Frame, V11SAD1_Frame, V12SAD1_Frame, V13SAD1_Frame, 
+    V14SAD1_Frame, V15SAD1_Frame, V16SAD1_Frame,
+     V1SAD1_Window, V2SAD1_Window, V3SAD1_Window, V4SAD1_Window, V5SAD1_Window, 
+     V6SAD1_Window, V7SAD1_Window, V8SAD1_Window, V9SAD1_Window, V10SAD1_Window, V11SAD1_Window, 
+     V12SAD1_Window, V13SAD1_Window, V14SAD1_Window, V15SAD1_Window, V16SAD1_Window,
+     V1SAD1, V2SAD1, V3SAD1, V4SAD1, V5SAD1, V6SAD1, V7SAD1, V8SAD1, V9SAD1, V10SAD1, 
+    V11SAD1, V12SAD1, V13SAD1, V14SAD1, V15SAD1, V16SAD1);
     
     pipline_SAD1 pipline_SAD1(Clk, MemtoRegSAD1, RegWriteSAD1, MemReadDataSAD1, ALUResultSAD1, WriteRegSAD1,
     MemtoRegSAD2, RegWriteSAD2, MemReadDataSAD2, ALUResultSAD2, WriteRegSAD2,PCPlus4SAD1, 

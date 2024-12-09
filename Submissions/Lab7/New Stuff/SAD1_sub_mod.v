@@ -20,49 +20,51 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module SAD1_sub_mod(vector1, vector2, vector4);
+module SAD1_sub_mod(V1_1, V2_1, V3_1, V4_1, V5_1, V6_1, V7_1, V8_1, V9_1, V10_1, V11_1, V12_1, V13_1, V14_1, V15_1, V16_1,
+    V1_2, V2_2, V3_2, V4_2, V5_2, V6_2, V7_2, V8_2, V9_2, V10_2, V11_2, V12_2, V13_2, V14_2, V15_2, V16_2,
+    V1_4, V2_4, V3_4, V4_4, V5_4, V6_4, V7_4, V8_4, V9_4, V10_4, V11_4, V12_4, V13_4, V14_4, V15_4, V16_4);
 
-    input [31:0] vector1 [0:15];
+    input [31:0] V1_1, V2_1, V3_1, V4_1, V5_1, V6_1, V7_1, V8_1, V9_1, V10_1, V11_1, V12_1, V13_1, V14_1, V15_1, V16_1;
     
-    input [31:0] vector2 [0:15];
+    input [31:0] V1_2, V2_2, V3_2, V4_2, V5_2, V6_2, V7_2, V8_2, V9_2, V10_2, V11_2, V12_2, V13_2, V14_2, V15_2, V16_2;
     
-    wire [31:0] vector3 [0:15];
+    wire [31:0] V1_3, V2_3, V3_3, V4_3, V5_3, V6_3, V7_3, V8_3, V9_3, V10_3, V11_3, V12_3, V13_3, V14_3, V15_3, V16_3;;
     
-    output reg [31:0] vector4 [0:15];
+    output reg [31:0] V1_4, V2_4, V3_4, V4_4, V5_4, V6_4, V7_4, V8_4, V9_4, V10_4, V11_4, V12_4, V13_4, V14_4, V15_4, V16_4;
     
     
-    Subtractor subtractor0(vector3[0], vector1[0], vector2[0]);
-    absUnit absUnit0(vector3[0], vector4[0]);
-    Subtractor subtractor1(vector3[1], vector1[1], vector2[1]);
-    absUnit absUnit1(vector3[1], vector4[1]);
-    Subtractor subtractor2(vector3[2], vector1[2], vector2[2]);
-    absUnit absUnit2(vector3[2], vector4[2]);
-    Subtractor subtractor3(vector3[3], vector1[3], vector2[3]);
-    absUnit absUnit3(vector3[3], vector4[3]);
-    Subtractor subtractor4(vector3[4], vector1[4], vector2[4]);
-    absUnit absUnit4(vector3[4], vector4[4]);
-    Subtractor subtractor5(vector3[5], vector1[5], vector2[5]);
-    absUnit absUnit5(vector3[5], vector4[5]);
-    Subtractor subtractor6(vector3[6], vector1[6], vector2[6]);
-    absUnit absUnit6(vector3[6], vector4[6]);
-    Subtractor subtractor7(vector3[7], vector1[7], vector2[7]);
-    absUnit absUnit7(vector3[7], vector4[7]);
-    Subtractor subtractor8(vector3[8], vector1[8], vector2[8]);
-    absUnit absUnit8(vector3[8], vector4[8]);
-    Subtractor subtractor9(vector3[9], vector1[9], vector2[9]);
-    absUnit absUnit9(vector3[9], vector4[9]);
-    Subtractor subtractor10(vector3[10], vector1[10], vector2[10]);
-    absUnit absUnit10(vector3[10], vector4[10]);
-    Subtractor subtractor11(vector3[11], vector1[11], vector2[11]);
-    absUnit absUnit11(vector3[11], vector4[11]);
-    Subtractor subtractor12(vector3[12], vector1[12], vector2[12]);
-    absUnit absUnit12(vector3[12], vector4[12]);
-    Subtractor subtractor13(vector3[13], vector1[13], vector2[13]);
-    absUnit absUnit13(vector3[13], vector4[13]);
-    Subtractor subtractor14(vector3[14], vector1[14], vector2[14]);
-    absUnit absUnit14(vector3[14], vector4[14]);
-    Subtractor subtractor15(vector3[15], vector1[15], vector2[15]);
-    absUnit absUnit15(vector3[15], vector4[15]);
+    Subtractor subtractor1(V1_3, V1_1, V1_2);
+    absUnit absUnit1(V1_3, V1_4);
+    Subtractor subtractor2(V2_3, V2_1, V2_2);
+    absUnit absUnit2(V2_3, V2_4);
+    Subtractor subtractor3(V3_3, V3_1, V3_2);
+    absUnit absUnit3(V3_3, V3_4);
+    Subtractor subtractor4(V4_3, V4_1, V4_2);
+    absUnit absUnit4(V4_3, V4_4);
+    Subtractor subtractor5(V5_3, V5_1, V5_2);
+    absUnit absUnit5(V5_3, V5_4);
+    Subtractor subtractor6(V6_3, V6_1, V6_2);
+    absUnit absUnit6(V6_3, V6_4);
+    Subtractor subtractor7(V7_3, V7_1, V7_2);
+    absUnit absUnit7(V7_3, V7_4);
+    Subtractor subtractor8(V8_3, V8_1, V8_2);
+    absUnit absUnit8(V8_3, V8_4);
+    Subtractor subtractor9(V9_3, V9_1, V9_2);
+    absUnit absUnit9(V9_3, V9_4);
+    Subtractor subtractor10(V10_3, V10_1, V10_2);
+    absUnit absUnit10(V10_3, V10_4);
+    Subtractor subtractor11(V11_3, V11_1, V11_2);
+    absUnit absUnit11(V11_3, V11_4);
+    Subtractor subtractor12(V12_3, V12_1, V12_2);
+    absUnit absUnit12(V12_3, V12_4);
+    Subtractor subtractor13(V13_3, V13_1, V13_2);
+    absUnit absUnit13(V13_3, V13_4);
+    Subtractor subtractor14(V14_3, V14_1, V14_2);
+    absUnit absUnit14(V14_3, V14_4);
+    Subtractor subtractor15(V15_3, V15_1, V15_2);
+    absUnit absUnit15(V15_3, V15_4);
+    Subtractor subtractor16(V16_3, V16_1, V16_2);
+   absUnit absUnit16(V16_3, V16_4);
     
     
     
