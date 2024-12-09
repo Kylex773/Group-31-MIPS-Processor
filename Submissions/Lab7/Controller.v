@@ -20,7 +20,8 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module Controller(InstCode, FunctCode, RegImm, NopCheck, RegDst, MemRead, MemToReg, ALUOp, MemWrite, ALUSrc, RegWrite, BranchType, jal, Display, hazardType, SAD);
+module Controller(InstCode, FunctCode, RegImm, NopCheck, RegDst, MemRead, MemToReg, ALUOp, MemWrite,
+     ALUSrc, RegWrite, BranchType, jal, Display, hazardType, SAD);
 
 input [5:0] InstCode; // 6 bit input code for each instruction
 input [5:0] FunctCode; //needed because the world hates us and JR uses the R type function field :)

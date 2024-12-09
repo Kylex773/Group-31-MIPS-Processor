@@ -20,18 +20,31 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module Memory_sub_mod(ALUResultM, ReadData2M, Clk, MemWriteM, MemReadM, MemTypeM, Reset, MemReadDataM);
+module Memory_sub_mod(AddressM, WriteDataM, ReadData2M, Clk, MemWriteM, MemReadM, 
+    MemTypeM, Reset, vector, address, rowSkip, updatedAddress);
     
-    input [31:0] ALUResultM; 	
+    //Datamemory
+    input [31:0] AddressM; 	
     input [31:0] ReadData2M; 
     input Clk;
     input MemWriteM; 		 
     input MemReadM; 			
     input [1:0] MemTypeM;
     input Reset;
-    output wire [31:0] MemReadDataM;
+    input WriteDataM;
+    output wire [31:0] vector [0:15];
     
-    DataMemory DataMemory(ALUResultM, ReadData2M, Clk, MemWriteM, MemReadM,
-     MemReadDataM, MemTypeM, Reset);
     
-endmodule
+    // AdressUpdated
+    input [31:0] address;
+    input [31:0] rowSkip;
+    output wire [31:0] updatedAddress;
+    
+    
+    AddressUpdater AddressUpdater(address, rowSkip, updatedAddress);
+     
+     DataMemoryNew DataMemoryNew(AddressM, WriteDataM, Clk, MemWriteM, MemReadM, ReadData2M, Reset, InitM, SADM, vector);
+     
+     
+    endmodule
+

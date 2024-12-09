@@ -23,7 +23,7 @@
 module Decode_sub_mod(InstructionD, MemReadD, MemToRegD, ALUOpD, MemWriteD, ALUSrcD, 
     RegWriteD, BranchTypeD, jalD, DisplayD, hazardTypeD, WriteRegD1, Clk, WriteRegW,
     WriteDataW, RegWriteW, ReadData1D, ReadData2D, V0, V1, ImmExtD, BranchD,
-    PCSel, PCPlus4D, PCPlus4F, PCInF, WriteRegD
+    PCSel, PCPlus4D, PCPlus4F, PCInF, WriteRegD, SAD
 );
     //Controller
     input [31:0] InstructionD;
@@ -37,6 +37,7 @@ module Decode_sub_mod(InstructionD, MemReadD, MemToRegD, ALUOpD, MemWriteD, ALUS
     output wire jalD;
     output wire DisplayD;
     output wire hazardTypeD;
+    output wire [1:0] SAD;
     wire RegDst;
     
     //Mux5Bit2To1
@@ -80,7 +81,7 @@ module Decode_sub_mod(InstructionD, MemReadD, MemToRegD, ALUOpD, MemWriteD, ALUS
     
     Controller Controller(InstructionD[31:26], InstructionD[5:0], InstructionD[20:16], InstructionD,
       RegDst, MemReadD, MemToRegD, ALUOpD, MemWriteD, ALUSrcD, RegWriteD, BranchTypeD, jalD, 
-      DisplayD, hazardTypeD);
+      DisplayD, hazardTypeD, SAD);
     
     Mux5Bit2To1 RegDstMux(WriteRegD1, InstructionD[20:16], InstructionD[15:11], RegDst);
     
