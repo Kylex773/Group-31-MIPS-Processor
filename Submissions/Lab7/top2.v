@@ -118,6 +118,10 @@ Clk, Reset, V0, V1
     wire [31:0]instructionSAD2;
     wire BranchSAD2;
     
+    wire [1:0] MFSel;
+    wire [31:0] addrS1, addrS2, addrW;
+    
+    
     
 
     
@@ -208,7 +212,11 @@ Clk, Reset, V0, V1
     //DataMemory DataMemory(ALUResultM, ReadData2M, Clk, MemWriteM, MemReadM,
      //MemReadDataM, MemTypeM, Reset); 
      
-     Memory_sub_mod Memory_sub_mod(ALUResultM, ReadData2M, Clk, MemWriteM, MemReadM, MemTypeM, Reset, MemReadDataM);    
+    forwardingUnit forwardingUnit(instructionW, instructionM, instructionSAD2, MFSel);
+    
+    Mux32Bit4to1(out, ALUResultM, addrS1, addrS2, addrW, MFSel);
+     
+    Memory_sub_mod Memory_sub_mod(ALUResultM, ReadData2M, Clk, MemWriteM, MemReadM, MemTypeM, Reset, MemReadDataM);    
     
     Pipline_Memory Pipline_Memory(Clk, MemtoRegM, RegWriteM, MemReadDataM, ALUResultM, WriteRegM,
     MemtoRegSAD1, RegWriteSAD1, MemReadDataSAD1, ALUResultSAD1, WriteRegSAD1,

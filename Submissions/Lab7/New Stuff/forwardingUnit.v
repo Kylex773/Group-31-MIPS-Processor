@@ -26,11 +26,11 @@ input [31:0] instructionW, instructionM, instructionSAD2;
 output reg [1:0] MFSel; 
 
 always @(*) begin
-if(instructionW == 001111 && instructionM == 111111)
+if(instructionW == 6'b001111 && instructionM == 6'b111111)
 MFSel <= 3; //WB to M forwarding
-else if(instructionSAD2 == 101111 && instructionM == 111111)
+else if(instructionSAD2 == 6'b101111 && instructionM == 6'b111111)
 MFSel <= 2; //SAD2 to M forwarding
-else if(instructionW != 001111 && instructionM == 111111)
+else if(instructionW != 6'b001111 && instructionM == 6'b111111)
 MFSel <= 1; //SAD1 to M forwarding
 else
 MFSel <= 0; //no forwarding
