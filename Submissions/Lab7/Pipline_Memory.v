@@ -20,9 +20,10 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module Pipline_Memory(Clk, MemtoRegM, RegWriteM, MemReadDataM, ALUResultM, WriteRegM, MemtoRegW, RegWriteW, MemReadDataW, ALUResultW, WriteRegW,
-PCPlus4M, PCPlus4W, jalM, jalW, DisplayM, DisplayW, BranchTypeM, BranchTypeW, Reset,
-hazardTypeM, hazardTypeW, instructionM, instructionW, BranchM, BranchW);
+module Pipline_Memory(Clk, MemtoRegM, RegWriteM, MemReadDataM, ALUResultM, WriteRegM,
+ MemtoRegSAD1, RegWriteSAD1, MemReadDataSAD1, ALUResultSAD1, WriteRegSAD1,
+PCPlus4M, PCPlus4SAD1, jalM, jalSAD1, DisplayM, DisplaySAD1, BranchTypeM, BranchTypeSAD1, Reset,
+hazardTypeM, hazardTypeSAD1, instructionM, instructionSAD1, BranchM, BranchSAD1);
 input Clk;
 input MemtoRegM;
 input RegWriteM;
@@ -37,44 +38,52 @@ input hazardTypeM;
 input [31:0]instructionM;
 input BranchM;
 
-output reg MemtoRegW;
-output reg RegWriteW;
-output reg [31:0] MemReadDataW;
-output reg [31:0] ALUResultW;
-output reg [4:0] WriteRegW;
-output reg [31:0]PCPlus4W;
-output reg jalW, DisplayW;
-output reg [1:0] BranchTypeW;
-output reg hazardTypeW;
-output reg [31:0]instructionW;
-output reg BranchW;
+
+output reg MemtoRegSAD1;
+output reg RegWriteSAD1;
+output reg [31:0] MemReadDataSAD1;
+output reg [31:0] ALUResultSAD1;
+output reg [4:0] WriteRegSAD1;
+output reg [31:0]PCPlus4SAD1;
+output reg jalSAD1, DisplaySAD1;
+output reg [1:0] BranchTypeSAD1;
+output reg hazardTypeSAD1;
+output reg [31:0]instructionSAD1;
+output reg BranchSAD1;
 
 always @(posedge Clk) begin
         if(Reset) begin
-        MemtoRegW <= 0;
-        RegWriteW <= 0;
-        MemReadDataW <= 0;
-        ALUResultW <= 0;
-        WriteRegW <= 0;
-        PCPlus4W <= 0;
-        jalW <= 0;
-        DisplayW <= 0;
-        BranchTypeW <= 0;
+        MemtoRegSAD1 <= 0;
+        RegWriteSAD1 <= 0;
+        MemReadDataSAD1 <= 0;
+        ALUResultSAD1 <= 0;
+        WriteRegSAD1 <= 0;
+        PCPlus4SAD1 <= 0;
+        jalSAD1 <= 0;
+        DisplaySAD1 <= 0;
+        BranchTypeSAD1 <= 0;
         end
         else begin
-        MemtoRegW <= MemtoRegM;
-        RegWriteW <= RegWriteM;
-        MemReadDataW <= MemReadDataM;
-        ALUResultW <= ALUResultM;
-        WriteRegW <= WriteRegM;
-        PCPlus4W <= PCPlus4M;
-        jalW <= jalM;
-        DisplayW <= DisplayM;
-        BranchTypeW <= BranchTypeM;
-        hazardTypeW <= hazardTypeM;
-        instructionW <= instructionM;
-        BranchW <= BranchM;
+        MemtoRegSAD1 <= MemtoRegM;
+        RegWriteSAD1 <= RegWriteM;
+        MemReadDataSAD1 <= MemReadDataM;
+        ALUResultSAD1 <= ALUResultM;
+        WriteRegSAD1 <= WriteRegM;
+        PCPlus4SAD1 <= PCPlus4M;
+        jalSAD1 <= jalM;
+        DisplaySAD1 <= DisplayM;
+        BranchTypeSAD1 <= BranchTypeM;
+        hazardTypeSAD1 <= hazardTypeM;
+        instructionSAD1 <= instructionM;
+        BranchSAD1 <= BranchM;
         end
+        //if(INT)begin
+        //window1 <= Vect1
+        //window2 <= Vect2 ect
+        //else
+        //frame1 <= Vect1
+        //frame2 <= Vect2 ect
+        //end
     end
 
 
