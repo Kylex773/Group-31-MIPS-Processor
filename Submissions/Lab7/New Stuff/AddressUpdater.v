@@ -20,18 +20,22 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module AddressUpdater(address, rowSkip, updatedAddress);
+module AddressUpdater(address, SAD, updatedAddress);
 
 input [31:0] address;
-input [1:0] rowSkip;
+input [1:0] SAD;
 
 output reg [31:0] updatedAddress;
 
 always @(*) begin
-    if(rowSkip == 1)
+    if(SAD == 3)
+    updatedAddress <= 16;
+    else if (SAD == 2)
+    updatedAddress <= address + 4;
+    else if(SAD == 1)
     updatedAddress <= address + 16;
     else
-    updatedAddress <= address + 4;
+    updatedAddress <= address;
 end
 
 
