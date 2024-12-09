@@ -115,22 +115,22 @@ always @(posedge Clk) begin
         instructionSAD2 <= instructionSAD1;
         BranchSAD2 <= BranchSAD1;
         
-    V1SAD2 <= V1SAD1
-    V2SAD2 <= V2SAD1
-    V2SAD2 <= V2SAD1
-    V2SAD2 <= V2SAD1
-    V2SAD2 <= V2SAD1
-    V6SAD2 <= V6SAD1
-    V7SAD2 <= V7SAD1
-    V8SAD2 <= V8SAD1
-    V9SAD2 <= V9SAD1
-    V10SAD2 <= V10SAD1
-    V11SAD2 <= V11SAD1
-    V12SAD2 <= V12SAD1
-    V13SAD2 <= V13SAD1
-    V14SAD2 <= V14SAD1
-    V15SAD2 <= V15SAD1
-    V16SAD2 <= V16SAD1
+    V1SAD2 <= V1SAD1;
+    V2SAD2 <= V2SAD1;
+    V2SAD2 <= V2SAD1;
+    V2SAD2 <= V2SAD1;
+    V2SAD2 <= V2SAD1;
+    V6SAD2 <= V6SAD1;
+    V7SAD2 <= V7SAD1;
+    V8SAD2 <= V8SAD1;
+    V9SAD2 <= V9SAD1;
+    V10SAD2 <= V10SAD1;
+    V11SAD2 <= V11SAD1;
+    V12SAD2 <= V12SAD1;
+    V13SAD2 <= V13SAD1;
+    V14SAD2 <= V14SAD1;
+    V15SAD2 <= V15SAD1;
+    V16SAD2 <= V16SAD1;
         
         end
     end
