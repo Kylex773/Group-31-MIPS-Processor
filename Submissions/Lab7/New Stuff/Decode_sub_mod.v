@@ -76,6 +76,8 @@ module Decode_sub_mod(InstructionD, MemReadD, MemToRegD, ALUOpD, MemWriteD, ALUS
     
     //JALMuxRegister
     output wire [4:0] WriteRegD;
+
+    wire [1:0] SAD;
     
     
     
