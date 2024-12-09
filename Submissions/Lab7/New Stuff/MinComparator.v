@@ -21,11 +21,11 @@
 
 
 module MinComparator(A, B, Xa, Ya, Xb, Yb, min, minX, minY);
-    input A, B;
-    input Xa, Ya, Xb, Yb;
+    input [31:0] A, B;
+    input [31:0] Xa, Ya, Xb, Yb;
     
-    output reg min;
-    output reg minX, minY;
+    output reg [31:0] min;
+    output reg [31:0] minX, minY;
     
     always @(*)begin
         if(A < B)begin
