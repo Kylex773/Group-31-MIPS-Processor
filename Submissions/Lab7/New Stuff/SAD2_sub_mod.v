@@ -45,7 +45,7 @@ input [31:0] V16;
 input [31:0] x, y;
 input [31:0] instructionSAD2;
 
-output reg [31:0] SADValue, xnew, ynew;
+output wire [31:0] SADValue, xnew, ynew;
 
 Giant_Adder Giant_Adder(SADValue, V1, V2, V3, V4, V5, V6, V7, V8, V9, V10, V11, V12, V13,
 V14, V15, V16);

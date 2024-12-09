@@ -22,7 +22,7 @@
 
 
 module top2(
-Clk, Reset, V0, V1
+Clk, Reset, minX, minY
     );
     
     //Global Variables
@@ -90,8 +90,9 @@ Clk, Reset, V0, V1
     
     wire BranchE, BranchM;
     wire BranchW;
-    output wire [31:0] V0, V1;
+    wire [31:0] V0, V1;
     
+    output wire [31:0] minX, minY;
     
     wire MemtoRegSAD1;
     wire RegWriteSAD1;
@@ -136,7 +137,10 @@ Clk, Reset, V0, V1
     wire [31:0] V1SAD1, V2SAD1, V3SAD1, V4SAD1, V5SAD1, V6SAD1, V7SAD1, V8SAD1, V9SAD1, V10SAD1, 
     V11SAD1, V12SAD1, V13SAD1, V14SAD1, V15SAD1, V16SAD1;
     
-
+    wire [31:0] V1SAD2, V2SAD2, V3SAD2, V4SAD2, V5SAD2, V6SAD2, V7SAD2, V8SAD2, V9SAD2, V10SAD2,
+     V11SAD2, V12SAD2, V13SAD2, V14SAD2, V15SAD2, V16SAD2;
+     
+    
     
     
     
@@ -180,10 +184,10 @@ Clk, Reset, V0, V1
      
     forwardingUnit forwardingUnit(instructionW, instructionM, instructionSAD2, MFSel);
     
-    Mux32Bit4to1(AddressM, ALUResultM, FADS1, FADS2, FADW, MFSel);
+    Mux32Bit4to1 Finchat(AddressM, ALUResultM, FADS1, FADS2, FADW, MFSel);
      
-    Memory_sub_mod(AddressM, WriteDataM, ReadData2M, Clk, MemWriteM, MemReadM, 
-    MemTypeM, Reset, address, SAD, FADM, V1M, V2M, V3M, V4M, 
+    Memory_sub_mod Memory_sub_mod(AddressM, WriteDataM, ReadData2M, Clk, MemWriteM, MemReadM, 
+    MemTypeM, Reset, SADM, FADM, V1M, V2M, V3M, V4M, 
     V5M, V6M, V7M, V8M, V9M ,V10M, V11M, V12M, V13M, V14M, V15M, V16M);    
     
     Pipline_Memory Pipline_Memory(Clk, MemtoRegM, RegWriteM, MemReadDataM, ALUResultM, WriteRegM,
@@ -215,18 +219,21 @@ Clk, Reset, V0, V1
     V11SAD1, V12SAD1, V13SAD1, V14SAD1, V15SAD1, V16SAD1, V1SAD2, V2SAD2, V3SAD2, V4SAD2, V5SAD2, V6SAD2, V7SAD2, 
     V8SAD2, V9SAD2, V10SAD2, V11SAD2, V12SAD2, V13SAD2, V14SAD2, V15SAD2, V16SAD2, FADSAD1, FADSAD2);
     
-    SAD2_sub_mod SAD2_sub_mod(vector4SAD2, x, y, SADValue, instructionSAD2, xnew, ynew);
+    SAD2_sub_mod SAD2_sub_mod(V1SAD2, V2SAD2, V3SAD2, V4SAD2, V5SAD2, V6SAD2, V7SAD2, 
+    V8SAD2, V9SAD2, V10SAD2, V11SAD2, V12SAD2, V13SAD2, V14SAD2, V15SAD2, V16SAD2, XcurrW, YcurrW, 
+    currSADValueSAD2, instructionSAD2, xcurrSAD2, ycurrSAD2);
     
     pipline_SAD2 pipline_SAD2(Clk, MemtoRegSAD2, RegWriteSAD2, MemReadDataSAD2, ALUResultSAD2, WriteRegSAD2,
     MemtoRegW, RegWriteW, MemReadDataW, ALUResultW, WriteRegW,
     PCPlus4SAD2, PCPlus4W, jalSAD2, jalW, DisplaySAD2, DisplayW, BranchTypeSAD2, BranchTypeW, Reset,
-    hazardTypeW, hazardTypeSAD2, instructionSAD2, instructionW, BranchSAD2, BranchW, FADSAD2, FADW);
+    hazardTypeW, hazardTypeSAD2, instructionSAD2, instructionW, BranchSAD2, BranchW, FADSAD2, FADW, xcurrSAD2, 
+    ycurrSAD2, currSADValueSAD2, min, minX, minY, XcurrW, YcurrW, currSADValueW, minW, minX, minY);
 
 
 
     
-    Writeback_sub_mod(ALUResultW, MemReadDataW, MemtoRegW, PCPlus4W, jalW, WriteDataW, A, B, Xa, 
-    Ya, Xb, Yb, min, minX, minY);
+    Writeback_sub_mod Writeback_sub_mod(ALUResultW, MemReadDataW, MemtoRegW, PCPlus4W, jalW, WriteDataW, minSADValueW,
+     CurrSADValuew, XminW, YminW, XcurrW, YcurrW, minW, minXW, minYW);
     
     
     
