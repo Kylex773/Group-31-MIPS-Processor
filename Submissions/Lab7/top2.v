@@ -120,7 +120,7 @@ Clk, Reset, V0, V1
     wire [1:0] MFSel;
     wire [31:0] addrS1, addrS2, addrW;
     
-    wire [1:0] SAMD, SADE, SADM, SADSAD1;
+    wire [1:0] SAMD, SADE, SADM, SADSAD1, SADSAD2;
     
     wire [31:0] V1M, V2M, V3M, V4M, V5M, V6M, V7M, V8M, V9M ,V10M, V11M, V12M, V13M, V14M, V15M, V16M;
     
@@ -179,7 +179,7 @@ Clk, Reset, V0, V1
      
     forwardingUnit forwardingUnit(instructionW, instructionM, instructionSAD2, MFSel);
     
-    Mux32Bit4to1(out, ALUResultM, addrS1, addrS2, addrW, MFSel);
+    Mux32Bit4to1(AddressM, ALUResultM, addrS1, addrS2, addrW, MFSel);
      
     Memory_sub_mod(AddressM, WriteDataM, ReadData2M, Clk, MemWriteM, MemReadM, 
     MemTypeM, Reset, address, rowSkip, updatedAddress, V1M, V2M, V3M, V4M, 
@@ -209,7 +209,10 @@ Clk, Reset, V0, V1
     pipline_SAD1 pipline_SAD1(Clk, MemtoRegSAD1, RegWriteSAD1, MemReadDataSAD1, ALUResultSAD1, WriteRegSAD1,
     MemtoRegSAD2, RegWriteSAD2, MemReadDataSAD2, ALUResultSAD2, WriteRegSAD2,PCPlus4SAD1, 
     PCPlus4SAD2, jalSAD1, jalSAD2, DisplaySAD1, DisplaySAD2, BranchTypeSAD1, BranchTypeSAD2, Reset,
-    hazardTypeSAD1, hazardTypeSAD2, instructionSAD1, instructionSAD2, BranchSAD1, BranchSAD2);
+    hazardTypeSAD1, hazardTypeSAD2, instructionSAD1, instructionSAD2, BranchSAD1, BranchSAD2, SADSAD1, SADSAD2,
+    V1SAD1, V2SAD1, V3SAD1, V4SAD1, V5SAD1, V6SAD1, V7SAD1, V8SAD1, V9SAD1, V10SAD1, 
+    V11SAD1, V12SAD1, V13SAD1, V14SAD1, V15SAD1, V16SAD1, V1SAD2, V2SAD2, V3SAD2, V4SAD2, V5SAD2, V6SAD2, V7SAD2, 
+    V8SAD2, V9SAD2, V10SAD2, V11SAD2, V12SAD2, V13SAD2, V14SAD2, V15SAD2, V16SAD2);
     
     SAD2_sub_mod SAD2_sub_mod(vector4SAD2, x, y, SADValue, instructionSAD2, xnew, ynew);
     
