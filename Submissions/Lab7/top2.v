@@ -84,7 +84,6 @@ Clk, Reset, V0, V1
     wire DisplayD, DisplayE, DisplayM, DisplayW;
     wire [1:0] BranchTypeE, BranchTypeM, BranchTypeW;
     wire hazardTypeD, hazardTypeE, hazardTypeM;
-    wire Stall;
     wire [31:0] InstructionE, InstructionM;
     wire [31:0] InstructionW;
     wire  hazardTypeW;
@@ -136,10 +135,9 @@ Clk, Reset, V0, V1
     //PCAdder PCAdder(PCOutF, PCPlus4F);
     //InstructionMemory InstructionMemory(PCOutF, InstructionF);
     
-   Fetch_sub_mod Fetch_sub_mod(Clk, Reset, Stall, PCPlus4F, InstructionF, PCInF);
+   Fetch_sub_mod Fetch_sub_mod(Clk, Reset, PCPlus4F, InstructionF, PCInF);
     
-    Pipline_Fetch Pipline_Fetch(Clk, PCPlus4F, InstructionF, PCPlus4D, InstructionD,
-     ~Stall, BranchD, Reset);
+    Pipline_Fetch Pipline_Fetch(Clk, PCPlus4F, InstructionF, PCPlus4D, InstructionD, Reset);
      
      
     
@@ -175,11 +173,9 @@ Clk, Reset, V0, V1
     
     Decode_sub_mod Decode_sub_mod(InstructionD, MemReadD, MemToRegD, ALUOpD, MemWriteD, ALUSrcD, 
     RegWriteD, BranchTypeD, jalD, DisplayD, hazardTypeD, WriteRegD1, Clk, WriteRegW,
-    WriteDataW, RegWriteW, ReadData1D, ReadData2D, V0, V1, ImmExtD, Stall, BranchD,
+    WriteDataW, RegWriteW, ReadData1D, ReadData2D, V0, V1, ImmExtD, BranchD,
     PCSel, PCPlus4D, PCPlus4F, PCInF, WriteRegD);
     
-    Hazard_Detection_Unit Unit(InstructionE, InstructionM, InstructionD, InstructionW, 
-    hazardTypeE, hazardTypeM, hazardTypeD, hazardTypeW, Stall, RegWriteE, RegWriteM, RegWriteW);
     
     Pipline_Decode Pipline_Decode(Clk,
         MemReadD, MemToRegD, MemWriteD, ALUSrcD, RegWriteD, InstructionD[27:26],
@@ -187,7 +183,7 @@ Clk, Reset, V0, V1
         MemReadE, MemToRegE, MemWriteE, ALUSrcE, RegWriteE, MemTypeE,
         ALUOpE, WriteRegE, ImmExtE, ReadData1E, ReadData2E, ShftAmtE,
         PCPlus4D, PCPlus4E, jalD, jalE, DisplayD, DisplayE, BranchTypeD, BranchTypeE,
-        hazardTypeD, hazardTypeE, InstructionD, InstructionE, ~Stall, Reset, BranchD, BranchE);
+        hazardTypeD, hazardTypeE, InstructionD, InstructionE, Reset, BranchD, BranchE);
         
     //Execute Stage
     //Mux32Bit2To1 ALUSrcMux(ALUSrcValE, ReadData2E, ImmExtE, ALUSrcE);
