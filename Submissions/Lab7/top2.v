@@ -92,6 +92,33 @@ Clk, Reset, V0, V1
     wire BranchE, BranchM;
     wire BranchW;
     output wire [31:0] V0, V1;
+    
+    
+    wire MemtoRegSAD1;
+    wire RegWriteSAD1;
+    wire [31:0] MemReadDataSAD1;
+    wire [31:0] ALUResultSAD1;
+    wire [4:0] WriteRegSAD1;
+    wire [31:0]PCPlus4SAD1;
+    wire jalSAD1, DisplaySAD1;
+    wire [1:0] BranchTypeSAD1;
+    wire hazardTypeSAD1;
+    wire [31:0]instructionSAD1;
+    wire BranchSAD1;
+    
+    wire MemtoRegSAD2;
+    wire RegWriteSAD2;
+    wire [31:0] MemReadDataSAD2;
+    wire [31:0] ALUResultSAD2;
+    wire [4:0] WriteRegSAD2;
+    wire [31:0]PCPlus4SAD2;
+    wire jalSAD2, DisplaySAD2;
+    wire [1:0] BranchTypeSAD2;
+    wire hazardTypeSAD2;
+    wire [31:0]instructionSAD2;
+    wire BranchSAD2;
+    
+    
 
     
     
@@ -183,11 +210,23 @@ Clk, Reset, V0, V1
      
      Memory_sub_mod Memory_sub_mod(ALUResultM, ReadData2M, Clk, MemWriteM, MemReadM, MemTypeM, Reset, MemReadDataM);    
     
-    Pipline_Memory Pipline_Memory(Clk, 
-    MemtoRegM, RegWriteM, MemReadDataM, ALUResultM, WriteRegM,
+    Pipline_Memory Pipline_Memory(Clk, MemtoRegM, RegWriteM, MemReadDataM, ALUResultM, WriteRegM,
+    MemtoRegSAD1, RegWriteSAD1, MemReadDataSAD1, ALUResultSAD1, WriteRegSAD1,
+    PCPlus4M, PCPlus4SAD1, jalM, jalSAD1, DisplayM, DisplaySAD1, BranchTypeM, BranchTypeSAD1, Reset,
+    hazardTypeM, hazardTypeSAD1, instructionM, instructionSAD1, BranchM, BranchSAD1);
+    
+    
+    
+    pipline_SAD1 pipline_SAD1(Clk, MemtoRegSAD1, RegWriteSAD1, MemReadDataSAD1, ALUResultSAD1, WriteRegSAD1,
+    MemtoRegSAD2, RegWriteSAD2, MemReadDataSAD2, ALUResultSAD2, WriteRegSAD2,PCPlus4SAD1, 
+    PCPlus4SAD2, jalSAD1, jalSAD2, DisplaySAD1, DisplaySAD2, BranchTypeSAD1, BranchTypeSAD2, Reset,
+    hazardTypeSAD1, hazardTypeSAD2, instructionSAD1, instructionSAD2, BranchSAD1, BranchSAD2);
+    
+    
+    pipline_SAD2 pipline_SAD2(Clk, MemtoRegSAD2, RegWriteSAD2, MemReadDataSAD2, ALUResultSAD2, WriteRegSAD2,
     MemtoRegW, RegWriteW, MemReadDataW, ALUResultW, WriteRegW,
-    PCPlus4M, PCPlus4W, jalM, jalW, DisplayM, DisplayW, BranchTypeM, BranchTypeW, Reset,
-    hazardTypeM, hazardTypeW, InstructionM, InstructionW, BranchM, BranchW);
+    PCPlus4SAD2, PCPlus4W, jalSAD2, jalW, DisplaySAD2, DisplayW, BranchTypeSAD2, BranchTypeW, Reset,
+    hazardTypeW, hazardTypeSAD2, instructionSAD2, instructionW, BranchSAD2, BranchW);
 
     //Writeback Stage
     //Mux32Bit2To1 MemToRegMux(WriteDataW1, ALUResultW, MemReadDataW, MemtoRegW);

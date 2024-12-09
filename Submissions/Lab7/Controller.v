@@ -20,7 +20,7 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module Controller(InstCode, FunctCode, RegImm, NopCheck, RegDst, MemRead, MemToReg, ALUOp, MemWrite, ALUSrc, RegWrite, BranchType, jal, Display, hazardType);
+module Controller(InstCode, FunctCode, RegImm, NopCheck, RegDst, MemRead, MemToReg, ALUOp, MemWrite, ALUSrc, RegWrite, BranchType, jal, Display, hazardType, SAD);
 
 input [5:0] InstCode; // 6 bit input code for each instruction
 input [5:0] FunctCode; //needed because the world hates us and JR uses the R type function field :)
@@ -38,6 +38,7 @@ output reg [1:0] BranchType; //type of branch/jump
 output reg jal; //is it jal
 output reg Display; //not needed anymore
 output reg hazardType; //0 for rtype, 1 for mem/itype
+output reg [1:0] SAD;
 
 always @(*)
 begin
@@ -55,6 +56,7 @@ RegWrite <=0;
 BranchType <= 2;
 jal <= 0;
 hazardType <= 1;
+SAD <= 0;
 end
 
 else begin //r type instructions
@@ -68,7 +70,47 @@ RegWrite <= 1;
 BranchType <= 0;
 jal <= 0;
 hazardType <= 0;
+SAD <= 0;
 end
+end
+
+6'b001111:begin //SADJ
+RegDst <= 0;
+MemRead <= 1;
+MemToReg <= 1;
+ALUOp <= 4'b0000;
+MemWrite <= 0;
+ALUSrc <= 0;
+RegWrite <= 1; 
+BranchType <= 0;
+jal <= 0;
+SAD <= 1;
+end
+
+6'b001111:begin //SAD
+RegDst <= 0;
+MemRead <= 1;
+MemToReg <= 1;
+ALUOp <= 4'b0000;
+MemWrite <= 0;
+ALUSrc <= 0;
+RegWrite <= 1; 
+BranchType <= 0;
+jal <= 0;
+SAD <= 2;
+end
+
+6'b001111:begin //SAD
+RegDst <= 0;
+MemRead <= 1;
+MemToReg <= 1;
+ALUOp <= 4'b0000;
+MemWrite <= 0;
+ALUSrc <= 0;
+RegWrite <= 1; 
+BranchType <= 0;
+jal <= 0;
+SAD <= 3;
 end
 
 6'b001000: begin //add immediate
@@ -82,6 +124,7 @@ RegWrite <=1;
 BranchType <= 0;
 jal <= 0;
 hazardType <= 1;
+SAD <= 0;
 end
 
 6'b100011: begin //lw
@@ -95,6 +138,7 @@ RegWrite <=1;
 BranchType <= 0;
 jal <= 0;
 hazardType <= 1;
+SAD <= 0;
 end
 
 6'b100001: begin //lh
@@ -108,6 +152,7 @@ RegWrite <=1;
 BranchType <= 0;
 jal <= 0;
 hazardType <= 1;
+SAD <= 0;
 end
 
 6'b100000: begin //lb
@@ -121,6 +166,7 @@ RegWrite <=1;
 BranchType <= 0;
 jal <= 0;
 hazardType <= 1;
+SAD <= 0;
 end
 
 6'b101011: begin //sw
@@ -134,6 +180,7 @@ RegWrite <=0;
 BranchType <= 0;
 jal <= 0;
 hazardType <= 0;
+SAD <= 0;
 end
 
 6'b101001: begin //sh
@@ -147,6 +194,7 @@ RegWrite <=0;
 BranchType <= 0;
 jal <= 0;
 hazardType <= 0;
+SAD <= 0;
 end
 
 6'b101000: begin //sb
@@ -160,6 +208,7 @@ RegWrite <=0;
 BranchType <= 0;
 jal <= 0;
 hazardType <= 0;
+SAD <= 0;
 end
 
 6'b001100: begin //and immediate
@@ -173,6 +222,7 @@ RegWrite <=1;
 BranchType <= 0;
 jal <= 0;
 hazardType <= 1;
+SAD <= 0;
 end
 
 6'b001101: begin //or immediate
@@ -186,6 +236,7 @@ RegWrite <=1;
 BranchType <= 0;
 jal <= 0;
 hazardType <= 1;
+SAD <= 0;
 end
 
 6'b001110: begin //xor immediate
@@ -199,6 +250,7 @@ RegWrite <=1;
 BranchType <= 0;
 jal <= 0;
 hazardType <= 1;
+SAD <= 0;
 end
 
 6'b001010: begin //slt immediate
@@ -212,6 +264,7 @@ RegWrite <=1;
 BranchType <= 0;
 jal <= 0;
 hazardType <= 1;
+SAD <= 0;
 end
 
 6'b011100: begin //mul
@@ -225,6 +278,7 @@ RegWrite <= 1;
 BranchType <= 0;
 jal <= 0;
 hazardType <= 0;
+SAD <= 0;
 end
 
 //branch type instructions
@@ -242,6 +296,7 @@ RegWrite <= 0;
 BranchType <= 3;
 jal <= 0;
 hazardType <= 1;
+SAD <= 0;
 end
 
 else if (RegImm == 5'b00000) begin //bltz
@@ -255,6 +310,7 @@ RegWrite <= 0;
 BranchType <= 3;
 jal <= 0;
 hazardType <= 1;
+SAD <= 0;
 end
 end
 
@@ -269,6 +325,7 @@ RegWrite <= 0;
 BranchType <= 3;
 jal <= 0;
 hazardType <= 0;
+SAD <= 0;
 end
 
 6'b000101: begin //bne
@@ -282,6 +339,7 @@ RegWrite <= 0;
 BranchType <= 3;
 jal <= 0;
 hazardType <= 0;
+SAD <= 0;
 end
 
 6'b000111: begin //bgtz
@@ -295,6 +353,7 @@ RegWrite <= 0;
 BranchType <= 3;
 jal <= 0;
 hazardType <= 1;
+SAD <= 0;
 end
 
 6'b000110: begin //blez
@@ -308,6 +367,7 @@ RegWrite <= 0;
 BranchType <= 3;
 jal <= 0;
 hazardType <= 0;
+SAD <= 0;
 end
 
 6'b000010: begin //j
@@ -320,6 +380,7 @@ ALUSrc <= 0;
 RegWrite <= 0; 
 BranchType <= 1;
 jal <= 0;
+SAD <= 0;
 end
 
 6'b000011: begin //jal
@@ -332,7 +393,10 @@ ALUSrc <= 0;
 RegWrite <= 1; 
 BranchType <= 1;
 jal <= 1;
+SAD <= 0;
 end
+
+
 
 default: begin //default case
 RegDst <= 0;
@@ -344,6 +408,7 @@ ALUSrc <= 0;
 RegWrite <=0; 
 BranchType <= 0;
 jal <= 0;
+SAD <= 0;
 end
 endcase 
 
@@ -358,6 +423,7 @@ ALUSrc <= 0;
 RegWrite <=0; 
 BranchType <= 0;
 jal <= 0;
+SAD <= 0;
 end
 else
 Display <= 1;
