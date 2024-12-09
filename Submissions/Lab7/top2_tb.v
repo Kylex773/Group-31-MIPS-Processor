@@ -26,7 +26,7 @@ module top2_tb();
 reg Clk, Reset;
 //wire BranchW;
 //wire [4:0] WriteRegW;
-wire [31:0] V0, V1;
+wire [31:0] minX, minY;
 //wire [31:0] PCPlus4W, WriteDataW1;
 
 //wire Stall;
