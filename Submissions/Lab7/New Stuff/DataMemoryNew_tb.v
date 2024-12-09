@@ -33,7 +33,7 @@ module DataMemoryNew_tb();
     reg SAD;
     
     wire [31:0] ReadData;
-    wire [31:0] vector [0:15];
+    wire [31:0] V1, V2, V3, V4, V5, V6, V7, V8, V9, V10, V11, V12, V13, V14, V15, V16;
     
     DataMemoryNew u0(
         .Address(Address), 
@@ -45,7 +45,22 @@ module DataMemoryNew_tb();
         .Reset(Reset),
         .Init(Init),
         .SAD(SAD),
-        .vector(vector)
+        .V1(V1),
+        .V2(V2),
+        .V3(V3),
+        .V4(V4),
+        .V5(V5),
+        .V6(V6),
+        .V7(V7),
+        .V8(V8),
+        .V9(V9),
+        .V10(V10),
+        .V11(V11),
+        .V12(V12),
+        .V13(V13),
+        .V14(V14),
+        .V15(V15),
+        .V16(V16)
     );
     
     initial begin

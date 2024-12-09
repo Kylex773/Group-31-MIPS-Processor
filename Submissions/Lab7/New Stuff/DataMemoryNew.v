@@ -20,7 +20,9 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module DataMemoryNew(Address, WriteData, Clk, MemWrite, MemRead, ReadData, Reset, Init, SAD, vector); 
+module DataMemoryNew(Address, WriteData, Clk, MemWrite, MemRead, ReadData, Reset, Init, SAD, 
+V1, V2, V3, V4, V5, V6, V7, V8, V9, V10, V11, V12, V13, V14, V15, V16
+); 
 
     input [31:0] Address; 	// Input Address 
     input [31:0] WriteData; // Data that needs to be written into the address 
@@ -31,7 +33,7 @@ module DataMemoryNew(Address, WriteData, Clk, MemWrite, MemRead, ReadData, Reset
     input Init, SAD;
     
     output reg[31:0] ReadData; // Contents of memory location at real
-    output reg[31:0] vector [0:15];
+    output reg[31:0] V1, V2, V3, V4, V5, V6, V7, V8, V9, V10, V11, V12, V13, V14, V15, V16;
     
     reg i;
     
@@ -41,26 +43,40 @@ module DataMemoryNew(Address, WriteData, Clk, MemWrite, MemRead, ReadData, Reset
     
     always@(*) begin
         if(Init)begin
-            for(i = 0; i <= 15; i = i + 1)
-                vector[i] <= memory[4100 + i];
+            V1 <= memory[4100];
+            V2 <= memory[4101];
+            V3 <= memory[4102];
+            V4 <= memory[4103];
+            V5 <= memory[4104];
+            V6 <= memory[4105];
+            V7 <= memory[4106];
+            V8 <= memory[4107];
+            V9 <= memory[4108];
+            V10 <= memory[4109];
+            V11 <= memory[4110];
+            V12 <= memory[4111];
+            V13 <= memory[4112];
+            V14 <= memory[4113];
+            V15 <= memory[4114];
+            V16 <= memory[4115];
         end
         else if(SAD) begin
-            vector[0] <= memory[Address[13:2]];
-            vector[1] <= memory[Address[13:2] + 1];
-            vector[2] <= memory[Address[13:2] + 2];
-            vector[3] <= memory[Address[13:2] + 3];
-            vector[4] <= memory[Address[13:2] + 64];
-            vector[5] <= memory[Address[13:2] + 65];
-            vector[6] <= memory[Address[13:2] + 66];
-            vector[7] <= memory[Address[13:2] + 67];
-            vector[8] <= memory[Address[13:2] + 128];
-            vector[9] <= memory[Address[13:2] + 129];
-            vector[10] <= memory[Address[13:2] + 130];
-            vector[11] <= memory[Address[13:2] + 131];
-            vector[12] <= memory[Address[13:2] + 192];
-            vector[13] <= memory[Address[13:2] + 193];
-            vector[14] <= memory[Address[13:2] + 194];
-            vector[15] <= memory[Address[13:2] + 195];
+            V1 <= memory[Address[13:2]];
+            V2 <= memory[Address[13:2] + 1];
+            V3 <= memory[Address[13:2] + 2];
+            V4 <= memory[Address[13:2] + 3];
+            V5 <= memory[Address[13:2] + 64];
+            V6 <= memory[Address[13:2] + 65];
+            V7 <= memory[Address[13:2] + 66];
+            V8 <= memory[Address[13:2] + 67];
+            V9 <= memory[Address[13:2] + 128];
+            V10 <= memory[Address[13:2] + 129];
+            V11 <= memory[Address[13:2] + 130];
+            V12 <= memory[Address[13:2] + 131];
+            V13 <= memory[Address[13:2] + 192];
+            V14 <= memory[Address[13:2] + 193];
+            V15 <= memory[Address[13:2] + 194];
+            V16 <= memory[Address[13:2] + 195];
         end
         else begin
             if(MemRead)
