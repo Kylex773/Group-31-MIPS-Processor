@@ -20,7 +20,8 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module Controller(InstCode, FunctCode, RegImm, NopCheck, RegDst, MemRead, MemToReg, ALUOp, MemWrite, ALUSrc, RegWrite, BranchType, jal, Display, hazardType);
+module Controller(InstCode, FunctCode, RegImm, NopCheck, RegDst, MemRead, MemToReg,
+ ALUOp, MemWrite, ALUSrc, RegWrite, BranchType, jal, Display, hazardType);
 
 input [5:0] InstCode; // 6 bit input code for each instruction
 input [5:0] FunctCode; //needed because the world hates us and JR uses the R type function field :)
@@ -244,7 +245,8 @@ jal <= 0;
 hazardType <= 1;
 end
 
-else if (RegImm == 5'b00000) begin //bltz
+else //if (RegImm == 5'b00000) begin //bltz\
+begin
 RegDst <= 0;
 MemRead <= 0;
 MemToReg <= 0;
@@ -297,6 +299,8 @@ jal <= 0;
 hazardType <= 1;
 end
 
+
+
 6'b000110: begin //blez
 RegDst <= 0;
 MemRead <= 0;
@@ -320,6 +324,7 @@ ALUSrc <= 0;
 RegWrite <= 0; 
 BranchType <= 1;
 jal <= 0;
+hazardType <= 1;
 end
 
 6'b000011: begin //jal
@@ -332,6 +337,7 @@ ALUSrc <= 0;
 RegWrite <= 1; 
 BranchType <= 1;
 jal <= 1;
+hazardType <= 0;
 end
 
 default: begin //default case
@@ -344,6 +350,7 @@ ALUSrc <= 0;
 RegWrite <=0; 
 BranchType <= 0;
 jal <= 0;
+hazardType <= 0;
 end
 endcase 
 
@@ -358,6 +365,7 @@ ALUSrc <= 0;
 RegWrite <=0; 
 BranchType <= 0;
 jal <= 0;
+hazardType <= 0;
 end
 else
 Display <= 1;

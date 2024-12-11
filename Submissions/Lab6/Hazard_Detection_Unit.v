@@ -20,10 +20,13 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module Hazard_Detection_Unit(Exei, Memi, Deci, Wbi, exeh, memh, dech, wbh, Stall, RegWriteE, RegWriteM, RegWriteW);
+module Hazard_Detection_Unit(Exei, Memi, Deci, Wbi, exeh, memh, dech, wbh, Stall, RegWriteE,
+ RegWriteM, RegWriteW);
 input [31:0] Exei, Memi, Deci, Wbi;
 input exeh, memh, dech, wbh, RegWriteE, RegWriteM, RegWriteW;
 output reg Stall;
+
+
 
 wire [4:0]ExeRD = Exei[15:11]; 
 wire [4:0]ExeRT = Exei[20:16];
@@ -36,10 +39,15 @@ wire [4:0]WbRT = Wbi[20:16];
 
 always @(*) begin
     Stall <= 0;
-    if(exeh == 0 && memh == 0 && wbh == 0 && dech == 0)begin  
+    if ( Exei[31:26] == 6'b000011 || Memi[31:26] == 6'b000011 || Deci[31:26] == 6'b000011 || Wbi[31:26] == 6'b000011) begin
+        Stall <= 0;
+    end
+    else if(exeh == 0 && memh == 0 && wbh == 0 && dech == 0)begin  
         if((ExeRD == DecRS || ExeRD == DecRT) && (RegWriteE == 1))begin
             Stall <= 1;
+            
         end
+        
         else if ((MemRD == DecRS || MemRD == DecRT) && (RegWriteM == 1))begin
             Stall <= 1;
         end

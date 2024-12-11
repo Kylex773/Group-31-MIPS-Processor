@@ -126,12 +126,12 @@ Clk, Reset, V0, V1
     PCSelector PCSelector(PCSel, BranchTypeD, BranchD);
     
     
-    JumpAddress JumpAddressCalc(InstructionD[25:0], PCPlus4D, JumpAddressD);
+    JumpAddress JumpAddressCalc(InstructionD[27:0], PCPlus4D, JumpAddressD);
     BranchAdder BranchAdder(PCPlus4D, ImmExtD, BranchAddressD);
     Mux32Bit4to1 PCMux(PCInF, PCPlus4F, JumpAddressD, ReadData1D, BranchAddressD, PCSel);
     
     
-    Mux5Bit2To1 JALMuxRegister(WriteRegD, WriteRegD1, 31, jalD);
+    Mux5Bit2To1 JALMuxRegister(WriteRegD, WriteRegD1, 5'd31, jalD);
     
     Pipline_Decode Pipline_Decode(Clk,
         MemReadD, MemToRegD, MemWriteD, ALUSrcD, RegWriteD, InstructionD[27:26],

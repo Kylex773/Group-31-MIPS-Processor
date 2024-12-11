@@ -48,39 +48,39 @@ Reset);
     
     output reg[31:0] ReadData; // Contents of memory location at real
     
-    reg [31:0] memory [0:4095];
+    reg [31:0] memory [0:16380];
 
     /* Please fill in the implementation here */
     always@(*) begin
         if(MemRead == 1'b1)begin
                 if(MemType == 2'b11)begin //load word
                     
-                    ReadData <= memory[Address[13:2]];
+                    ReadData <= memory[Address[15:2]];
                     
                 end
                 else if(MemType == 2'b01)begin  //load half
                     if(Address[1:0] == 2'b10)begin  //load bottom half
-                        ReadData <= {{16{memory[Address[13:2]][15]}}, memory[Address[13:2]][15:0]};
+                        ReadData <= {{16{memory[Address[15:2]][15]}}, memory[Address[15:2]][15:0]};
                         
                     end
                     else if(Address[1:0] == 2'b00)begin  //load top half
-                        ReadData <= {{16{memory[Address[13:2]][31]}}, memory[Address[13:2]][31:16]};
+                        ReadData <= {{16{memory[Address[15:2]][31]}}, memory[Address[15:2]][31:16]};
                     end
                 end
                 else if(MemType == 2'b00)begin  //load byte
                     if(Address[1:0] == 2'b11)begin
-                        ReadData <= {{24{memory[Address[13:2]][7]}}, memory[Address[13:2]][7:0]};//load least 8 bits                        
+                        ReadData <= {{24{memory[Address[15:2]][7]}}, memory[Address[15:2]][7:0]};//load least 8 bits                        
                     end
                     if(Address[1:0] == 2'b10)begin
-                        ReadData <= {{24{memory[Address[13:2]][15]}}, memory[Address[13:2]][15:8]}; //load lower half 8 bits
+                        ReadData <= {{24{memory[Address[15:2]][15]}}, memory[Address[15:2]][15:8]}; //load lower half 8 bits
                         
                         
                     end
                     if(Address[1:0] == 2'b01)begin
-                        ReadData <= {{24{memory[Address[13:2]][23]}}, memory[Address[13:2]][23:16]};  //load upper half 8 bits
+                        ReadData <= {{24{memory[Address[15:2]][23]}}, memory[Address[15:2]][23:16]};  //load upper half 8 bits
                     end
                     if(Address[1:0] == 2'b00)begin
-                        ReadData <= {{24{memory[Address[13:2]][31]}}, memory[Address[13:2]][31:24]};  //load most 8 bits
+                        ReadData <= {{24{memory[Address[15:2]][31]}}, memory[Address[15:2]][31:24]};  //load most 8 bits
                     end
                         
                 end   
@@ -93,28 +93,28 @@ Reset);
     //J <= memory[2];
         if(MemWrite == 1'b1)begin
             if(MemType == 2'b11)begin //Save word
-                    memory[Address[13:2]] <= WriteData;
+                    memory[Address[15:2]] <= WriteData;
             end
             if(MemType == 2'b01)begin //Save half
                 if(Address[1:0] == 2'b10)begin  //Save bottom half
-                        memory[Address[13:2]] <= {memory[Address[13:2]][31:16], WriteData[15:0]};
+                        memory[Address[15:2]] <= {memory[Address[15:2]][31:16], WriteData[15:0]};
                 end
                 else if(Address[1:0] == 2'b00)begin  //Save top half
-                        memory[Address[13:2]] <= {WriteData[15:0], memory[Address[13:2]][15:0]};
+                        memory[Address[15:2]] <= {WriteData[15:0], memory[Address[15:2]][15:0]};
                 end
             end
             if(MemType == 2'b00)begin //Save byte
                 if(Address[1:0] == 2'b11)begin  //Save bottom half
-                        memory[Address[13:2]] <= {memory[Address[13:2]][31:8], WriteData[7:0]};
+                        memory[Address[15:2]] <= {memory[Address[15:2]][31:8], WriteData[7:0]};
                 end
                 else if(Address[1:0] == 2'b10)begin  //Save top half
-                        memory[Address[13:2]] <= {memory[Address[13:2]][31:16], WriteData[7:0], memory[Address[13:2]][7:0]};
+                        memory[Address[15:2]] <= {memory[Address[15:2]][31:16], WriteData[7:0], memory[Address[15:2]][7:0]};
                 end
                 if(Address[1:0] == 2'b01)begin  //Save bottom half
-                        memory[Address[13:2]] <= {memory[Address[13:2]][31:24], WriteData[7:0], memory[Address[13:2]][15:0]};
+                        memory[Address[15:2]] <= {memory[Address[15:2]][31:24], WriteData[7:0], memory[Address[15:2]][15:0]};
                 end
                 else if(Address[1:0] == 2'b00)begin  //Save top half
-                       memory[Address[13:2]] <= {WriteData[7:0], memory[Address[13:2]][23:0]};
+                       memory[Address[15:2]] <= {WriteData[7:0], memory[Address[15:2]][23:0]};
                 end
             end
         end

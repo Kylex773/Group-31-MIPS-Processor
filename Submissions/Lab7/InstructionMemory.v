@@ -48,7 +48,7 @@ module InstructionMemory(Address, Instruction);
     initial begin
 
 
-    $readmemh("Testing3.mem", memory);
+    $readmemh("imComp.mem", memory);
 
     end
     always @(*) begin
